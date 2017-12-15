@@ -1,0 +1,13 @@
+# IDE, editors
+*.iml
+.*.swp
+
+# java
+*.class
+*.jar
+*.war
+*.ear
+
+# archives
+*.gz
+*.zip
