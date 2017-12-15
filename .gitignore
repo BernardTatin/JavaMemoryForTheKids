@@ -1,6 +1,7 @@
 # IDE, editors
 *.iml
 .*.swp
+.idea/
 
 # java
 *.class
