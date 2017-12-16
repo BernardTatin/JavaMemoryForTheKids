@@ -6,10 +6,8 @@ package bernard.tatin;
  */
 public class App 
 {
-
     public static void main( String[] args ) {
-        long pid = ProcessID.getPID();
-
-        System.out.println( "My PID is " + String.valueOf(pid) );
+        System.out.println( "PID          " + String.valueOf(ProcessID.getPID()) );
+        System.out.println( "Command line " + ProcessCommandLine.getCommandLine());
     }
 }
