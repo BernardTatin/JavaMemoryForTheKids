@@ -1,25 +1,24 @@
 package bernard.tatin;
 
-import java.lang.annotation.Native;
 
 public class ProcessID {
     private static ProcessID ourInstance = new ProcessID();
-    private int pid = -1;
+    private long pid = -1;
 
-    private int innerGetPID() {
+    private long innerGetPID() {
+        if (pid == -1) {
+            String processName =
+                    java.lang.management.ManagementFactory.getRuntimeMXBean().getName();
+            pid = Long.parseLong(processName.split("@")[0]);
+        }
         return pid;
     }
 
-    public static int getPID() {
-        return ourInstance.innerGetPID();
+    public static long getPID() {
+        return ProcessID.ourInstance.innerGetPID();
     }
 
-    private interface CLibrary extends Library {
-        CLibrary INSTANCE = (CLibrary) Native.loadLibrary("c", CLibrary.class);
-        int getpid ();
-    }
 
     private ProcessID() {
-        pid = CLibrary.INSTANCE.getpid();
     }
 }
