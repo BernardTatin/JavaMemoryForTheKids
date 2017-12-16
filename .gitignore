@@ -9,6 +9,10 @@
 *.war
 *.ear
 
+# maven
+target/
+
+
 # archives
 *.gz
 *.zip
