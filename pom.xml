@@ -35,7 +35,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <!-- classpathPrefix>lib/</classpathPrefix -->
-              <mainClass>bernard.tatin.App</mainClass>
+              <mainClass>bernard.tatin.JavaMemoryForTheKids</mainClass>
             </manifest>
           </archive>
         </configuration>

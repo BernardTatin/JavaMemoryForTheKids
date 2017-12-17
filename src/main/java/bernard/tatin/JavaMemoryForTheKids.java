@@ -4,7 +4,7 @@ package bernard.tatin;
  * Hello world!
  *
  */
-public class App 
+public class JavaMemoryForTheKids
 {
     public static void main( String[] args ) {
         System.out.println( "PID          " + String.valueOf(ProcessID.getPID()) );
