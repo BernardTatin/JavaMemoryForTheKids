@@ -2,7 +2,7 @@ package bernard.tatin;
 
 
 public class ProcessID {
-    private static ProcessID ourInstance = new ProcessID();
+    final private static ProcessID ourInstance = new ProcessID();
     private long pid = -1;
 
     private long innerGetPID() {

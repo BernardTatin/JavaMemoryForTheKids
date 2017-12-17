@@ -1,12 +1,9 @@
 package bernard.tatin;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class ProcessCommandLine {
-    private static ProcessCommandLine ourInstance = new ProcessCommandLine();
-    private long pid = ProcessID.getPID();
+    final private static ProcessCommandLine ourInstance = new ProcessCommandLine();
     private String commandLine = null;
 
     private String innerGetCommandLine() {

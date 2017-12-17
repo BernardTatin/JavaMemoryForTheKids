@@ -4,8 +4,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class LinuxProc {
-    private static LinuxProc ourInstance = new LinuxProc();
-    private long pid = ProcessID.getPID();
+    final private static LinuxProc ourInstance = new LinuxProc();
+    final private long pid = ProcessID.getPID();
 
     private Path innerProcPathName(String path) {
         return Paths.get("/proc/" + String.valueOf(pid) + "/" + path);
