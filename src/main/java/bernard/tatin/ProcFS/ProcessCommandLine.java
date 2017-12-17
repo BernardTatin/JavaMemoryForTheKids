@@ -1,4 +1,6 @@
-package bernard.tatin;
+package bernard.tatin.ProcFS;
+
+import bernard.tatin.Tools.ForFiles;
 
 public class ProcessCommandLine {
     final private static ProcessCommandLine ourInstance = new ProcessCommandLine();
@@ -7,7 +9,7 @@ public class ProcessCommandLine {
     private String innerGetCommandLine() {
         if (commandLine == null) {
             try {
-                commandLine = Tools.loadTextFile(LinuxProc.procPathName("cmdline") );
+                commandLine = ForFiles.loadTextFile(LinuxProc.procPathName("cmdline") );
                 if (commandLine == null) {
                     commandLine = "<no command line found>";
                 }

@@ -1,10 +1,10 @@
-package bernard.tatin;
+package bernard.tatin.Tools;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class Tools {
-    private final static Tools ourInstance = new Tools();
+public class ForFiles {
+    private final static ForFiles ourInstance = new ForFiles();
 
     public static String loadTextFile(Path path) {
         try {
@@ -28,6 +28,6 @@ public class Tools {
         }
     }
 
-    private Tools() {
+    private ForFiles() {
     }
 }

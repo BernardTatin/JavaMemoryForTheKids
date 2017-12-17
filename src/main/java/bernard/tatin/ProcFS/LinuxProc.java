@@ -1,4 +1,4 @@
-package bernard.tatin;
+package bernard.tatin.ProcFS;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,6 +13,14 @@ public class LinuxProc {
 
     public static Path procPathName(String path) {
         return ourInstance.innerProcPathName(path);
+    }
+
+    public static void busySleep(long nanos) {
+        long elapsed;
+        final long startTime = System.nanoTime();
+        do {
+            elapsed = System.nanoTime() - startTime;
+        } while (elapsed < nanos);
     }
 
     private LinuxProc() {
