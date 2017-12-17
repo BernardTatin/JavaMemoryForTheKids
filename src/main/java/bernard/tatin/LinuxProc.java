@@ -1,4 +1,21 @@
 package bernard.tatin;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class LinuxProc {
+    private static LinuxProc ourInstance = new LinuxProc();
+    private long pid = ProcessID.getPID();
+
+    private Path innerProcPathName(String path) {
+        return Paths.get("/proc/" + String.valueOf(pid) + "/" + path);
+    }
+
+    public static Path procPathName(String path) {
+        return ourInstance.innerProcPathName(path);
+    }
+
+    private LinuxProc() {
+
+    }
 }
