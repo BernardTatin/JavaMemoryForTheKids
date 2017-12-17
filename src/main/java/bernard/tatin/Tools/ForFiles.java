@@ -14,7 +14,7 @@ public class ForFiles {
         if (l > 0) {
             // '\0' is a word separator
             for (int i=0; i<l; i++) {
-                if (aLine[i] == 0) {
+                if (aLine[i] < 32) {
                     aLine[i] = 32;
                 }
             }
