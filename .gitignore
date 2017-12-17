@@ -12,6 +12,8 @@
 # maven
 target/
 
+# tests garbage
+*.log
 
 # archives
 *.gz
