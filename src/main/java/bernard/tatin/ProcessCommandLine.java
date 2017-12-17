@@ -1,7 +1,5 @@
 package bernard.tatin;
 
-import java.nio.file.Files;
-
 public class ProcessCommandLine {
     final private static ProcessCommandLine ourInstance = new ProcessCommandLine();
     private String commandLine = null;
@@ -9,18 +7,8 @@ public class ProcessCommandLine {
     private String innerGetCommandLine() {
         if (commandLine == null) {
             try {
-                byte[] aLine = Files.readAllBytes(LinuxProc.procPathName("cmdline"));
-                int l = aLine.length;
-
-                if (l > 0) {
-                    // '\0' id a word separator
-                    for (int i=0; i<l; i++) {
-                        if (aLine[i] == 0) {
-                            aLine[i] = 32;
-                        }
-                    }
-                    commandLine = new String(aLine, "UTF-8");
-                } else {
+                commandLine = Tools.loadTextFile(LinuxProc.procPathName("cmdline") );
+                if (commandLine == null) {
                     commandLine = "<no command line found>";
                 }
             }
