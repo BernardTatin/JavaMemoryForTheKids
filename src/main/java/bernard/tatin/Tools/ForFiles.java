@@ -14,7 +14,7 @@ public class ForFiles {
         if (l > 0) {
             // '\0' is a word separator
             for (int i=0; i<l; i++) {
-                if (aLine[i] < 32) {
+                if (aLine[i] == 0) {
                     aLine[i] = 32;
                 }
             }
@@ -28,6 +28,14 @@ public class ForFiles {
         }
     }
 
+    public static String[] loadLinesFromfiles(Path path) {
+        String fileContent = ForFiles.loadTextFile(path);
+        if (fileContent != null) {
+            return fileContent.split("\n");
+        } else {
+            return null;
+        }
+    }
     private ForFiles() {
     }
 }

@@ -1,5 +1,6 @@
 package bernard.tatin;
 
+import bernard.tatin.ProcFS.LinuxConstants;
 import bernard.tatin.ProcFS.ProcessCommandLine;
 import bernard.tatin.ProcFS.ProcessID;
 import bernard.tatin.ProcFS.StatM;
@@ -29,9 +30,9 @@ public class JavaMemoryForTheKids
 
     public static void main( String[] args ) {
         Counter count = new Counter(25);
-        Integer[] memory = new Integer[1];
+        Byte[] memory = null;
+        Byte[] new_memory = null;
 
-        memory[0] = new Integer(0);
         System.out.println( "PID          " + String.valueOf(ProcessID.getPID()) );
         System.out.println( "Command line " + ProcessCommandLine.getCommandLine());
 
@@ -39,23 +40,28 @@ public class JavaMemoryForTheKids
             if (count.getValue() == 0) {
                 JavaMemoryForTheKids.showTitle();
             }
+            new_memory = MemoryFiller.fillMemory(MEMORY_INCREMENT);
+            if (memory != null) {
+                memory = Stream.concat(Arrays.stream(memory),
+                        Arrays.stream(new_memory))
+                        .toArray(Byte[]::new);
+            } else {
+                memory = new_memory;
+            }
+
+            memory_size += MEMORY_INCREMENT / LinuxConstants.KILOBYTE;
 
             String[] aString = StatM.getStats();
             for (int i=0; i<aString.length; i++) {
                 System.out.print(aString[i] + " ");
             }
+            System.out.println(ForStrings.leftFormat(String.valueOf(memory_size), StatM.FIELD_LENGTH));
             try {
                 Thread.sleep(800L);
             }
             catch (Exception e) {
 
             }
-            memory = Stream.concat(Arrays.stream(memory),
-                    Arrays.stream(MemoryFiller.fillMemory(MEMORY_INCREMENT)))
-                    .toArray(Integer[]::new);
-
-            memory_size += MEMORY_INCREMENT / 4096;
-            System.out.println(ForStrings.leftFormat(String.valueOf(memory_size), 10));
         }
     }
 }
