@@ -15,4 +15,9 @@ public class Counter {
         }
         return current;
     }
+
+    public int reset() {
+        current = 0;
+        return current;
+    }
 }

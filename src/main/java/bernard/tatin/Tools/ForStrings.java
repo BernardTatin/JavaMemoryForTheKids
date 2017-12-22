@@ -6,7 +6,7 @@ public class ForStrings {
     private final int MAX_STRING_LENGTH = 256;
 
     private void initWhites() {
-        whites = new String();
+        whites = "";
         for (int i=0; i<MAX_STRING_LENGTH; i++) {
             whites += " ";
         }

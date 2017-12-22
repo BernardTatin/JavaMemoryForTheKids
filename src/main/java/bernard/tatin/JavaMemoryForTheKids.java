@@ -17,13 +17,12 @@ import java.util.stream.Stream;
  */
 public class JavaMemoryForTheKids
 {
-    private final static int MEMORY_INCREMENT = 3200 * 1024;
-    private static int memory_size = 0;
+    private final static int MEMORY_INCREMENT = 5 * LinuxConstants.MEGABYTE;
 
     private static void showTitle() {
         String[] aTitle = StatM.getStatsTitle();
-        for (int i=0; i<aTitle.length; i++) {
-            System.out.print(aTitle[i] + " ");
+        for (String s : aTitle) {
+            System.out.print(s + " ");
         }
         System.out.println("");
     }
@@ -32,6 +31,7 @@ public class JavaMemoryForTheKids
         Counter count = new Counter(25);
         Byte[] memory = null;
         Byte[] new_memory = null;
+        int memory_size = 0;
 
         System.out.println( "PID          " + String.valueOf(ProcessID.getPID()) );
         System.out.println( "Command line " + ProcessCommandLine.getCommandLine());
@@ -41,21 +41,37 @@ public class JavaMemoryForTheKids
                 JavaMemoryForTheKids.showTitle();
             }
             new_memory = MemoryFiller.fillMemory(MEMORY_INCREMENT);
+            if (new_memory == null) {
+                System.err.println("ERROR : out of memory, reset all");
+                memory = null;
+                new_memory = null;
+                memory_size = 0;
+            }
             if (memory != null) {
-                memory = Stream.concat(Arrays.stream(memory),
-                        Arrays.stream(new_memory))
-                        .toArray(Byte[]::new);
+                try {
+                    memory = Stream.concat(Arrays.stream(memory),
+                            Arrays.stream(new_memory))
+                            .toArray(Byte[]::new);
+                } catch (OutOfMemoryError e) {
+                    System.err.println("ERROR : yes, we can catch java.lang.OutOfMemoryError !!!!");
+                    memory = null;
+                    memory_size = 0;
+                }
             } else {
                 memory = new_memory;
             }
 
-            memory_size += MEMORY_INCREMENT / LinuxConstants.KILOBYTE;
+            memory_size += MEMORY_INCREMENT / LinuxConstants.MEGABYTE;
 
             String[] aString = StatM.getStats();
-            for (int i=0; i<aString.length; i++) {
-                System.out.print(aString[i] + " ");
+            if (aString != null) {
+                for (String s : aString) {
+                    System.out.print(s + " ");
+                }
+                System.out.println(ForStrings.leftFormat(String.valueOf(memory_size), StatM.FIELD_LENGTH));
+            } else {
+                System.out.println("ERROR reading statm file");
             }
-            System.out.println(ForStrings.leftFormat(String.valueOf(memory_size), StatM.FIELD_LENGTH));
             try {
                 Thread.sleep(800L);
             }

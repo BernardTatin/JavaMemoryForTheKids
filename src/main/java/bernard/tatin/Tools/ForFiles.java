@@ -29,9 +29,13 @@ public class ForFiles {
     }
 
     public static String[] loadLinesFromfiles(Path path) {
+        return ForFiles.loadLinesFromfiles(path, "\n");
+    }
+
+    public static String[] loadLinesFromfiles(Path path, String separators) {
         String fileContent = ForFiles.loadTextFile(path);
         if (fileContent != null) {
-            return fileContent.split("\n");
+            return fileContent.split(separators);
         } else {
             return null;
         }
