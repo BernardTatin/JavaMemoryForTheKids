@@ -17,12 +17,13 @@ import java.util.stream.Stream;
  */
 class JavaMemoryForTheKids
 {
-    private final static int MEMORY_INCREMENT = 5 * LinuxConstants.MEGABYTE;
+    private final static int MEMORY_INCREMENT = 512 * LinuxConstants.KILOBYTE;
     private static String titleLine = null;
 
     private static void showTitle() {
         if (titleLine == null) {
             String[] aTitle = StatM.getStatsTitle();
+            titleLine = "";
             for (String s : aTitle) {
                 titleLine += s + " ";
             }
@@ -64,7 +65,7 @@ class JavaMemoryForTheKids
                 memory = new_memory;
             }
 
-            memory_size += MEMORY_INCREMENT / LinuxConstants.MEGABYTE;
+            memory_size += MEMORY_INCREMENT;
 
             String[] aString = StatM.getStats();
             if (aString != null) {
@@ -72,7 +73,7 @@ class JavaMemoryForTheKids
                 for (String s : aString) {
                     line += s + " ";
                 }
-                System.out.println(line + ForStrings.leftFormat(String.valueOf(memory_size), StatM.FIELD_LENGTH));
+                System.out.println(line + ForStrings.leftFormat(String.valueOf(memory_size / LinuxConstants.MEGABYTE), StatM.FIELD_LENGTH));
             } else {
                 System.out.println("ERROR reading statm file");
             }

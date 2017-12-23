@@ -21,8 +21,8 @@ public class StatM {
             ourInstance.statsTitles[i++] = ForStrings.rightFormat("Text", field_len) + "| ";
             ourInstance.statsTitles[i++] = ForStrings.rightFormat("Lib", field_len) + "| ";
             ourInstance.statsTitles[i++] = ForStrings.rightFormat("Data", field_len) + "| ";
-            ourInstance.statsTitles[i++] = ForStrings.rightFormat("Dirty Pages", field_len) + "| ";
-            ourInstance.statsTitles[i] = ForStrings.rightFormat("Allocated arrays", field_len) + " | ";
+            ourInstance.statsTitles[i++] = ForStrings.rightFormat("JVM free mem", field_len) + "| ";
+            ourInstance.statsTitles[i] = ForStrings.rightFormat("Allocated arrays", field_len) + " |";
         }
         return ourInstance.statsTitles;
     }
@@ -34,6 +34,8 @@ public class StatM {
     private String[] innerGetStats() {
         String[] strStats = ForFiles.loadLinesFromfiles(LinuxProc.procPathName("statm"), "[ \n]");
         if (strStats != null) {
+            // ugly, ugly, ugly !!!
+            strStats[6] = String.valueOf(Runtime.getRuntime().freeMemory() / LinuxConstants.PAGE_SIZE);
             for (int i = 0; i < strStats.length && i < FIELD_COUNT; i++) {
                 long v = Long.parseLong(strStats[i]) * LinuxConstants.PAGE_SIZE / LinuxConstants.MEGABYTE;
                 stats[i] = ForStrings.leftFormat(String.valueOf(v), FIELD_LENGTH - 3) + "M |";
