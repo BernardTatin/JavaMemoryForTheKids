@@ -1,7 +1,7 @@
 package bernard.tatin.Tools;
 
 public class ForStrings {
-    private static ForStrings ourInstance = new ForStrings();
+    private static final ForStrings ourInstance = new ForStrings();
     private String whites = null;
     private final int MAX_STRING_LENGTH = 256;
 

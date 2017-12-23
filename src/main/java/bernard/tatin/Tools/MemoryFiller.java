@@ -1,8 +1,6 @@
 package bernard.tatin.Tools;
 
 public class MemoryFiller {
-    private static MemoryFiller ourInstance = new MemoryFiller();
-
     public static Byte[] fillMemory(int bytes) {
         Byte[] table = null;
         try {

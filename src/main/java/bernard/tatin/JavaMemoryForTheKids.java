@@ -15,16 +15,19 @@ import java.util.stream.Stream;
  * Hello world!
  *
  */
-public class JavaMemoryForTheKids
+class JavaMemoryForTheKids
 {
     private final static int MEMORY_INCREMENT = 5 * LinuxConstants.MEGABYTE;
+    private static String titleLine = null;
 
     private static void showTitle() {
-        String[] aTitle = StatM.getStatsTitle();
-        for (String s : aTitle) {
-            System.out.print(s + " ");
+        if (titleLine == null) {
+            String[] aTitle = StatM.getStatsTitle();
+            for (String s : aTitle) {
+                titleLine += s + " ";
+            }
         }
-        System.out.println("");
+        System.out.println(titleLine);
     }
 
     public static void main( String[] args ) {
@@ -65,18 +68,18 @@ public class JavaMemoryForTheKids
 
             String[] aString = StatM.getStats();
             if (aString != null) {
+                String line = "";
                 for (String s : aString) {
-                    System.out.print(s + " ");
+                    line += s + " ";
                 }
-                System.out.println(ForStrings.leftFormat(String.valueOf(memory_size), StatM.FIELD_LENGTH));
+                System.out.println(line + ForStrings.leftFormat(String.valueOf(memory_size), StatM.FIELD_LENGTH));
             } else {
                 System.out.println("ERROR reading statm file");
             }
             try {
-                Thread.sleep(800L);
-            }
-            catch (Exception e) {
-
+                Thread.sleep(300L);
+            } catch (InterruptedException e) {
+                System.err.println("ERROR InterruptedException : " + e.getMessage());
             }
         }
     }

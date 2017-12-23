@@ -4,8 +4,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class ForFiles {
-    private final static ForFiles ourInstance = new ForFiles();
-
     public static String loadTextFile(Path path) {
         try {
         byte[] aLine = Files.readAllBytes(path);

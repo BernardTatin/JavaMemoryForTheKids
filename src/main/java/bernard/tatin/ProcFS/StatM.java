@@ -7,7 +7,7 @@ public class StatM {
     private final static StatM ourInstance = new StatM();
     private final int FIELD_COUNT = 7;
     public static final int FIELD_LENGTH = 14;
-    private String[] stats = new String[FIELD_COUNT];
+    private final String[] stats = new String[FIELD_COUNT];
     private String[] statsTitles = null;
 
     public static String[] getStatsTitle() {
