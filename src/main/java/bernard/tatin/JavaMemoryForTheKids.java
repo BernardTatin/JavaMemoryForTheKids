@@ -13,10 +13,8 @@ import java.util.stream.Stream;
 
 /**
  * Hello world!
- *
  */
-class JavaMemoryForTheKids
-{
+class JavaMemoryForTheKids {
     private final static int MEMORY_INCREMENT = 512 * LinuxConstants.KILOBYTE;
     private static String titleLine = null;
 
@@ -31,42 +29,42 @@ class JavaMemoryForTheKids
         System.out.println(titleLine);
     }
 
-    public static void main( String[] args ) {
+    public static void main(String[] args) {
         Counter count = new Counter(25);
         Byte[] memory = null;
-        Byte[] new_memory = null;
         int memory_size = 0;
+        boolean success = false;
 
-        System.out.println( "PID          " + String.valueOf(ProcessID.getPID()) );
-        System.out.println( "Command line " + ProcessCommandLine.getCommandLine());
+        System.out.println("PID          " + String.valueOf(ProcessID.getPID()));
+        System.out.println("Command line " + ProcessCommandLine.getCommandLine());
 
         while (true) {
             if (count.getValue() == 0) {
                 JavaMemoryForTheKids.showTitle();
             }
-            new_memory = MemoryFiller.fillMemory(MEMORY_INCREMENT);
-            if (new_memory == null) {
-                System.err.println("ERROR : out of memory, reset all");
+
+            try {
+                if (memory != null) {
+                    memory = Stream.concat(Arrays.stream(memory),
+                            Arrays.stream(MemoryFiller.fillMemory(MEMORY_INCREMENT)))
+                            .toArray(Byte[]::new);
+                } else {
+                    memory = MemoryFiller.fillMemory(MEMORY_INCREMENT);
+                }
+                success = true;
+            } catch (OutOfMemoryError e) {
+                System.err.println("ERROR : yes, we can catch java.lang.OutOfMemoryError !!!!");
+                success = false;
+            } catch (Exception e) {
+                System.err.println("ERROR : " + e.getMessage());
+                success = false;
+            }
+            if (success) {
+                memory_size += MEMORY_INCREMENT;
+            } else {
                 memory = null;
-                new_memory = null;
                 memory_size = 0;
             }
-            if (memory != null) {
-                try {
-                    memory = Stream.concat(Arrays.stream(memory),
-                            Arrays.stream(new_memory))
-                            .toArray(Byte[]::new);
-                } catch (OutOfMemoryError e) {
-                    System.err.println("ERROR : yes, we can catch java.lang.OutOfMemoryError !!!!");
-                    memory = null;
-                    memory_size = 0;
-                }
-            } else {
-                memory = new_memory;
-            }
-
-            memory_size += MEMORY_INCREMENT;
-
             String[] aString = StatM.getStats();
             if (aString != null) {
                 String line = "";
