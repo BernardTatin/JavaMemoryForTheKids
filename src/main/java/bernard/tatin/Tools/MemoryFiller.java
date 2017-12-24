@@ -1,24 +1,20 @@
 package bernard.tatin.Tools;
 
-public class MemoryFiller {
-    public static Byte[] fillMemory(int bytes) {
-        Byte[] table = null;
-        try {
-            table = new Byte[bytes];
-            byte b = (byte) 0;
+import java.util.stream.Stream;
 
-            for (int i = 0; i < bytes; i++) {
-                table[i] = b;
-                if (b == (byte) 255) {
-                    b = (byte) 0;
-                } else {
-                    b++;
-                }
-            }
+public class MemoryFiller {
+    public static Stream<Byte> fillMemory(int bytes) {
+
+        try {
+            return Stream.iterate((byte) 0,
+                    b -> (byte) ((b + (byte) 1) % (byte) 253)).limit(bytes);
         } catch (OutOfMemoryError e) {
-            table = null;
+            System.err.println("ERROR (MemoryFiller): " + e.getMessage());
+            return null;
+        } catch (Exception e) {
+            System.err.println("ERROR (MemoryFiller): " + e.getMessage());
+            return null;
         }
-        return table;
     }
 
     private MemoryFiller() {

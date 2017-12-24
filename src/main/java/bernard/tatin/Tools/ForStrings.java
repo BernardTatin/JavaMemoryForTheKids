@@ -1,15 +1,14 @@
 package bernard.tatin.Tools;
 
+import java.util.stream.Stream;
+
 public class ForStrings {
     private static final ForStrings ourInstance = new ForStrings();
     private String whites = null;
     private final int MAX_STRING_LENGTH = 256;
 
     private void initWhites() {
-        whites = "";
-        for (int i=0; i<MAX_STRING_LENGTH; i++) {
-            whites += " ";
-        }
+        whites = Stream.iterate("", s -> " ").limit(MAX_STRING_LENGTH).reduce("", String::concat);
     }
 
     public static String rightFormat(String str, int expectedLength) {

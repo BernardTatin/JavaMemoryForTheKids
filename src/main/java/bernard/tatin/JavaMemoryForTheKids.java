@@ -21,10 +21,7 @@ class JavaMemoryForTheKids {
     private static void showTitle() {
         if (titleLine == null) {
             String[] aTitle = StatM.getStatsTitle();
-            titleLine = "";
-            for (String s : aTitle) {
-                titleLine += s + " ";
-            }
+            titleLine = Arrays.stream(aTitle).reduce("", String::concat);
         }
         System.out.println(titleLine);
     }
@@ -32,7 +29,7 @@ class JavaMemoryForTheKids {
     public static void main(String[] args) {
         Counter count = new Counter(25);
         Byte[] memory = null;
-        int memory_size = 0;
+        long memory_size = 0;
         boolean success = false;
 
         System.out.println("PID          " + String.valueOf(ProcessID.getPID()));
@@ -44,33 +41,29 @@ class JavaMemoryForTheKids {
             }
 
             try {
-                if (memory != null) {
-                    memory = Stream.concat(Arrays.stream(memory),
-                            Arrays.stream(MemoryFiller.fillMemory(MEMORY_INCREMENT)))
-                            .toArray(Byte[]::new);
-                } else {
-                    memory = MemoryFiller.fillMemory(MEMORY_INCREMENT);
-                }
+                memory = memory != null ?
+                        Stream.concat(Arrays.stream(memory), MemoryFiller.fillMemory(MEMORY_INCREMENT)).toArray(Byte[]::new) :
+                        MemoryFiller.fillMemory(MEMORY_INCREMENT).toArray(Byte[]::new);
+
+                memory_size += memory.length;
                 success = true;
             } catch (OutOfMemoryError e) {
                 System.err.println("ERROR : yes, we can catch java.lang.OutOfMemoryError !!!!");
                 success = false;
             } catch (Exception e) {
-                System.err.println("ERROR : " + e.getMessage());
+                System.err.println("ERROR (memory): " + e.getMessage());
                 success = false;
             }
-            if (success) {
-                memory_size += MEMORY_INCREMENT;
-            } else {
+            if (!success) {
                 memory = null;
                 memory_size = 0;
+                if (count.getValue() == 0) {
+                    JavaMemoryForTheKids.showTitle();
+                }
             }
             String[] aString = StatM.getStats();
             if (aString != null) {
-                String line = "";
-                for (String s : aString) {
-                    line += s + " ";
-                }
+                String line = Arrays.stream(aString).reduce("", String::concat);
                 System.out.println(line + ForStrings.leftFormat(String.valueOf(memory_size / LinuxConstants.MEGABYTE), StatM.FIELD_LENGTH));
             } else {
                 System.out.println("ERROR reading statm file");
