@@ -23,6 +23,10 @@ class JavaMemoryForTheKids {
             String[] aTitle = StatM.getStatsTitle();
             titleLine = Arrays.stream(aTitle).reduce("", String::concat);
         }
+
+        System.out.println("PID          " + String.valueOf(ProcessID.getPID()));
+        System.out.println("Command line " + ProcessCommandLine.getCommandLine());
+
         System.out.println(titleLine);
     }
 
@@ -31,9 +35,6 @@ class JavaMemoryForTheKids {
         Byte[] memory = null;
         long memory_size = 0;
         boolean success = false;
-
-        System.out.println("PID          " + String.valueOf(ProcessID.getPID()));
-        System.out.println("Command line " + ProcessCommandLine.getCommandLine());
 
         while (true) {
             if (count.getValue() == 0) {
@@ -45,7 +46,6 @@ class JavaMemoryForTheKids {
                         Stream.concat(Arrays.stream(memory), MemoryFiller.fillMemory(MEMORY_INCREMENT)).toArray(Byte[]::new) :
                         MemoryFiller.fillMemory(MEMORY_INCREMENT).toArray(Byte[]::new);
 
-                memory_size += memory.length;
                 success = true;
             } catch (OutOfMemoryError e) {
                 System.err.println("ERROR : yes, we can catch java.lang.OutOfMemoryError !!!!");
@@ -60,6 +60,8 @@ class JavaMemoryForTheKids {
                 if (count.getValue() == 0) {
                     JavaMemoryForTheKids.showTitle();
                 }
+            } else {
+                memory_size = memory.length;
             }
             String[] aString = StatM.getStats();
             if (aString != null) {

@@ -18,8 +18,8 @@ public class StatM {
             ourInstance.statsTitles[i++] = ForStrings.rightFormat("Prog. Size", field_len) + " | ";
             ourInstance.statsTitles[i++] = ForStrings.rightFormat("Resident", field_len) + "| ";
             ourInstance.statsTitles[i++] = ForStrings.rightFormat("Share", field_len) + "| ";
-            ourInstance.statsTitles[i++] = ForStrings.rightFormat("Text", field_len) + "| ";
-            ourInstance.statsTitles[i++] = ForStrings.rightFormat("Lib", field_len) + "| ";
+            ourInstance.statsTitles[i++] = ForStrings.rightFormat("JVM total memory", field_len) + "| ";
+            ourInstance.statsTitles[i++] = ForStrings.rightFormat("JVM max memory", field_len) + "| ";
             ourInstance.statsTitles[i++] = ForStrings.rightFormat("Data", field_len) + "| ";
             ourInstance.statsTitles[i++] = ForStrings.rightFormat("JVM free mem", field_len) + "| ";
             ourInstance.statsTitles[i] = ForStrings.rightFormat("Allocated arrays", field_len) + " |";
@@ -36,8 +36,10 @@ public class StatM {
         if (strStats != null) {
             // ugly, ugly, ugly !!!
             strStats[6] = String.valueOf(Runtime.getRuntime().freeMemory() / LinuxConstants.PAGE_SIZE);
+            strStats[4] = String.valueOf(Runtime.getRuntime().maxMemory() / LinuxConstants.PAGE_SIZE);
+            strStats[3] = String.valueOf(Runtime.getRuntime().totalMemory() / LinuxConstants.PAGE_SIZE);
             for (int i = 0; i < strStats.length && i < FIELD_COUNT; i++) {
-                long v = Long.parseLong(strStats[i]) * LinuxConstants.PAGE_SIZE / LinuxConstants.MEGABYTE;
+                long v = (Long.parseLong(strStats[i]) * LinuxConstants.PAGE_SIZE) / LinuxConstants.MEGABYTE;
                 stats[i] = ForStrings.leftFormat(String.valueOf(v), FIELD_LENGTH - 3) + "M |";
             }
             return stats;

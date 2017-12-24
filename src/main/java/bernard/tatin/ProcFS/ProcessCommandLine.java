@@ -4,9 +4,9 @@ import bernard.tatin.Tools.ForFiles;
 
 public class ProcessCommandLine {
     final private static ProcessCommandLine ourInstance = new ProcessCommandLine();
-    private String commandLine = null;
+    private static String commandLine = null;
 
-    private String innerGetCommandLine() {
+    public static String getCommandLine() {
         if (commandLine == null) {
             try {
                 commandLine = ForFiles.loadTextFile(LinuxProc.procPathName("cmdline") );
@@ -19,10 +19,6 @@ public class ProcessCommandLine {
             }
         }
         return commandLine;
-    }
-
-    public static String getCommandLine() {
-        return ourInstance.innerGetCommandLine();
     }
 
     private ProcessCommandLine() {
