@@ -1,6 +1,7 @@
 package bernard.tatin;
 
-import bernard.tatin.ProcFS.LinuxConstants;
+import bernard.tatin.Constants.ApplicationConstants;
+import bernard.tatin.Constants.LinuxConstants;
 import bernard.tatin.ProcFS.ProcessCommandLine;
 import bernard.tatin.ProcFS.ProcessID;
 import bernard.tatin.ProcFS.StatM;
@@ -15,7 +16,6 @@ import java.util.stream.Stream;
  * Hello world!
  */
 class JavaMemoryForTheKids {
-    private final static int MEMORY_INCREMENT = 512 * LinuxConstants.KILOBYTE;
     private static String titleLine = null;
 
     private static void showTitle() {
@@ -43,8 +43,8 @@ class JavaMemoryForTheKids {
 
             try {
                 memory = memory != null ?
-                        Stream.concat(Arrays.stream(memory), MemoryFiller.fillMemory(MEMORY_INCREMENT)).toArray(Byte[]::new) :
-                        MemoryFiller.fillMemory(MEMORY_INCREMENT).toArray(Byte[]::new);
+                        Stream.concat(Arrays.stream(memory), MemoryFiller.fillMemory(ApplicationConstants.MEMORY_INCREMENT)).toArray(Byte[]::new) :
+                        MemoryFiller.fillMemory(ApplicationConstants.MEMORY_INCREMENT).toArray(Byte[]::new);
 
                 success = true;
             } catch (OutOfMemoryError e) {
@@ -66,7 +66,7 @@ class JavaMemoryForTheKids {
             String[] aString = StatM.getStats();
             if (aString != null) {
                 String line = Arrays.stream(aString).reduce("", String::concat);
-                System.out.println(line + ForStrings.leftFormat(String.valueOf(memory_size / LinuxConstants.MEGABYTE), StatM.FIELD_LENGTH));
+                System.out.println(line + ForStrings.leftFormat(String.valueOf(memory_size / LinuxConstants.MEGABYTE), ApplicationConstants.FIELD_LENGTH));
             } else {
                 System.out.println("ERROR reading statm file");
             }

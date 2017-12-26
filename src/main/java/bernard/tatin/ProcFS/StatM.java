@@ -1,20 +1,20 @@
 package bernard.tatin.ProcFS;
 
+import bernard.tatin.Constants.ApplicationConstants;
+import bernard.tatin.Constants.LinuxConstants;
 import bernard.tatin.Tools.ForFiles;
 import bernard.tatin.Tools.ForStrings;
 
 public class StatM {
     private final static StatM ourInstance = new StatM();
-    private final int FIELD_COUNT = 7;
-    public static final int FIELD_LENGTH = 14;
-    private final String[] stats = new String[FIELD_COUNT];
+    private final String[] stats = new String[ApplicationConstants.FIELD_COUNT];
     private String[] statsTitles = null;
 
     public static String[] getStatsTitle() {
         if (ourInstance.statsTitles == null) {
             int i = 0;
-            int field_len = StatM.FIELD_LENGTH - 2;
-            ourInstance.statsTitles = new String[ourInstance.FIELD_COUNT + 1];
+            int field_len = ApplicationConstants.FIELD_LENGTH - 2;
+            ourInstance.statsTitles = new String[ApplicationConstants.FIELD_COUNT + 1];
             ourInstance.statsTitles[i++] = ForStrings.rightFormat("Prog. Size", field_len) + " | ";
             ourInstance.statsTitles[i++] = ForStrings.rightFormat("Resident", field_len) + "| ";
             ourInstance.statsTitles[i++] = ForStrings.rightFormat("Share", field_len) + "| ";
@@ -38,9 +38,9 @@ public class StatM {
             strStats[6] = String.valueOf(Runtime.getRuntime().freeMemory() / LinuxConstants.PAGE_SIZE);
             strStats[4] = String.valueOf(Runtime.getRuntime().maxMemory() / LinuxConstants.PAGE_SIZE);
             strStats[3] = String.valueOf(Runtime.getRuntime().totalMemory() / LinuxConstants.PAGE_SIZE);
-            for (int i = 0; i < strStats.length && i < FIELD_COUNT; i++) {
+            for (int i = 0; i < strStats.length && i < ApplicationConstants.FIELD_COUNT; i++) {
                 long v = (Long.parseLong(strStats[i]) * LinuxConstants.PAGE_SIZE) / LinuxConstants.MEGABYTE;
-                stats[i] = ForStrings.leftFormat(String.valueOf(v), FIELD_LENGTH - 3) + "M |";
+                stats[i] = ForStrings.leftFormat(String.valueOf(v), ApplicationConstants.FIELD_LENGTH - 3) + "M |";
             }
             return stats;
         } else {
