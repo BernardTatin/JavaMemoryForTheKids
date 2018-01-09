@@ -20,10 +20,8 @@ import java.util.stream.Stream;
  */
 class JavaMemoryForTheKids {
     private static String titleLine = null;
-    Counter count = new Counter(25);
+    private Counter count = new Counter(25);
     private BlockingQueue<String> queue = new LinkedBlockingDeque<>(10);
-    private ThPrinter printer;
-    private Thread thePrinter;
 
     public static void main(String[] args) {
         JavaMemoryForTheKids jm = new JavaMemoryForTheKids();
@@ -31,8 +29,16 @@ class JavaMemoryForTheKids {
 
     }
 
-    private synchronized void sendString(String str) {
-        printer.sendString(str);
+    private void sendString(String str) {
+        ThPrinter.mainPrinter.sendString(str);
+    }
+
+    private void sendError(String str) {
+        ThPrinter.mainPrinter.sendError(str);
+    }
+
+    private void sendError(Exception e) {
+        ThPrinter.mainPrinter.sendError(e);
     }
 
     private void showTitle() {
@@ -49,12 +55,13 @@ class JavaMemoryForTheKids {
         sendString(titleLine);
     }
 
-    public void innerLoop() {
+    private void innerLoop() {
         Byte[] memory = null;
         long memory_size = 0;
         boolean success = false;
+        Thread thePrinter;
+        ThPrinter printer = new ThPrinter(queue);
 
-        printer = new ThPrinter(queue);
         thePrinter = new Thread(printer);
         thePrinter.start();
 
@@ -70,12 +77,10 @@ class JavaMemoryForTheKids {
 
                 success = true;
             } catch (OutOfMemoryError e) {
-                // System.err.println("ERROR : yes, we can catch java.lang.OutOfMemoryError !!!!");
-                sendString("ERROR : yes, we can catch java.lang.OutOfMemoryError !!!!");
+                sendError("ERROR : yes, we can catch java.lang.OutOfMemoryError !!!!");
                 success = false;
             } catch (Exception e) {
-                // System.err.println("ERROR (memory): " + e.getMessage());
-                sendString("ERROR (memory): " + e.getMessage());
+                sendError("ERROR (memory): " + e.getMessage());
                 success = false;
             }
             if (!success) {
@@ -90,17 +95,14 @@ class JavaMemoryForTheKids {
             String[] aString = StatM.getStats();
             if (aString != null) {
                 String line = Arrays.stream(aString).reduce("", String::concat);
-                // System.out.println(line + ForStrings.leftFormat(String.valueOf(memory_size / LinuxConstants.MEGABYTE), ApplicationConstants.FIELD_LENGTH));
                 sendString(line + ForStrings.leftFormat(String.valueOf(memory_size / LinuxConstants.MEGABYTE), ApplicationConstants.FIELD_LENGTH));
             } else {
-                // System.out.println("ERROR reading statm file");
-                sendString("ERROR reading statm file");
+                sendError("ERROR reading statm file");
             }
             try {
                 Thread.sleep(300L);
             } catch (InterruptedException e) {
-                // System.err.println("ERROR InterruptedException : " + e.getMessage());
-                sendString("ERROR InterruptedException : " + e.getMessage());
+                sendError("ERROR InterruptedException : " + e.getMessage());
             }
         }
     }

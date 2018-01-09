@@ -4,9 +4,11 @@ import java.util.concurrent.BlockingQueue;
 
 public class ThPrinter implements ThConsumer, Runnable {
     private final BlockingQueue<String> queue;
+    public static ThPrinter mainPrinter;
 
     public ThPrinter(BlockingQueue<String> q) {
         queue = q;
+        ThPrinter.mainPrinter = this;
     }
 
     public boolean consume() {
@@ -29,8 +31,21 @@ public class ThPrinter implements ThConsumer, Runnable {
             queue.put(str);
             notify();
         } catch (Exception e) {
-            System.err.println("ERROR (sendString): " + e.toString());
+            System.err.println("ERROR (ThPrinter::sendString): " + e.toString());
         }
+    }
+
+    public synchronized void sendError(String str) {
+        try {
+            System.err.println(str);
+            notify();
+        } catch (Exception e) {
+            System.err.println("ERROR (ThPrinter::sendError): " + e.toString());
+        }
+    }
+
+    public synchronized void sendError(Exception e) {
+        sendError(e.toString());
     }
 
     public synchronized void run() {
