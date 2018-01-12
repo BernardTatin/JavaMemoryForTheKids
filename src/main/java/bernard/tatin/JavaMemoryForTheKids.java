@@ -66,7 +66,7 @@ class JavaMemoryForTheKids {
                 sendError("ERROR reading statm file");
             }
             try {
-                Thread.sleep(500L);
+                Thread.sleep(100L);
             } catch (InterruptedException e) {
                 sendError("ERROR InterruptedException : " + e.getMessage());
             }
