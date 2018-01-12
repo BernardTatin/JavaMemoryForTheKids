@@ -24,6 +24,16 @@ public class ThPrinter implements ThConsumer, Runnable {
         }
     }
 
+    public synchronized void sendStrings(String[] strs) {
+        try {
+            for (String str: strs) {
+                queue.put(str);
+            }
+            notify();
+        } catch (Exception e) {
+            System.err.println("ERROR (ThPrinter::sendString): " + e.toString());
+        }
+    }
     public synchronized void sendString(String str) {
         try {
             queue.put(str);

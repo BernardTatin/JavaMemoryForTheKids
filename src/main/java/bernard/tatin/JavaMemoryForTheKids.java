@@ -41,9 +41,10 @@ class JavaMemoryForTheKids {
             titleLine = Arrays.stream(aTitle).reduce("", String::concat);
         }
 
-        sendString("PID          " + String.valueOf(ProcessID.getPID()));
-        sendString("Command line " + ProcessCommandLine.getCommandLine());
-        sendString(titleLine);
+        ThPrinter.mainPrinter.sendStrings(
+                new String[] {"PID          " + String.valueOf(ProcessID.getPID()),
+                        "Command line " + ProcessCommandLine.getCommandLine(),
+                        titleLine});
     }
 
     private void innerLoop() {
