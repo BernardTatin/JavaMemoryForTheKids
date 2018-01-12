@@ -1,4 +1,4 @@
-package bernard.tatin.ProcFS;
+package bernard.tatin.Constants;
 
 public class LinuxConstants {
     public static final int PAGE_SIZE = 4096;

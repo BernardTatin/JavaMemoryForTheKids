@@ -3,7 +3,7 @@ package bernard.tatin.ProcFS;
 import bernard.tatin.Tools.ForFiles;
 
 public class ProcessCommandLine {
-    final private static ProcessCommandLine ourInstance = new ProcessCommandLine();
+    //    final private static ProcessCommandLine ourInstance = new ProcessCommandLine();
     private static String commandLine = null;
 
     public static String getCommandLine() {
