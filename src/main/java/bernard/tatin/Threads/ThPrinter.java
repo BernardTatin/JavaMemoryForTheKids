@@ -3,12 +3,10 @@ package bernard.tatin.Threads;
 import java.util.concurrent.BlockingQueue;
 
 public class ThPrinter implements ThConsumer, Runnable {
-    private final BlockingQueue<String> queue;
-    public static ThPrinter mainPrinter;
+    public final static ThPrinter mainPrinter = new ThPrinter();
+    private BlockingQueue<String> queue;
 
-    public ThPrinter(BlockingQueue<String> q) {
-        queue = q;
-        ThPrinter.mainPrinter = this;
+    private ThPrinter() {
     }
 
     public boolean consume() {
@@ -44,8 +42,13 @@ public class ThPrinter implements ThConsumer, Runnable {
         }
     }
 
-    public synchronized void sendError(Exception e) {
-        sendError(e.toString());
+    public ThConsumer initialize(BlockingQueue<String> q) {
+        queue = q;
+        Thread thePrinter = new Thread(this, "ThPrinter");
+
+        thePrinter.setDaemon(true);
+        thePrinter.start();
+        return this;
     }
 
     public synchronized void run() {
