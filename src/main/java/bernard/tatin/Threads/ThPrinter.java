@@ -24,9 +24,9 @@ public class ThPrinter implements ThConsumer, Runnable {
         }
     }
 
-    public synchronized void sendStrings(String[] strs) {
+    public synchronized void sendStrings(String[] strings) {
         try {
-            for (String str: strs) {
+            for (String str: strings) {
                 queue.put(str);
             }
             notify();
@@ -52,13 +52,12 @@ public class ThPrinter implements ThConsumer, Runnable {
         }
     }
 
-    public ThConsumer initialize(BlockingQueue<String> q) {
+    public void initialize(BlockingQueue<String> q) {
         queue = q;
         Thread thePrinter = new Thread(this, "ThPrinter");
 
         thePrinter.setDaemon(true);
         thePrinter.start();
-        return this;
     }
 
     public synchronized void run() {

@@ -66,12 +66,11 @@ public class ThMemoryFiller extends ThPrinterClient implements ThConsumer, Runna
         mutex.unlock();
     }
 
-    public ThConsumer initialize() {
+    public void initialize() {
         Thread theMemoryFiller = new Thread(this, "ThMemoryFiller");
 
         theMemoryFiller.setDaemon(true);
         theMemoryFiller.start();
-        return this;
     }
 
     public synchronized void run() {

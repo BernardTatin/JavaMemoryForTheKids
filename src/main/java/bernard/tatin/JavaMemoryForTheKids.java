@@ -38,7 +38,7 @@ class JavaMemoryForTheKids extends ThPrinterClient {
             titleLine = Arrays.stream(aTitle).reduce("", String::concat);
         }
 
-        ThPrinter.mainPrinter.sendStrings(
+        sendStrings(
                 new String[] {"PID          " + String.valueOf(ProcessID.getPID()),
                         "Command line " + ProcessCommandLine.getCommandLine(),
                         titleLine});
