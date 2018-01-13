@@ -6,6 +6,7 @@ import bernard.tatin.ProcFS.ProcessCommandLine;
 import bernard.tatin.ProcFS.ProcessID;
 import bernard.tatin.ProcFS.StatM;
 import bernard.tatin.Threads.ThPrinter;
+import bernard.tatin.Threads.ThPrinterClient;
 import bernard.tatin.Tools.Counter;
 import bernard.tatin.Tools.ForStrings;
 import bernard.tatin.Tools.ThMemoryFiller;
@@ -17,22 +18,18 @@ import java.util.concurrent.LinkedBlockingDeque;
 /**
  * Hello world!
  */
-class JavaMemoryForTheKids {
+class JavaMemoryForTheKids extends ThPrinterClient {
     private static String titleLine = null;
     private final Counter count = new Counter(25);
     private final BlockingQueue<String> queue = new LinkedBlockingDeque<>(10);
 
     public static void main(String[] args) {
         JavaMemoryForTheKids jm = new JavaMemoryForTheKids();
+
+        ThPrinter.mainPrinter.initialize(jm.queue);
+        ThMemoryFiller.mainMemoryFiller.initialize();
+
         jm.innerLoop();
-    }
-
-    private void sendString(String str) {
-        ThPrinter.mainPrinter.sendString(str);
-    }
-
-    private void sendError(String str) {
-        ThPrinter.mainPrinter.sendError(str);
     }
 
     private void showTitle() {
@@ -48,18 +45,14 @@ class JavaMemoryForTheKids {
     }
 
     private void innerLoop() {
-        long memory_size;
-
-        ThPrinter.mainPrinter.initialize(queue);
-        ThMemoryFiller.mainMemoryFiller.initialize();
-
         while (true) {
+            long memory_size = ThMemoryFiller.mainMemoryFiller.getMemorySize();
+            String[] aString = StatM.getStats();
+
             if (count.getValue() == 0) {
                 showTitle();
             }
 
-            memory_size = ThMemoryFiller.mainMemoryFiller.getMemorySize();
-            String[] aString = StatM.getStats();
             if (aString != null) {
                 String line = Arrays.stream(aString).reduce("", String::concat);
                 sendString(line + ForStrings.leftFormat(String.valueOf(memory_size / LinuxConstants.MEGABYTE), ApplicationConstants.FIELD_LENGTH));

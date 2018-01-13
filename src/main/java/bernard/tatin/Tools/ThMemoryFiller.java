@@ -2,13 +2,13 @@ package bernard.tatin.Tools;
 
 import bernard.tatin.Constants.ApplicationConstants;
 import bernard.tatin.Threads.ThConsumer;
-import bernard.tatin.Threads.ThPrinter;
+import bernard.tatin.Threads.ThPrinterClient;
 
 import java.util.Arrays;
 import java.util.concurrent.Semaphore;
 import java.util.stream.Stream;
 
-public class ThMemoryFiller implements ThConsumer, Runnable {
+public class ThMemoryFiller extends ThPrinterClient implements ThConsumer, Runnable {
     public final static ThMemoryFiller mainMemoryFiller = new ThMemoryFiller();
     private final Semaphore mutex = new Semaphore(1, true);
     private Byte[] memory = null;
@@ -30,9 +30,9 @@ public class ThMemoryFiller implements ThConsumer, Runnable {
 
                 success = true;
             } catch (OutOfMemoryError e) {
-                ThPrinter.mainPrinter.sendError("ERROR (ThMemoryFiller::consume): " + e.toString());
+                sendError("ERROR (ThMemoryFiller::consume): " + e.toString());
             } catch (Exception e) {
-                ThPrinter.mainPrinter.sendError("ERROR (ThMemoryFiller::consume): " + e.toString());
+                sendError("ERROR (ThMemoryFiller::consume): " + e.toString());
             }
 
             if (success) {
@@ -44,7 +44,7 @@ public class ThMemoryFiller implements ThConsumer, Runnable {
             try {
                 Thread.sleep(100L);
             } catch (InterruptedException e) {
-                ThPrinter.mainPrinter.sendError("ERROR InterruptedException : " + e.getMessage());
+                sendError("ERROR InterruptedException : " + e.getMessage());
             }
         }
     }
@@ -56,7 +56,7 @@ public class ThMemoryFiller implements ThConsumer, Runnable {
             rmem = memory_size;
             mutex.release();
         } catch (Exception e) {
-            ThPrinter.mainPrinter.sendError("ERROR : cannot acquire mutex " + e.toString());
+            sendError("ERROR : cannot acquire mutex " + e.toString());
         } finally {
             return rmem;
         }
@@ -71,9 +71,9 @@ public class ThMemoryFiller implements ThConsumer, Runnable {
             }
             mutex.release();
         } catch (InterruptedException e) {
-            ThPrinter.mainPrinter.sendError("ERROR : cannot acquire mutex " + e.toString());
+            sendError("ERROR : cannot acquire mutex " + e.toString());
         } catch (Exception e) {
-            ThPrinter.mainPrinter.sendError("ERROR : cannot acquire mutex " + e.toString());
+            sendError("ERROR : cannot acquire mutex " + e.toString());
         }
     }
 
@@ -95,10 +95,10 @@ public class ThMemoryFiller implements ThConsumer, Runnable {
             return Stream.iterate((byte) 0,
                     b -> (byte) ((b + (byte) 1) % (byte) 253)).limit(bytes);
         } catch (OutOfMemoryError e) {
-            ThPrinter.mainPrinter.sendError("ERROR (ThMemoryFiller): " + e.getMessage());
+            sendError("ERROR (ThMemoryFiller): " + e.getMessage());
             return null;
         } catch (Exception e) {
-            ThPrinter.mainPrinter.sendError("ERROR (ThMemoryFiller): " + e.getMessage());
+            sendError("ERROR (ThMemoryFiller): " + e.getMessage());
             return null;
         }
     }
