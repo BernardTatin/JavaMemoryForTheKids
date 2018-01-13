@@ -1,16 +1,16 @@
 package bernard.tatin.Tools;
 
 import bernard.tatin.Constants.ApplicationConstants;
+import bernard.tatin.Threads.Mutex;
 import bernard.tatin.Threads.ThConsumer;
 import bernard.tatin.Threads.ThPrinterClient;
 
 import java.util.Arrays;
-import java.util.concurrent.Semaphore;
 import java.util.stream.Stream;
 
 public class ThMemoryFiller extends ThPrinterClient implements ThConsumer, Runnable {
     public final static ThMemoryFiller mainMemoryFiller = new ThMemoryFiller();
-    private final Semaphore mutex = new Semaphore(1, true);
+    private final Mutex mutex = new Mutex();
     private Byte[] memory = null;
     private long memory_size = 0;
 
@@ -52,29 +52,26 @@ public class ThMemoryFiller extends ThPrinterClient implements ThConsumer, Runna
     public long getMemorySize() {
         long rmem = 0;
         try {
-            mutex.acquire();
-            rmem = memory_size;
-            mutex.release();
+            mutex.lock();
         } catch (Exception e) {
             sendError("ERROR : cannot acquire mutex " + e.toString());
-        } finally {
-            return rmem;
         }
+        rmem = memory_size;
+        mutex.unlock();
+        return rmem;
     }
 
     private void setMemorySize() {
         try {
-            memory_size = 0;
-            mutex.acquire();
-            if (memory != null) {
-                memory_size = memory.length;
-            }
-            mutex.release();
+            mutex.lock();
         } catch (InterruptedException e) {
             sendError("ERROR : cannot acquire mutex " + e.toString());
-        } catch (Exception e) {
-            sendError("ERROR : cannot acquire mutex " + e.toString());
         }
+        memory_size = 0;
+        if (memory != null) {
+            memory_size = memory.length;
+        }
+        mutex.unlock();
     }
 
     public ThConsumer initialize() {
