@@ -1,16 +1,16 @@
 package bernard.tatin.Tools;
 
 import bernard.tatin.Constants.ApplicationConstants;
+import bernard.tatin.Threads.Mutex;
 import bernard.tatin.Threads.ThConsumer;
-import bernard.tatin.Threads.ThPrinter;
+import bernard.tatin.Threads.ThPrinterClient;
 
 import java.util.Arrays;
-import java.util.concurrent.Semaphore;
 import java.util.stream.Stream;
 
-public class ThMemoryFiller implements ThConsumer, Runnable {
+public class ThMemoryFiller extends ThPrinterClient implements ThConsumer, Runnable {
     public final static ThMemoryFiller mainMemoryFiller = new ThMemoryFiller();
-    private final Semaphore mutex = new Semaphore(1, true);
+    private final Mutex mutex = new Mutex();
     private Byte[] memory = null;
     private long memory_size = 0;
 
@@ -18,7 +18,6 @@ public class ThMemoryFiller implements ThConsumer, Runnable {
     }
 
     public boolean consume() {
-        boolean success = false;
         while (true) {
             try {
                 memory = memory != null ?
@@ -28,23 +27,16 @@ public class ThMemoryFiller implements ThConsumer, Runnable {
                         fillMemory(ApplicationConstants.MEMORY_INCREMENT).
                                 toArray(Byte[]::new);
 
-                success = true;
             } catch (OutOfMemoryError e) {
-                ThPrinter.mainPrinter.sendError("ERROR (ThMemoryFiller::consume): " + e.toString());
-            } catch (Exception e) {
-                ThPrinter.mainPrinter.sendError("ERROR (ThMemoryFiller::consume): " + e.toString());
-            }
-
-            if (success) {
-                success = false;
-            } else {
+                sendError("ERROR (ThMemoryFiller::consume): " + e.toString());
                 memory = null;
             }
+
             setMemorySize();
             try {
                 Thread.sleep(100L);
             } catch (InterruptedException e) {
-                ThPrinter.mainPrinter.sendError("ERROR InterruptedException : " + e.getMessage());
+                sendError("ERROR InterruptedException : " + e.getMessage());
             }
         }
     }
@@ -52,29 +44,26 @@ public class ThMemoryFiller implements ThConsumer, Runnable {
     public long getMemorySize() {
         long rmem = 0;
         try {
-            mutex.acquire();
-            rmem = memory_size;
-            mutex.release();
+            mutex.lock();
         } catch (Exception e) {
-            ThPrinter.mainPrinter.sendError("ERROR : cannot acquire mutex " + e.toString());
-        } finally {
-            return rmem;
+            sendError("ERROR : cannot acquire mutex " + e.toString());
         }
+        rmem = memory_size;
+        mutex.unlock();
+        return rmem;
     }
 
     private void setMemorySize() {
         try {
-            memory_size = 0;
-            mutex.acquire();
-            if (memory != null) {
-                memory_size = memory.length;
-            }
-            mutex.release();
+            mutex.lock();
         } catch (InterruptedException e) {
-            ThPrinter.mainPrinter.sendError("ERROR : cannot acquire mutex " + e.toString());
-        } catch (Exception e) {
-            ThPrinter.mainPrinter.sendError("ERROR : cannot acquire mutex " + e.toString());
+            sendError("ERROR : cannot acquire mutex " + e.toString());
         }
+        memory_size = 0;
+        if (memory != null) {
+            memory_size = memory.length;
+        }
+        mutex.unlock();
     }
 
     public ThConsumer initialize() {
@@ -90,16 +79,7 @@ public class ThMemoryFiller implements ThConsumer, Runnable {
     }
 
     private Stream<Byte> fillMemory(int bytes) {
-
-        try {
-            return Stream.iterate((byte) 0,
-                    b -> (byte) ((b + (byte) 1) % (byte) 253)).limit(bytes);
-        } catch (OutOfMemoryError e) {
-            ThPrinter.mainPrinter.sendError("ERROR (ThMemoryFiller): " + e.getMessage());
-            return null;
-        } catch (Exception e) {
-            ThPrinter.mainPrinter.sendError("ERROR (ThMemoryFiller): " + e.getMessage());
-            return null;
-        }
+        return Stream.iterate((byte) 0,
+                b -> (byte) ((b + (byte) 1) % (byte) 253)).limit(bytes);
     }
 }

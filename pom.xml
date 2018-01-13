@@ -78,7 +78,7 @@
                     <source>${jdkversion}</source>
                     <target>${jdkversion}</target>
                     <executable>${JAVA_HOME}/bin/javac</executable>
-                    <compilerVersion>1.8</compilerVersion>
+                    <compilerVersion>${jdkversion}</compilerVersion>
                 </configuration>
             </plugin>
 
