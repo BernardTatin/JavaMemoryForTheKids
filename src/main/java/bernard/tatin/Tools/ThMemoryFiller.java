@@ -18,7 +18,6 @@ public class ThMemoryFiller extends ThPrinterClient implements ThConsumer, Runna
     }
 
     public boolean consume() {
-        boolean success = false;
         while (true) {
             try {
                 memory = memory != null ?
@@ -28,18 +27,11 @@ public class ThMemoryFiller extends ThPrinterClient implements ThConsumer, Runna
                         fillMemory(ApplicationConstants.MEMORY_INCREMENT).
                                 toArray(Byte[]::new);
 
-                success = true;
             } catch (OutOfMemoryError e) {
                 sendError("ERROR (ThMemoryFiller::consume): " + e.toString());
-            } catch (Exception e) {
-                sendError("ERROR (ThMemoryFiller::consume): " + e.toString());
-            }
-
-            if (success) {
-                success = false;
-            } else {
                 memory = null;
             }
+
             setMemorySize();
             try {
                 Thread.sleep(100L);
@@ -87,16 +79,7 @@ public class ThMemoryFiller extends ThPrinterClient implements ThConsumer, Runna
     }
 
     private Stream<Byte> fillMemory(int bytes) {
-
-        try {
-            return Stream.iterate((byte) 0,
-                    b -> (byte) ((b + (byte) 1) % (byte) 253)).limit(bytes);
-        } catch (OutOfMemoryError e) {
-            sendError("ERROR (ThMemoryFiller): " + e.getMessage());
-            return null;
-        } catch (Exception e) {
-            sendError("ERROR (ThMemoryFiller): " + e.getMessage());
-            return null;
-        }
+        return Stream.iterate((byte) 0,
+                b -> (byte) ((b + (byte) 1) % (byte) 253)).limit(bytes);
     }
 }
