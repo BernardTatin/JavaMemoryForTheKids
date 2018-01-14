@@ -12,8 +12,6 @@ import bernard.tatin.Tools.ForStrings;
 import bernard.tatin.Tools.ThMemoryFiller;
 
 import java.util.Arrays;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Hello world!
@@ -37,7 +35,7 @@ class JavaMemoryForTheKids extends ThPrinterClient {
             titleLine = Arrays.stream(aTitle).reduce("", String::concat);
         }
 
-        sendStrings(
+        printStrings(
                 new String[] {"PID          " + String.valueOf(ProcessID.getPID()),
                         "Command line " + ProcessCommandLine.getCommandLine(),
                         titleLine});
@@ -58,14 +56,14 @@ class JavaMemoryForTheKids extends ThPrinterClient {
                                 LinuxConstants.MEGABYTE),
                                 ApplicationConstants.FIELD_LENGTH);
 
-                sendString(Arrays.stream(aString).reduce("", String::concat));
+                printString(Arrays.stream(aString).reduce("", String::concat));
             } else {
-                sendError("ERROR reading statm file");
+                printError("ERROR reading statm file");
             }
             try {
                 Thread.sleep(100L);
             } catch (InterruptedException e) {
-                sendError("ERROR InterruptedException : " + e.getMessage());
+                printError("ERROR InterruptedException : " + e.getMessage());
             }
         }
     }
