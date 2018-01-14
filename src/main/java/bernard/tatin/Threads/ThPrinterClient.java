@@ -1,15 +1,15 @@
 package bernard.tatin.Threads;
 
 public class ThPrinterClient {
-    protected void sendString(String str) {
-        ThPrinter.mainPrinter.sendString(str);
+    protected void printString(String str) {
+        ThPrinter.mainPrinter.printString(str);
     }
-    protected void sendStrings(String[] strings) {
-        ThPrinter.mainPrinter.sendStrings(strings);
+    protected void printStrings(String[] strings) {
+        ThPrinter.mainPrinter.printStrings(strings);
     }
 
-    protected void sendError(String str) {
-        ThPrinter.mainPrinter.sendError(str);
+    protected void printError(String str) {
+        ThPrinter.mainPrinter.printError(str);
     }
 
 }

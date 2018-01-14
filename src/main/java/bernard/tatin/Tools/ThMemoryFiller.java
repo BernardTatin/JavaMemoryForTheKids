@@ -28,7 +28,7 @@ public class ThMemoryFiller extends ThPrinterClient implements ThConsumer, Runna
                                 toArray(Byte[]::new);
 
             } catch (OutOfMemoryError e) {
-                sendError("ERROR (ThMemoryFiller::consume): " + e.toString());
+                printError("ERROR (ThMemoryFiller::consume): " + e.toString());
                 memory = null;
             }
 
@@ -36,7 +36,7 @@ public class ThMemoryFiller extends ThPrinterClient implements ThConsumer, Runna
             try {
                 Thread.sleep(100L);
             } catch (InterruptedException e) {
-                sendError("ERROR InterruptedException : " + e.getMessage());
+                printError("ERROR InterruptedException : " + e.getMessage());
             }
         }
     }
@@ -46,7 +46,7 @@ public class ThMemoryFiller extends ThPrinterClient implements ThConsumer, Runna
         try {
             mutex.lock();
         } catch (Exception e) {
-            sendError("ERROR : cannot acquire mutex " + e.toString());
+            printError("ERROR : cannot acquire mutex " + e.toString());
         }
         rmem = memory_size;
         mutex.unlock();
@@ -57,7 +57,7 @@ public class ThMemoryFiller extends ThPrinterClient implements ThConsumer, Runna
         try {
             mutex.lock();
         } catch (InterruptedException e) {
-            sendError("ERROR : cannot acquire mutex " + e.toString());
+            printError("ERROR : cannot acquire mutex " + e.toString());
         }
         memory_size = 0;
         if (memory != null) {

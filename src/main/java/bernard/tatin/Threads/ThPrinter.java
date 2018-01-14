@@ -36,31 +36,31 @@ public class ThPrinter implements ThConsumer, Runnable {
         }
     }
 
-    public synchronized void sendStrings(String[] strings) {
+    public synchronized void printStrings(String[] strings) {
         try {
             for (String str: strings) {
                 queue.put(new PrintElement(System.out, str));
             }
             notify();
         } catch (Exception e) {
-            System.err.println("ERROR (ThPrinter::sendString): " + e.toString());
+            System.err.println("ERROR (ThPrinter::printString): " + e.toString());
         }
     }
-    public synchronized void sendString(String str) {
+    public synchronized void printString(String str) {
         try {
             queue.put(new PrintElement(System.out, str));
             notify();
         } catch (Exception e) {
-            System.err.println("ERROR (ThPrinter::sendString): " + e.toString());
+            System.err.println("ERROR (ThPrinter::printString): " + e.toString());
         }
     }
 
-    public synchronized void sendError(String str) {
+    public synchronized void printError(String str) {
         try {
             queue.put(new PrintElement(System.err, str));
             notify();
         } catch (Exception e) {
-            System.err.println("ERROR (ThPrinter::sendError): " + e.toString());
+            System.err.println("ERROR (ThPrinter::printError): " + e.toString());
         }
     }
 
