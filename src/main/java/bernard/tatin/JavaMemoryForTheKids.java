@@ -54,8 +54,12 @@ class JavaMemoryForTheKids extends ThPrinterClient {
             }
 
             if (aString != null) {
-                String line = Arrays.stream(aString).reduce("", String::concat);
-                sendString(line + ForStrings.leftFormat(String.valueOf(memory_size / LinuxConstants.MEGABYTE), ApplicationConstants.FIELD_LENGTH));
+                aString[ApplicationConstants.FIELD_COUNT-1] =
+                        ForStrings.leftFormat(String.valueOf(memory_size /
+                                LinuxConstants.MEGABYTE),
+                                ApplicationConstants.FIELD_LENGTH);
+
+                sendString(Arrays.stream(aString).reduce("", String::concat));
             } else {
                 sendError("ERROR reading statm file");
             }
