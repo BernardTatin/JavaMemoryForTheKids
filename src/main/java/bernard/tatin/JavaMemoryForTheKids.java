@@ -21,12 +21,11 @@ import java.util.concurrent.LinkedBlockingDeque;
 class JavaMemoryForTheKids extends ThPrinterClient {
     private static String titleLine = null;
     private final Counter count = new Counter(25);
-    private final BlockingQueue<String> queue = new LinkedBlockingDeque<>(10);
 
     public static void main(String[] args) {
         JavaMemoryForTheKids jm = new JavaMemoryForTheKids();
 
-        ThPrinter.mainPrinter.initialize(jm.queue);
+        ThPrinter.mainPrinter.initialize();
         ThMemoryFiller.mainMemoryFiller.initialize();
 
         jm.innerLoop();
