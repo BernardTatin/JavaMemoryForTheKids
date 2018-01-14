@@ -1,22 +1,34 @@
 package bernard.tatin.Threads;
 
+import java.io.PrintStream;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
+
+class PrintElement {
+    public PrintStream stream;
+    public String line;
+
+    public PrintElement(PrintStream s, String l) {
+        stream = s;
+        line = l;
+    }
+}
 
 public class ThPrinter implements ThConsumer, Runnable {
     public final static ThPrinter mainPrinter = new ThPrinter();
-    private BlockingQueue<String> queue;
+    private final BlockingQueue<PrintElement> queue = new LinkedBlockingDeque<>(10);
 
     private ThPrinter() {
     }
 
-    public boolean consume() {
-        String line;
+    public void consume() {
+        PrintElement pElement;
         while (true) {
             try {
                 wait();
                 while (!queue.isEmpty()) {
-                    line = queue.take();
-                    System.out.println(line);
+                    pElement = queue.take();
+                    pElement.stream.println(pElement.line);
                 }
             } catch (Exception e) {
                 System.err.println("ERROR (ThPrinter::consume): " + e.toString());
@@ -24,10 +36,10 @@ public class ThPrinter implements ThConsumer, Runnable {
         }
     }
 
-    public synchronized void sendStrings(String[] strs) {
+    public synchronized void sendStrings(String[] strings) {
         try {
-            for (String str: strs) {
-                queue.put(str);
+            for (String str: strings) {
+                queue.put(new PrintElement(System.out, str));
             }
             notify();
         } catch (Exception e) {
@@ -36,7 +48,7 @@ public class ThPrinter implements ThConsumer, Runnable {
     }
     public synchronized void sendString(String str) {
         try {
-            queue.put(str);
+            queue.put(new PrintElement(System.out, str));
             notify();
         } catch (Exception e) {
             System.err.println("ERROR (ThPrinter::sendString): " + e.toString());
@@ -45,20 +57,18 @@ public class ThPrinter implements ThConsumer, Runnable {
 
     public synchronized void sendError(String str) {
         try {
-            System.err.println(str);
+            queue.put(new PrintElement(System.err, str));
             notify();
         } catch (Exception e) {
             System.err.println("ERROR (ThPrinter::sendError): " + e.toString());
         }
     }
 
-    public ThConsumer initialize(BlockingQueue<String> q) {
-        queue = q;
+    public void initialize() {
         Thread thePrinter = new Thread(this, "ThPrinter");
 
         thePrinter.setDaemon(true);
         thePrinter.start();
-        return this;
     }
 
     public synchronized void run() {

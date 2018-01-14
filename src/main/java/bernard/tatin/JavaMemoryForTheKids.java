@@ -21,12 +21,11 @@ import java.util.concurrent.LinkedBlockingDeque;
 class JavaMemoryForTheKids extends ThPrinterClient {
     private static String titleLine = null;
     private final Counter count = new Counter(25);
-    private final BlockingQueue<String> queue = new LinkedBlockingDeque<>(10);
 
     public static void main(String[] args) {
         JavaMemoryForTheKids jm = new JavaMemoryForTheKids();
 
-        ThPrinter.mainPrinter.initialize(jm.queue);
+        ThPrinter.mainPrinter.initialize();
         ThMemoryFiller.mainMemoryFiller.initialize();
 
         jm.innerLoop();
@@ -38,7 +37,7 @@ class JavaMemoryForTheKids extends ThPrinterClient {
             titleLine = Arrays.stream(aTitle).reduce("", String::concat);
         }
 
-        ThPrinter.mainPrinter.sendStrings(
+        sendStrings(
                 new String[] {"PID          " + String.valueOf(ProcessID.getPID()),
                         "Command line " + ProcessCommandLine.getCommandLine(),
                         titleLine});
@@ -54,8 +53,12 @@ class JavaMemoryForTheKids extends ThPrinterClient {
             }
 
             if (aString != null) {
-                String line = Arrays.stream(aString).reduce("", String::concat);
-                sendString(line + ForStrings.leftFormat(String.valueOf(memory_size / LinuxConstants.MEGABYTE), ApplicationConstants.FIELD_LENGTH));
+                aString[ApplicationConstants.FIELD_COUNT-1] =
+                        ForStrings.leftFormat(String.valueOf(memory_size /
+                                LinuxConstants.MEGABYTE),
+                                ApplicationConstants.FIELD_LENGTH);
+
+                sendString(Arrays.stream(aString).reduce("", String::concat));
             } else {
                 sendError("ERROR reading statm file");
             }

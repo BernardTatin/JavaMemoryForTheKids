@@ -7,14 +7,13 @@ import bernard.tatin.Tools.ForStrings;
 
 public class StatM {
     private final static StatM ourInstance = new StatM();
-    private final String[] stats = new String[ApplicationConstants.FIELD_COUNT];
     private String[] statsTitles = null;
 
     public static String[] getStatsTitle() {
         if (ourInstance.statsTitles == null) {
             int i = 0;
             int field_len = ApplicationConstants.FIELD_LENGTH - 2;
-            ourInstance.statsTitles = new String[ApplicationConstants.FIELD_COUNT + 1];
+            ourInstance.statsTitles = new String[ApplicationConstants.FIELD_COUNT];
             ourInstance.statsTitles[i++] = ForStrings.rightFormat("Prog. Size", field_len) + " | ";
             ourInstance.statsTitles[i++] = ForStrings.rightFormat("Resident", field_len) + "| ";
             ourInstance.statsTitles[i++] = ForStrings.rightFormat("Share", field_len) + "| ";
@@ -22,7 +21,7 @@ public class StatM {
             ourInstance.statsTitles[i++] = ForStrings.rightFormat("JVM max memory", field_len) + "| ";
             ourInstance.statsTitles[i++] = ForStrings.rightFormat("Data", field_len) + "| ";
             ourInstance.statsTitles[i++] = ForStrings.rightFormat("JVM free mem", field_len) + "| ";
-            ourInstance.statsTitles[i] = ForStrings.rightFormat("Allocated arrays", field_len) + " |";
+            ourInstance.statsTitles[i] = ForStrings.rightFormat("Allocated memory", field_len) + " |";
         }
         return ourInstance.statsTitles;
     }
@@ -32,6 +31,7 @@ public class StatM {
     }
 
     private String[] innerGetStats() {
+        String[] stats = new String[ApplicationConstants.FIELD_COUNT];
         String[] strStats = ForFiles.loadLinesFromfiles(LinuxProc.procPathName("statm"), "[ \n]");
         if (strStats != null) {
             // ugly, ugly, ugly !!!

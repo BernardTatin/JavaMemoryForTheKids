@@ -1,5 +1,6 @@
 package bernard.tatin.Threads;
 
 public interface ThConsumer {
-    boolean consume();
+    void consume();
+    void initialize();
 }
