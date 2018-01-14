@@ -8,13 +8,18 @@ import bernard.tatin.Threads.ThPrinterClient;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class ThMemoryFiller extends ThPrinterClient implements ThConsumer, Runnable {
-    public final static ThMemoryFiller mainMemoryFiller = new ThMemoryFiller();
+public class ThMemoryFiller extends ThPrinterClient
+        implements ThConsumer, Runnable {
+    private final static ThMemoryFiller mainMemoryFiller = new ThMemoryFiller();
     private final Mutex mutex = new Mutex();
     private Byte[] memory = null;
     private long memory_size = 0;
 
     private ThMemoryFiller() {
+    }
+
+    public static ThMemoryFiller getMainInstance() {
+        return mainMemoryFiller;
     }
 
     public void consume() {
