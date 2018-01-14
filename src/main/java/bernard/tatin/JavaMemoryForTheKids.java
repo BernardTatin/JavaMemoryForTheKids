@@ -23,15 +23,15 @@ class JavaMemoryForTheKids extends ThPrinterClient {
     public static void main(String[] args) {
         JavaMemoryForTheKids jm = new JavaMemoryForTheKids();
 
-        ThPrinter.mainPrinter.initialize();
-        ThMemoryFiller.mainMemoryFiller.initialize();
+        ThPrinter.getMainInstance().initialize();
+        ThMemoryFiller.getMainInstance().initialize();
 
         jm.innerLoop();
     }
 
     private void showTitle() {
         if (titleLine == null) {
-            String[] aTitle = StatM.getStatsTitle();
+            String[] aTitle = StatM.getMainInstance().getStatsTitle();
             titleLine = Arrays.stream(aTitle).reduce("", String::concat);
         }
 
@@ -43,8 +43,8 @@ class JavaMemoryForTheKids extends ThPrinterClient {
 
     private void innerLoop() {
         while (true) {
-            long memory_size = ThMemoryFiller.mainMemoryFiller.getMemorySize();
-            String[] aString = StatM.getStats();
+            long memory_size = ThMemoryFiller.getMainInstance().getMemorySize();
+            String[] aString = StatM.getMainInstance().getStats();
 
             if (count.getValue() == 0) {
                 showTitle();

@@ -15,10 +15,14 @@ class PrintElement {
 }
 
 public class ThPrinter implements ThConsumer, Runnable {
-    public final static ThPrinter mainPrinter = new ThPrinter();
+    private final static ThPrinter mainPrinter = new ThPrinter();
     private final BlockingQueue<PrintElement> queue = new LinkedBlockingDeque<>(10);
 
     private ThPrinter() {
+    }
+
+    public static ThPrinter getMainInstance() {
+        return mainPrinter;
     }
 
     public void consume() {

@@ -9,25 +9,29 @@ public class StatM {
     private final static StatM ourInstance = new StatM();
     private String[] statsTitles = null;
 
-    public static String[] getStatsTitle() {
-        if (ourInstance.statsTitles == null) {
-            int i = 0;
-            int field_len = ApplicationConstants.FIELD_LENGTH - 2;
-            ourInstance.statsTitles = new String[ApplicationConstants.FIELD_COUNT];
-            ourInstance.statsTitles[i++] = ForStrings.rightFormat("Prog. Size", field_len) + " | ";
-            ourInstance.statsTitles[i++] = ForStrings.rightFormat("Resident", field_len) + "| ";
-            ourInstance.statsTitles[i++] = ForStrings.rightFormat("Share", field_len) + "| ";
-            ourInstance.statsTitles[i++] = ForStrings.rightFormat("JVM total memory", field_len) + "| ";
-            ourInstance.statsTitles[i++] = ForStrings.rightFormat("JVM max memory", field_len) + "| ";
-            ourInstance.statsTitles[i++] = ForStrings.rightFormat("Data", field_len) + "| ";
-            ourInstance.statsTitles[i++] = ForStrings.rightFormat("JVM free mem", field_len) + "| ";
-            ourInstance.statsTitles[i] = ForStrings.rightFormat("Allocated memory", field_len) + " |";
-        }
-        return ourInstance.statsTitles;
+    public static StatM getMainInstance() {
+        return ourInstance;
     }
 
-    public static String[] getStats() {
-        return ourInstance.innerGetStats();
+    public String[] getStatsTitle() {
+        if (statsTitles == null) {
+            int i = 0;
+            int field_len = ApplicationConstants.FIELD_LENGTH - 2;
+            statsTitles = new String[ApplicationConstants.FIELD_COUNT];
+            statsTitles[i++] = ForStrings.rightFormat("Prog. Size", field_len) + " | ";
+            statsTitles[i++] = ForStrings.rightFormat("Resident", field_len) + "| ";
+            statsTitles[i++] = ForStrings.rightFormat("Share", field_len) + "| ";
+            statsTitles[i++] = ForStrings.rightFormat("JVM total memory", field_len) + "| ";
+            statsTitles[i++] = ForStrings.rightFormat("JVM max memory", field_len) + "| ";
+            statsTitles[i++] = ForStrings.rightFormat("Data", field_len) + "| ";
+            statsTitles[i++] = ForStrings.rightFormat("JVM free mem", field_len) + "| ";
+            statsTitles[i] = ForStrings.rightFormat("Allocated memory", field_len) + " |";
+        }
+        return statsTitles;
+    }
+
+    public String[] getStats() {
+        return innerGetStats();
     }
 
     private String[] innerGetStats() {
