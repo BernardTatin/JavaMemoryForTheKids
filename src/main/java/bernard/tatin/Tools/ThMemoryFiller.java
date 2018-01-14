@@ -17,7 +17,7 @@ public class ThMemoryFiller extends ThPrinterClient implements ThConsumer, Runna
     private ThMemoryFiller() {
     }
 
-    public boolean consume() {
+    public void consume() {
         while (true) {
             try {
                 memory = memory != null ?
