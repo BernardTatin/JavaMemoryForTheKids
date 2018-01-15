@@ -5,6 +5,10 @@ import bernard.tatin.Constants.LinuxConstants;
 import bernard.tatin.Tools.ForFiles;
 import bernard.tatin.Tools.ForStrings;
 
+import java.util.Arrays;
+import java.util.function.Function;
+import java.util.function.IntFunction;
+
 public class StatM {
     private final static StatM ourInstance = new StatM();
     private String[] statsTitles = null;
@@ -21,53 +25,54 @@ public class StatM {
         return ourInstance;
     }
 
+    public static String rightFormat(String s) {
+        return ForStrings.rightFormat(s,
+                ApplicationConstants.FIELD_LENGTH - 2) +
+                "|";
+    }
     public String[] getStatsTitle() {
         if (statsTitles == null) {
-            int field_len = ApplicationConstants.FIELD_LENGTH - 2;
             statsTitles = new String[ApplicationConstants.FIELD_COUNT];
-            statsTitles[FPROG_SIZE] =
-                    ForStrings.rightFormat("Prog. Size", field_len) + " | ";
-            statsTitles[FRESIDENT] =
-                    ForStrings.rightFormat("Resident", field_len) + "| ";
-            statsTitles[FDATA] =
-                    ForStrings.rightFormat("Data", field_len) + "| ";
-            statsTitles[FJTOTAL] =
-                    ForStrings.rightFormat("JVM total memory", field_len) + "| ";
-            statsTitles[FJMAX] =
-                    ForStrings.rightFormat("JVM max memory", field_len) + "| ";
-            statsTitles[FJFREE] =
-                    ForStrings.rightFormat("JVM free mem", field_len) + "| ";
-            statsTitles[FALLOCATED] =
-                    ForStrings.rightFormat("Allocated memory", field_len) + " |";
+            statsTitles[FPROG_SIZE] = "Prog. Size";
+            statsTitles[FRESIDENT] = "Resident";
+            statsTitles[FDATA] = "Data";
+            statsTitles[FJTOTAL] = "JVM total memory";
+            statsTitles[FJMAX] = "JVM max memory";
+            statsTitles[FJFREE] = "JVM free mem";
+            statsTitles[FALLOCATED] = "Allocated memory";
+            statsTitles = Arrays.stream(statsTitles).map(StatM::rightFormat).toArray(String[]::new);
         }
         return statsTitles;
     }
 
     public String[] getStats(long allocatedMemory) {
-        long[] lstats = new long[ApplicationConstants.FIELD_COUNT];
+        Long[] lstats = new Long[ApplicationConstants.FIELD_COUNT];
         String[] stats = new String[ApplicationConstants.FIELD_COUNT];
         String[] strStats = ForFiles.loadLinesFromfiles(
                 LinuxProc.procPathName("statm"),
                 "[ \n]");
         if (strStats != null) {
-            lstats[FALLOCATED] = allocatedMemory;
-            lstats[FJFREE] = Runtime.getRuntime().freeMemory();
-            lstats[FJMAX] = Runtime.getRuntime().maxMemory();
-            lstats[FJTOTAL] = Runtime.getRuntime().totalMemory();
-            lstats[FPROG_SIZE] = Long.parseLong(strStats[0]) * LinuxConstants.PAGE_SIZE;
-            lstats[FRESIDENT] = Long.parseLong(strStats[1]) * LinuxConstants.PAGE_SIZE;
-            lstats[FDATA] = Long.parseLong(strStats[5]) * LinuxConstants.PAGE_SIZE;
-            for (int i = 0; i < ApplicationConstants.FIELD_COUNT; i++) {
-                stats[i] = ForStrings.leftFormat(
-                        String.valueOf(lstats[i] / LinuxConstants.MEGABYTE),
-                        ApplicationConstants.FIELD_LENGTH - 3) + "M |";
-            }
-            return stats;
+            lstats[FALLOCATED] = allocatedMemory / LinuxConstants.MEGABYTE;
+            lstats[FJFREE] = Runtime.getRuntime().freeMemory() / LinuxConstants.MEGABYTE;
+            lstats[FJMAX] = Runtime.getRuntime().maxMemory() / LinuxConstants.MEGABYTE;
+            lstats[FJTOTAL] = Runtime.getRuntime().totalMemory() / LinuxConstants.MEGABYTE;
+            lstats[FPROG_SIZE] = (Long.parseLong(strStats[0]) * LinuxConstants.PAGE_SIZE) / LinuxConstants.MEGABYTE;
+            lstats[FRESIDENT] = (Long.parseLong(strStats[1]) * LinuxConstants.PAGE_SIZE) / LinuxConstants.MEGABYTE;
+            lstats[FDATA] = (Long.parseLong(strStats[5]) * LinuxConstants.PAGE_SIZE) / LinuxConstants.MEGABYTE;
+            return convertArray(lstats, v ->
+                    ForStrings.leftFormat( String.valueOf(v), ApplicationConstants.FIELD_LENGTH-3) + "M |" ,
+                    String[]::new);
         } else {
             return null;
         }
     }
-
+    // cf :
+    // https://stackoverflow.com/questions/23057549/lambda-expression-to-convert-array-list-of-string-to-array-list-of-integers
+    public <T, U> U[] convertArray(T[] from,
+                                          Function<T, U> func,
+                                          IntFunction<U[]> generator) {
+        return Arrays.stream(from).map(func).toArray(generator);
+    }
     private StatM() {
     }
 }
