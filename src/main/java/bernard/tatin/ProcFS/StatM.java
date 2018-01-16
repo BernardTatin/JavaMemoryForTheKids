@@ -65,19 +65,9 @@ public class StatM {
 
     private String longToMB(Long l) {
         Double h = l.doubleValue() / LinuxConstants.MEGABYTE;
-        Long lh = h.longValue();
-        Double b = (h - lh.doubleValue()) * 1000.0;
-        Long lb = b.longValue();
-        String r = String.valueOf(lh) + ".";
-
-        if (lb < 10) {
-            r += "00";
-        } else if (lb < 100) {
-            r += "0";
-        }
-        r += String.valueOf(lb);
-        return r;
+        return String.format("%.3f", h);
     }
+
     private StatM() {
     }
 }
