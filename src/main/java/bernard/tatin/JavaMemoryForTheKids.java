@@ -45,14 +45,14 @@ class JavaMemoryForTheKids extends ThPrinterClient {
     private void innerLoop() {
         while (true) {
             long memory_size = ThMemoryFiller.getMainInstance().getMemorySize();
-            String[] aString = StatM.getMainInstance().getStats(memory_size);
+            String aString = StatM.getMainInstance().getStats(memory_size);
 
             if (count.getValue() == 0) {
                 showTitle();
             }
 
             if (aString != null) {
-                printString(Arrays.stream(aString).reduce("", String::concat));
+                printString(aString);
             } else {
                 printError("ERROR reading statm file");
             }
