@@ -23,14 +23,14 @@ public class ThMemoryFiller extends ThPrinterClient
     }
 
     public void consume() {
+        Byte[] memory_unit = fillMemory(ApplicationConstants.MEMORY_INCREMENT).
+                                toArray(Byte[]::new);
         while (true) {
             try {
                 memory = memory != null ?
-                        Stream.concat(Arrays.stream(memory),
-                                fillMemory(ApplicationConstants.MEMORY_INCREMENT)).
+                        Stream.concat(Arrays.stream(memory), Arrays.stream(memory_unit)).
                                 toArray(Byte[]::new) :
-                        fillMemory(ApplicationConstants.MEMORY_INCREMENT).
-                                toArray(Byte[]::new);
+                        memory_unit;
 
             } catch (OutOfMemoryError e) {
                 printError("ERROR (ThMemoryFiller::consume): " + e.toString());
