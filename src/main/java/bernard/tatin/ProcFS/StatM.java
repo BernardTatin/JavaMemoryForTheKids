@@ -43,7 +43,7 @@ public class StatM {
 
     public String[] getStats(long allocatedMemory) {
         Long[] lstats = new Long[ApplicationConstants.FIELD_COUNT];
-        String[] strStats = ForFiles.loadLinesFromfiles(
+        String[] strStats = ForFiles.loadLinesFromFiles(
                 LinuxProc.procPathName("statm"),
                 "[ \n]");
         if (strStats != null) {
