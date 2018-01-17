@@ -23,7 +23,7 @@
             </properties>
         </profile>
         <profile>
-            <id>defaultjdk</id>
+            <id>openjdk8</id>
             <properties>
                 <jdkversion>1.8</jdkversion>
                 <JAVA_HOME>/usr/lib/jvm/java-8-openjdk-amd64</JAVA_HOME>

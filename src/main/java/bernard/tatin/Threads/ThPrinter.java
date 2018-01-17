@@ -5,8 +5,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 class PrintElement {
-    public PrintStream stream;
-    public String line;
+    public final PrintStream stream;
+    public final String line;
 
     public PrintElement(PrintStream s, String l) {
         stream = s;

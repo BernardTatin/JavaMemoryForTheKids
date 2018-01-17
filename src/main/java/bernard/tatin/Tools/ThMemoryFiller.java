@@ -47,7 +47,7 @@ public class ThMemoryFiller extends ThPrinterClient
     }
 
     public long getMemorySize() {
-        long rmem = 0;
+        long rmem;
         try {
             mutex.lock();
         } catch (Exception e) {

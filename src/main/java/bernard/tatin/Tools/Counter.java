@@ -1,8 +1,8 @@
-package bernard.tatin.Tools;
+package bernard.tatinrecommendations
 
-public class Counter {
+class Counter {
     private int current = -1;
-    private int max = 0;
+    private int max;
 
     public Counter(int theMax) {
         max = theMax;
