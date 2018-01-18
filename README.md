@@ -1,4 +1,4 @@
-[![Known Vulnerabilities](https://snyk.io/test/github/bernardtatin/javamemoryforthekids/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/bernardtatin/javamemoryforthekids?targetFile=pom.xml)
+
 # Java Memory For the Kids
 
 Last time I worked with _Java_, it was with version 1.4 while version 1.5 was announced. Today, I need to understand how _Java_ manage its memory while I need to code with it.
