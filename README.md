@@ -15,7 +15,11 @@ I use **Maven** which is well supported by a lot of modern IDEs.
 ## JDKs
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 With **JDK 9**, tests failed, even if they're empty. Run **maven** with the option `-Dmaven.test.skip=true`.
+=======
+With JDK 9, tests failed, even if they're empty. Run maven with the option `-Dmaven.test.skip=true`.
+>>>>>>> threaded
 =======
 With JDK 9, tests failed, even if they're empty. Run maven with the option `-Dmaven.test.skip=true`.
 >>>>>>> threaded
