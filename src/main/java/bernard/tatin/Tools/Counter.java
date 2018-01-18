@@ -1,6 +1,6 @@
-package bernard.tatinrecommendations
+package bernard.tatin.Tools;
 
-class Counter {
+public class Counter {
     private int current = -1;
     private int max;
 
@@ -15,9 +15,4 @@ class Counter {
         }
         return current;
     }
-
-//    public int reset() {
-//        current = 0;
-//        return current;
-//    }
 }
