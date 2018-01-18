@@ -1,6 +1,7 @@
 package bernard.tatin.Threads;
 
-public interface ThConsumer {
+public interface IThConsumer {
     void consume();
     void initialize();
+    void innerLoop();
 }

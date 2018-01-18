@@ -2,7 +2,7 @@ package bernard.tatin.Tools;
 
 public class Counter {
     private int current = -1;
-    private int max = 0;
+    private int max;
 
     public Counter(int theMax) {
         max = theMax;
@@ -15,9 +15,4 @@ public class Counter {
         }
         return current;
     }
-
-//    public int reset() {
-//        current = 0;
-//        return current;
-//    }
 }

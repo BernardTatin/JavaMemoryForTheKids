@@ -3,6 +3,7 @@
 .*.swp
 .idea/
 codealike.json
+reports/
 
 # java
 *.class

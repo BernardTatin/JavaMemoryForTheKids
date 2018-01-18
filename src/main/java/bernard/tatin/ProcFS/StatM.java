@@ -41,25 +41,31 @@ public class StatM {
         return statsTitles;
     }
 
-    public String[] getStats(long allocatedMemory) {
+    public String getStats(long allocatedMemory) {
         Long[] lstats = new Long[ApplicationConstants.FIELD_COUNT];
         String[] strStats = ForFiles.loadLinesFromFiles(
                 LinuxProc.procPathName("statm"),
                 "[ \n]");
         if (strStats != null) {
-            lstats[FALLOCATED] = allocatedMemory / LinuxConstants.MEGABYTE;
-            lstats[FJFREE] = Runtime.getRuntime().freeMemory() / LinuxConstants.MEGABYTE;
-            lstats[FJMAX] = Runtime.getRuntime().maxMemory() / LinuxConstants.MEGABYTE;
-            lstats[FJTOTAL] = Runtime.getRuntime().totalMemory() / LinuxConstants.MEGABYTE;
-            lstats[FPROGRAM_SIZE] = (Long.parseLong(strStats[0]) * LinuxConstants.PAGE_SIZE) / LinuxConstants.MEGABYTE;
-            lstats[FRESIDENT] = (Long.parseLong(strStats[1]) * LinuxConstants.PAGE_SIZE) / LinuxConstants.MEGABYTE;
-            lstats[FDATA] = (Long.parseLong(strStats[5]) * LinuxConstants.PAGE_SIZE) / LinuxConstants.MEGABYTE;
+            lstats[FALLOCATED] = allocatedMemory;
+            lstats[FJFREE] = Runtime.getRuntime().freeMemory();
+            lstats[FJMAX] = Runtime.getRuntime().maxMemory();
+            lstats[FJTOTAL] = Runtime.getRuntime().totalMemory();
+            lstats[FPROGRAM_SIZE] = (Long.parseLong(strStats[0]) * LinuxConstants.PAGE_SIZE);
+            lstats[FRESIDENT] = (Long.parseLong(strStats[1]) * LinuxConstants.PAGE_SIZE);
+            lstats[FDATA] = (Long.parseLong(strStats[5]) * LinuxConstants.PAGE_SIZE);
             return Arrays.stream(lstats).map(v ->
-                    ForStrings.leftFormat(String.valueOf(v), ApplicationConstants.FIELD_LENGTH - 3) + "M |").
-                    toArray(String[]::new);
+                    ForStrings.leftFormat(longToMB(v),
+                            ApplicationConstants.FIELD_LENGTH - 3) + "M |").
+                    reduce("", String::concat);
         } else {
             return null;
         }
+    }
+
+    private String longToMB(Long l) {
+        Double h = l.doubleValue() / LinuxConstants.MEGABYTE;
+        return String.format("%.3f", h);
     }
 
     private StatM() {

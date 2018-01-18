@@ -1,19 +1,18 @@
 package bernard.tatin.Tools;
 
 import bernard.tatin.Constants.ApplicationConstants;
-import bernard.tatin.Threads.Mutex;
-import bernard.tatin.Threads.ThConsumer;
-import bernard.tatin.Threads.ThPrinterClient;
+import bernard.tatin.Threads.*;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class ThMemoryFiller extends ThPrinterClient
-        implements ThConsumer, Runnable {
+public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
     private final static ThMemoryFiller mainMemoryFiller = new ThMemoryFiller();
     private final Mutex mutex = new Mutex();
     private Byte[] memory = null;
     private long memory_size = 0;
+    private Byte[] memory_unit = fillMemory(ApplicationConstants.MEMORY_INCREMENT).
+            toArray(Byte[]::new);
 
     private ThMemoryFiller() {
     }
@@ -22,32 +21,29 @@ public class ThMemoryFiller extends ThPrinterClient
         return mainMemoryFiller;
     }
 
-    public void consume() {
-        while (true) {
-            try {
-                memory = memory != null ?
-                        Stream.concat(Arrays.stream(memory),
-                                fillMemory(ApplicationConstants.MEMORY_INCREMENT)).
-                                toArray(Byte[]::new) :
-                        fillMemory(ApplicationConstants.MEMORY_INCREMENT).
-                                toArray(Byte[]::new);
+    @Override
+    public void innerLoop() {
+        try {
+            memory = memory != null ?
+                    Stream.concat(Arrays.stream(memory), Arrays.stream(memory_unit)).
+                            toArray(Byte[]::new) :
+                    memory_unit;
 
-            } catch (OutOfMemoryError e) {
-                printError("ERROR (ThMemoryFiller::consume): " + e.toString());
-                memory = null;
-            }
+        } catch (OutOfMemoryError e) {
+            printError("ERROR (ThMemoryFiller::consume): " + e.toString());
+            memory = null;
+        }
 
-            setMemorySize();
-            try {
-                Thread.sleep(100L);
-            } catch (InterruptedException e) {
-                printError("ERROR InterruptedException : " + e.getMessage());
-            }
+        setMemorySize();
+        try {
+            Thread.sleep(100L);
+        } catch (InterruptedException e) {
+            printError("ERROR InterruptedException : " + e.getMessage());
         }
     }
 
     public long getMemorySize() {
-        long rmem = 0;
+        long rmem;
         try {
             mutex.lock();
         } catch (Exception e) {
@@ -71,19 +67,18 @@ public class ThMemoryFiller extends ThPrinterClient
         mutex.unlock();
     }
 
-    public void initialize() {
-        Thread theMemoryFiller = new Thread(this, "ThMemoryFiller");
-
-        theMemoryFiller.setDaemon(true);
-        theMemoryFiller.start();
-    }
-
-    public synchronized void run() {
-        consume();
-    }
-
     private Stream<Byte> fillMemory(int bytes) {
         return Stream.iterate((byte) 0,
                 b -> (byte) ((b + (byte) 1) % (byte) 253)).limit(bytes);
+    }
+    public void printString(String str) {
+        ThPrinter.getMainInstance().printString(str);
+    }
+    public void printStrings(String[] strings) {
+        ThPrinter.getMainInstance().printStrings(strings);
+    }
+
+    public void printError(String str) {
+        ThPrinter.getMainInstance().printError(str);
     }
 }
