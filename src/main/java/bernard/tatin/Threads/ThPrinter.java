@@ -14,7 +14,7 @@ class PrintElement {
     }
 }
 
-public class ThPrinter implements ThConsumer, Runnable {
+public class ThPrinter extends AThConsumer {
     private final static ThPrinter mainPrinter = new ThPrinter();
     private final BlockingQueue<PrintElement> queue = new LinkedBlockingDeque<>(10);
 
@@ -25,18 +25,16 @@ public class ThPrinter implements ThConsumer, Runnable {
         return mainPrinter;
     }
 
-    public void consume() {
+    public void innerLoop() {
         PrintElement pElement;
-        while (true) {
-            try {
-                wait();
-                while (!queue.isEmpty()) {
-                    pElement = queue.take();
-                    pElement.stream.println(pElement.line);
-                }
-            } catch (Exception e) {
-                System.err.println("ERROR (ThPrinter::consume): " + e.toString());
+        try {
+            wait();
+            while (!queue.isEmpty()) {
+                pElement = queue.take();
+                pElement.stream.println(pElement.line);
             }
+        } catch (Exception e) {
+            System.err.println("ERROR (ThPrinter::consume): " + e.toString());
         }
     }
 
@@ -68,14 +66,4 @@ public class ThPrinter implements ThConsumer, Runnable {
         }
     }
 
-    public void initialize() {
-        Thread thePrinter = new Thread(this, "ThPrinter");
-
-        thePrinter.setDaemon(true);
-        thePrinter.start();
-    }
-
-    public synchronized void run() {
-        consume();
-    }
 }

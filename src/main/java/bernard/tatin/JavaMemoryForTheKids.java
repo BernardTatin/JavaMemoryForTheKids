@@ -3,6 +3,7 @@ package bernard.tatin;
 import bernard.tatin.ProcFS.ProcessCommandLine;
 import bernard.tatin.ProcFS.ProcessID;
 import bernard.tatin.ProcFS.StatM;
+import bernard.tatin.Threads.AThConsumer;
 import bernard.tatin.Threads.ThPrinter;
 import bernard.tatin.Threads.ThPrinterClient;
 import bernard.tatin.Tools.Counter;
@@ -18,6 +19,18 @@ class JavaMemoryForTheKids extends ThPrinterClient {
     private final Counter count = new Counter(25);
 
     public static void main(String[] args) {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                AThConsumer.isRunning.reset();
+                try {
+                    Thread.sleep(100);
+                } catch (Exception e) {
+
+                }
+                System.out.println("W: interrupt received, exit...");
+            }
+        });
         JavaMemoryForTheKids jm = new JavaMemoryForTheKids();
 
         ThPrinter.getMainInstance().initialize();
