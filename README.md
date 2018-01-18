@@ -1,3 +1,4 @@
+[![Known Vulnerabilities](https://snyk.io/test/github/bernardtatin/javamemoryforthekids/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/bernardtatin/javamemoryforthekids?targetFile=pom.xml)
 
 # Java Memory For the Kids
 
@@ -13,4 +14,8 @@ I use **Maven** which is well supported by a lot of modern IDEs.
 
 ## JDKs
 
+<<<<<<< HEAD
 With **JDK 9**, tests failed, even if they're empty. Run **maven** with the option `-Dmaven.test.skip=true`.
+=======
+With JDK 9, tests failed, even if they're empty. Run maven with the option `-Dmaven.test.skip=true`.
+>>>>>>> threaded
