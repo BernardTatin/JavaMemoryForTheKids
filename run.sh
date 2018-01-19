@@ -57,6 +57,10 @@ do
             export JAVA_HOME=${openjdk8_home}
             profile=openjdk8
             ;;
+        openjdk9)
+            export JAVA_HOME=${openjdk9_home}
+            profile=openjdk9
+            ;;
         clean)
             doclean=1
             ;;

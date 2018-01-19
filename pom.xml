@@ -33,6 +33,16 @@
             </activation>
         </profile>
         <profile>
+            <id>openjdk9</id>
+            <properties>
+                <jdkversion>1.9</jdkversion>
+                <JAVA_HOME>/usr/lib/jvm/java-9-openjdk-amd64</JAVA_HOME>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
             <id>sunjdk9</id>
             <properties>
                 <jdkversion>1.9</jdkversion>
