@@ -9,8 +9,6 @@ import bernard.tatin.Threads.ThPrinterClient;
 import bernard.tatin.Tools.Counter;
 import bernard.tatin.Tools.ThMemoryFiller;
 
-import java.util.Arrays;
-
 /**
  * Hello world!
  */
@@ -19,18 +17,15 @@ class JavaMemoryForTheKids extends ThPrinterClient {
     private final Counter count = new Counter(25);
 
     public static void main(String[] args) {
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                AThConsumer.isRunning.reset();
-                try {
-                    Thread.sleep(100);
-                } catch (Exception e) {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            AThConsumer.isRunning.reset();
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {
 
-                }
-                System.out.println("W: interrupt received, exit...");
             }
-        });
+            System.out.println("W: interrupt received, exit...");
+        }));
         JavaMemoryForTheKids jm = new JavaMemoryForTheKids();
 
         ThPrinter.getMainInstance().initialize();
@@ -41,9 +36,9 @@ class JavaMemoryForTheKids extends ThPrinterClient {
 
     private void showTitle() {
         if (titleLine == null) {
-            String[] aTitle = StatM.getMainInstance().getStatsTitle();
+            String aTitle = StatM.getMainInstance().getStatsTitle();
             if (aTitle != null) {
-                titleLine = Arrays.stream(aTitle).reduce("", String::concat);
+                titleLine = aTitle;
             } else {
                 titleLine ="titleLine is NULLLLLL";
             }

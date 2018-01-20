@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public class StatM {
     private final static StatM ourInstance = new StatM();
-    private String[] statsTitles = null;
+    private String lineOfTitles = null;
 
     private final int FPROGRAM_SIZE = 0;
     private final int FRESIDENT = 1;
@@ -23,9 +23,9 @@ public class StatM {
         return ourInstance;
     }
 
-    public String[] getStatsTitle() {
-        if (statsTitles == null) {
-            statsTitles = new String[ApplicationConstants.FIELD_COUNT];
+    public String getStatsTitle() {
+        if (lineOfTitles == null) {
+            String[] statsTitles = new String[ApplicationConstants.FIELD_COUNT];
             statsTitles[FPROGRAM_SIZE] = "Prog. Size";
             statsTitles[FRESIDENT] = "Resident";
             statsTitles[FDATA] = "Data";
@@ -33,12 +33,12 @@ public class StatM {
             statsTitles[FJMAX] = "JVM max memory";
             statsTitles[FJFREE] = "JVM free mem";
             statsTitles[FALLOCATED] = "Allocated memory";
-            statsTitles = Arrays.stream(statsTitles).map(s ->
+            lineOfTitles = Arrays.stream(statsTitles).map(s ->
                     ForStrings.rightFormat(s,
                             ApplicationConstants.FIELD_LENGTH - 2) +
-                            " |").toArray(String[]::new);
+                            " |").reduce("", String::concat);
         }
-        return statsTitles;
+        return lineOfTitles;
     }
 
     public String getStats(long allocatedMemory) {
