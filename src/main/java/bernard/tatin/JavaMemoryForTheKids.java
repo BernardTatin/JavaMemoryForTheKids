@@ -9,8 +9,6 @@ import bernard.tatin.Threads.ThPrinterClient;
 import bernard.tatin.Tools.Counter;
 import bernard.tatin.Tools.ThMemoryFiller;
 
-import java.util.Arrays;
-
 /**
  * Hello world!
  */
@@ -19,20 +17,25 @@ class JavaMemoryForTheKids extends ThPrinterClient {
     private final Counter count = new Counter(25);
 
     public static void main(String[] args) {
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                AThConsumer.isRunning.reset();
-                try {
-                    Thread.sleep(100);
-                } catch (Exception e) {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            // System signals handled
+            // it works, but I don't like this
 
-                }
-                System.out.println("W: interrupt received, exit...");
+            // stop other threads
+            AThConsumer.isRunning.reset();
+            // wait a little
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {
+                // don't use printError, ThPrinter is stopped
+                System.err.println("Signal catching interrupted...");
             }
-        });
-        JavaMemoryForTheKids jm = new JavaMemoryForTheKids();
+            // don't use printString, ThPrinter is stopped
+            System.out.println("Signal caught, interrupt received, exit...");
+        }));
 
+        JavaMemoryForTheKids jm = new JavaMemoryForTheKids();
+        // initialize and run threads
         ThPrinter.getMainInstance().initialize();
         ThMemoryFiller.getMainInstance().initialize();
 
@@ -41,9 +44,9 @@ class JavaMemoryForTheKids extends ThPrinterClient {
 
     private void showTitle() {
         if (titleLine == null) {
-            String[] aTitle = StatM.getMainInstance().getStatsTitle();
+            String aTitle = StatM.getMainInstance().getStatsTitleLine();
             if (aTitle != null) {
-                titleLine = Arrays.stream(aTitle).reduce(" ", String::concat);
+                titleLine = aTitle;
             } else {
                 titleLine ="titleLine is NULLLLLL";
             }
@@ -57,8 +60,8 @@ class JavaMemoryForTheKids extends ThPrinterClient {
 
     private void innerLoop() {
         while (true) {
-            long memory_size = ThMemoryFiller.getMainInstance().getMemorySize();
-            String aString = StatM.getMainInstance().getStats(memory_size);
+            long memorySize = ThMemoryFiller.getMainInstance().getMemorySize();
+            String aString = StatM.getMainInstance().getStatsLine(memorySize);
 
             if (count.getValue() == 0) {
                 showTitle();

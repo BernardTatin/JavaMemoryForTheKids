@@ -7,6 +7,7 @@
 jdk8_home=/usr/local/java/jdk-8u151-linux-x64/jdk1.8.0_151
 jdk9_home=/usr/local/java/jdk-9.0.1_linux-x64_bin/jdk-9.0.1
 openjdk8_home=/usr/lib/jvm/java-8-openjdk-amd64
+openjdk9_home=/usr/lib/jvm/java-9-openjdk-amd64
 doclean=0
 profile=
 mvn_options='-T 2.0C -Dmaven.test.skip=true'
@@ -18,7 +19,7 @@ function dohelp() {
     [ $# -gt 0 ] && exit_code=$1
     cat << DOHELP
 ${script} [-h|--help] : this text
-${script} jdk8|jdk9|openjdk8 [clean] : jdk selection and possible clean
+${script} jdk8|jdk9|openjdk8|openjdk9 [clean] : jdk selection and possible clean
             before compilation
 DOHELP
     exit ${exit_code}
