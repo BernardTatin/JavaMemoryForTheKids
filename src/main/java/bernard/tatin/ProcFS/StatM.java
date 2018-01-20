@@ -35,8 +35,8 @@ public class StatM {
             statsTitles[FALLOCATED] = "Allocated memory";
             statsTitles = Arrays.stream(statsTitles).map(s ->
                     ForStrings.rightFormat(s,
-                            ApplicationConstants.FIELD_LENGTH - 3) +
-                            " | ").toArray(String[]::new);
+                            ApplicationConstants.FIELD_LENGTH - 2) +
+                            " |").toArray(String[]::new);
         }
         return statsTitles;
     }

@@ -43,7 +43,7 @@ class JavaMemoryForTheKids extends ThPrinterClient {
         if (titleLine == null) {
             String[] aTitle = StatM.getMainInstance().getStatsTitle();
             if (aTitle != null) {
-                titleLine = Arrays.stream(aTitle).reduce(" ", String::concat);
+                titleLine = Arrays.stream(aTitle).reduce("", String::concat);
             } else {
                 titleLine ="titleLine is NULLLLLL";
             }
