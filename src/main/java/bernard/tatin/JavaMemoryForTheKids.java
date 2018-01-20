@@ -18,16 +18,24 @@ class JavaMemoryForTheKids extends ThPrinterClient {
 
     public static void main(String[] args) {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            // System signals handled
+            // it works, but I don't like this
+
+            // stop other threads
             AThConsumer.isRunning.reset();
+            // wait a little
             try {
                 Thread.sleep(100);
             } catch (Exception e) {
-
+                // don't use printError, ThPrinter is stopped
+                System.err.println("Signal catching interrupted...");
             }
-            System.out.println("W: interrupt received, exit...");
+            // don't use printString, ThPrinter is stopped
+            System.out.println("Signal caught, interrupt received, exit...");
         }));
-        JavaMemoryForTheKids jm = new JavaMemoryForTheKids();
 
+        JavaMemoryForTheKids jm = new JavaMemoryForTheKids();
+        // initialize and run threads
         ThPrinter.getMainInstance().initialize();
         ThMemoryFiller.getMainInstance().initialize();
 
@@ -36,7 +44,7 @@ class JavaMemoryForTheKids extends ThPrinterClient {
 
     private void showTitle() {
         if (titleLine == null) {
-            String aTitle = StatM.getMainInstance().getStatsTitle();
+            String aTitle = StatM.getMainInstance().getStatsTitleLine();
             if (aTitle != null) {
                 titleLine = aTitle;
             } else {
@@ -52,8 +60,8 @@ class JavaMemoryForTheKids extends ThPrinterClient {
 
     private void innerLoop() {
         while (true) {
-            long memory_size = ThMemoryFiller.getMainInstance().getMemorySize();
-            String aString = StatM.getMainInstance().getStats(memory_size);
+            long memorySize = ThMemoryFiller.getMainInstance().getMemorySize();
+            String aString = StatM.getMainInstance().getStatsLine(memorySize);
 
             if (count.getValue() == 0) {
                 showTitle();
