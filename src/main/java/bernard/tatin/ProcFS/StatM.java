@@ -1,7 +1,6 @@
 package bernard.tatin.ProcFS;
 
 import bernard.tatin.Constants.ApplicationConstants;
-import bernard.tatin.Constants.LinuxConstants;
 import bernard.tatin.Tools.ForFiles;
 import bernard.tatin.Tools.ForStrings;
 
@@ -51,9 +50,9 @@ public class StatM {
             lstats[FJFREE] = Runtime.getRuntime().freeMemory();
             lstats[FJMAX] = Runtime.getRuntime().maxMemory();
             lstats[FJTOTAL] = Runtime.getRuntime().totalMemory();
-            lstats[FPROGRAM_SIZE] = (Long.parseLong(strStats[0]) * LinuxConstants.PAGE_SIZE);
-            lstats[FRESIDENT] = (Long.parseLong(strStats[1]) * LinuxConstants.PAGE_SIZE);
-            lstats[FDATA] = (Long.parseLong(strStats[5]) * LinuxConstants.PAGE_SIZE);
+            lstats[FPROGRAM_SIZE] = (Long.parseLong(strStats[0]) * ApplicationConstants.PAGE_SIZE);
+            lstats[FRESIDENT] = (Long.parseLong(strStats[1]) * ApplicationConstants.PAGE_SIZE);
+            lstats[FDATA] = (Long.parseLong(strStats[5]) * ApplicationConstants.PAGE_SIZE);
             return Arrays.stream(lstats).map(v ->
                     ForStrings.leftFormat(longToMB(v),
                             ApplicationConstants.FIELD_LENGTH - 3) + "M |").
@@ -64,7 +63,7 @@ public class StatM {
     }
 
     private String longToMB(Long l) {
-        Double h = l.doubleValue() / LinuxConstants.MEGABYTE;
+        Double h = l.doubleValue() / ApplicationConstants.MEGABYTE;
         return String.format("%.3f", h);
     }
 
