@@ -17,7 +17,7 @@ internal class JavaMemoryForTheKids : ThPrinterClient() {
 
     private fun showTitle() {
         if (titleLine == null) {
-            val aTitle = StatM.getMainInstance().getStatsTitleLine()
+            val aTitle = StatM.mainInstance.getStatsTitleLine()
             if (aTitle != null) {
                 titleLine = aTitle
             } else {
@@ -31,8 +31,8 @@ internal class JavaMemoryForTheKids : ThPrinterClient() {
 
     private fun innerLoop() {
         while (true) {
-            val memorySize = ThMemoryFiller.getMainInstance().getMemorySize()
-            val aString = StatM.getMainInstance().getStatsLine(memorySize)
+            val memorySize = ThMemoryFiller.mainInstance.getMemorySize()
+            val aString = StatM.mainInstance.getStatsLine(memorySize)
 
             if (count.getValue() === 0) {
                 showTitle()
@@ -76,8 +76,8 @@ internal class JavaMemoryForTheKids : ThPrinterClient() {
 
             val jm = JavaMemoryForTheKids()
             // initialize and run threads
-            ThPrinter.getMainInstance().initialize()
-            ThMemoryFiller.getMainInstance().initialize()
+            ThPrinter.mainInstance.initialize()
+            ThMemoryFiller.mainInstance.initialize()
 
             jm.innerLoop()
         }

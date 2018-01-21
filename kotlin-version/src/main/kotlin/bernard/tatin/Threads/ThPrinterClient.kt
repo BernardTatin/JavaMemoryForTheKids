@@ -1,6 +1,6 @@
 package bernard.tatin.Threads
 
-class ThPrinterClient : IThPrinterClient {
+open class ThPrinterClient : IThPrinterClient {
     fun printString(str: String) {
         ThPrinter.getMainInstance().printString(str)
     }

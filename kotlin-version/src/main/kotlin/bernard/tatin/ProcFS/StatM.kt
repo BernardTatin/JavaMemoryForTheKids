@@ -7,6 +7,7 @@ import bernard.tatin.Tools.ForStrings
 import java.util.Arrays
 
 class StatM private constructor() {
+    @JvmStatic val mainInstance = StatM()
     private val F_PROGRAM_SIZE = 0
     private val F_RESIDENT = 1
     private val F_DATA = 2
@@ -67,6 +68,5 @@ class StatM private constructor() {
     }
 
     companion object {
-        val mainInstance = StatM()
     }
 }

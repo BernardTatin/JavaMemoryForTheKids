@@ -10,7 +10,8 @@ class ThMemoryFiller private constructor() : AThConsumer(), IThPrinterClient {
     private val mutex = Mutex()
     private var memory: Array<Byte>? = null
     private var memory_size: Long = 0
-    private val memory_unit = fillMemory(ApplicationConstants.MEMORY_INCREMENT).toArray(Byte[]::new  /* Currently unsupported in Kotlin */)
+    private val memory_unit = fillMemory(ApplicationConstants.MEMORY_INCREMENT)
+            .toArray(Byte[]::new  /* Currently unsupported in Kotlin */)
 
     val memorySize: Long
         get() {
@@ -26,8 +27,7 @@ class ThMemoryFiller private constructor() : AThConsumer(), IThPrinterClient {
             return rmem
         }
 
-    @Override
-    fun innerLoop() {
+    override fun innerLoop() {
         try {
             memory = if (memory != null)
                 Stream.concat(Arrays.stream(memory), Arrays.stream(memory_unit)).toArray(Byte[]::new  /* Currently unsupported in Kotlin */)
@@ -43,7 +43,7 @@ class ThMemoryFiller private constructor() : AThConsumer(), IThPrinterClient {
         try {
             Thread.sleep(100L)
         } catch (e: InterruptedException) {
-            printError("ERROR InterruptedException : " + e.getMessage())
+            printError("ERROR InterruptedException : " + e.toString())
         }
 
     }
@@ -62,21 +62,22 @@ class ThMemoryFiller private constructor() : AThConsumer(), IThPrinterClient {
         mutex.unlock()
     }
 
-    private fun fillMemory(bytes: Int): Stream<Byte> {
+    private fun fillMemory(bytes: Long): Stream<Byte> {
         return Stream.iterate(0.toByte(),
                 { b -> ((b + 1.toByte()) % 253.toByte()).toByte() }).limit(bytes)
     }
 
-    fun printString(str: String) {
-        ThPrinter.getMainInstance().printString(str)
+
+    override fun printString(str: String) {
+        ThPrinter.mainInstance.printString(str)
     }
 
-    fun printStrings(strings: Array<String>) {
-        ThPrinter.getMainInstance().printStrings(strings)
+    override fun printStrings(strings: Array<String>) {
+        ThPrinter.mainInstance.printStrings(strings)
     }
 
-    fun printError(str: String) {
-        ThPrinter.getMainInstance().printError(str)
+    override fun printError(str: String) {
+        ThPrinter.mainInstance.printError(str)
     }
 
     companion object {
