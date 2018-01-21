@@ -17,11 +17,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.groupID>bernard.tatin</project.groupID>
         <sources.base>src/main/kotlin/bernard/tatin</sources.base>
-        <test.pack>ProcFS</test.pack>
-        <test.unit>processid</test.unit>
-        <test.class>ProcessIDTests</test.class>
-        <test.sources>${sources.base}/${test.pack}/${test.unit}</test.sources>
-        <test.mainclass>${project.groupID}.${test.pack}.${test.unit}.tests.${test.class}</test.mainclass>
+        <test.pack>WorkInProgress</test.pack>
+        <!--<test.unit>processid</test.unit>-->
+        <test.class>BigTest</test.class>
+        <test.sources>${sources.base}/${test.pack}</test.sources>
+        <test.mainclass>${project.groupID}.${test.pack}.${test.class}</test.mainclass>
     </properties>
 
     <profiles>
