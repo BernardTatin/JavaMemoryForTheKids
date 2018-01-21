@@ -3,7 +3,6 @@ package bernard.tatin.ProcFS
 import bernard.tatin.Tools.ForFiles
 
 object ProcessCommandLine {
-    //    final private static ProcessCommandLine ourInstance = new ProcessCommandLine();
     private var commandLine: String? = null
 
     fun getCommandLine(): String {
