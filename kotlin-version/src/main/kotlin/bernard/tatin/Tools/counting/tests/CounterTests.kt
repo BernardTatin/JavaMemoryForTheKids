@@ -1,4 +1,4 @@
-package bernard.tatin.Tools.counting
+package bernard.tatin.Tools.counting.tests
 
 import bernard.tatin.Tools.counting.Counter
 
@@ -17,7 +17,7 @@ class CounterTest(private val max: Int, private val loops: Int) {
         return true;
     }
     companion object {
-        fun main(args: Array<String>) {
+        @JvmStatic public fun main(args: Array<String>) {
             val counterTest = CounterTest(15, 3)
             if (!counterTest.testing()) {
                 java.lang.System.err.println("Test failed..")
@@ -28,3 +28,4 @@ class CounterTest(private val max: Int, private val loops: Int) {
 
     }
 }
+
