@@ -1,7 +1,7 @@
-package bernard.tatin.Tools;
+package bernard.tatin.tools;
 
-import bernard.tatin.Constants.ApplicationConstants;
-import bernard.tatin.Threads.*;
+import bernard.tatin.constants.Constants;
+import bernard.tatin.threads.*;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -11,7 +11,7 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
     private final Mutex mutex = new Mutex();
     private Byte[] memory = null;
     private long memory_size = 0;
-    private Byte[] memory_unit = fillMemory(ApplicationConstants.MEMORY_INCREMENT).
+    private Byte[] memory_unit = fillMemory(Constants.MEMORY_INCREMENT).
             toArray(Byte[]::new);
 
     private ThMemoryFiller() {

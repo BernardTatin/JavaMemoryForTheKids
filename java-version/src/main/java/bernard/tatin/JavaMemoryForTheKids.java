@@ -1,13 +1,13 @@
 package bernard.tatin;
 
-import bernard.tatin.ProcFS.ProcessCommandLine;
-import bernard.tatin.ProcFS.ProcessID;
-import bernard.tatin.ProcFS.StatM;
-import bernard.tatin.Threads.AThConsumer;
-import bernard.tatin.Threads.ThPrinter;
-import bernard.tatin.Threads.ThPrinterClient;
-import bernard.tatin.Tools.Counter;
-import bernard.tatin.Tools.ThMemoryFiller;
+import bernard.tatin.procFS.ProcessCommandLine;
+import bernard.tatin.procFS.ProcessID;
+import bernard.tatin.procFS.StatM;
+import bernard.tatin.threads.AThConsumer;
+import bernard.tatin.threads.ThPrinter;
+import bernard.tatin.threads.ThPrinterClient;
+import bernard.tatin.tools.Counter;
+import bernard.tatin.tools.ThMemoryFiller;
 
 /**
  * Hello world!

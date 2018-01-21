@@ -1,8 +1,8 @@
-package bernard.tatin.ProcFS;
+package bernard.tatin.procFS;
 
-import bernard.tatin.Constants.ApplicationConstants;
-import bernard.tatin.Tools.ForFiles;
-import bernard.tatin.Tools.ForStrings;
+import bernard.tatin.constants.Constants;
+import bernard.tatin.tools.ForFiles;
+import bernard.tatin.tools.ForStrings;
 
 import java.util.Arrays;
 
@@ -23,7 +23,7 @@ public class StatM {
 
     public String getStatsTitleLine() {
         if (lineOfTitle == null) {
-            String[] statsTitles = new String[ApplicationConstants.FIELD_COUNT];
+            String[] statsTitles = new String[Constants.FIELD_COUNT];
             statsTitles[F_PROGRAM_SIZE] = "Prog. Size";
             statsTitles[F_RESIDENT] = "Resident";
             statsTitles[F_DATA] = "Data";
@@ -34,14 +34,14 @@ public class StatM {
             lineOfTitle = Arrays.stream(statsTitles)
                     .map(s ->
                             ForStrings.rightFormat(s,
-                                    ApplicationConstants.FIELD_LENGTH - 2) + " |")
+                                    Constants.FIELD_LENGTH - 2) + " |")
                     .reduce("", String::concat);
         }
         return lineOfTitle;
     }
 
     public String getStatsLine(long allocatedMemory) {
-        Long[] lstats = new Long[ApplicationConstants.FIELD_COUNT];
+        Long[] lstats = new Long[Constants.FIELD_COUNT];
         String[] strStats = ForFiles.loadLinesFromFiles(
                 LinuxProc.procPathName("statm"),
                 "[ \n]");
@@ -50,13 +50,13 @@ public class StatM {
             lstats[F_JAVA_FREE] = Runtime.getRuntime().freeMemory();
             lstats[F_JAVA_MAX] = Runtime.getRuntime().maxMemory();
             lstats[F_JAVA_TOTAL] = Runtime.getRuntime().totalMemory();
-            lstats[F_PROGRAM_SIZE] = (Long.parseLong(strStats[0]) * ApplicationConstants.PAGE_SIZE);
-            lstats[F_RESIDENT] = (Long.parseLong(strStats[1]) * ApplicationConstants.PAGE_SIZE);
-            lstats[F_DATA] = (Long.parseLong(strStats[5]) * ApplicationConstants.PAGE_SIZE);
+            lstats[F_PROGRAM_SIZE] = (Long.parseLong(strStats[0]) * Constants.PAGE_SIZE);
+            lstats[F_RESIDENT] = (Long.parseLong(strStats[1]) * Constants.PAGE_SIZE);
+            lstats[F_DATA] = (Long.parseLong(strStats[5]) * Constants.PAGE_SIZE);
             return Arrays.stream(lstats)
                     .map(v ->
                             ForStrings.leftFormat(longToMB(v),
-                                    ApplicationConstants.FIELD_LENGTH - 3) + "M |")
+                                    Constants.FIELD_LENGTH - 3) + "M |")
                     .reduce("", String::concat);
         } else {
             return null;
@@ -64,7 +64,7 @@ public class StatM {
     }
 
     private String longToMB(Long l) {
-        Double h = l.doubleValue() / ApplicationConstants.MEGABYTE;
+        Double h = l.doubleValue() / Constants.MEGABYTE;
         return String.format("%.3f", h);
     }
 

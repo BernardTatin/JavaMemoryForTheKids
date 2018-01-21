@@ -1,4 +1,4 @@
-package bernard.tatin.ProcFS;
+package bernard.tatin.procFS;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
