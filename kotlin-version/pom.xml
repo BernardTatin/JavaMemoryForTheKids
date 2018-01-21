@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>bernard.tatin</groupId>
-    <artifactId>recallMeJava</artifactId>
+    <artifactId>recallMeKotlin</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>recallMeJava</name>
+    <name>recallMeKotlin</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -15,9 +15,29 @@
         <kotlin.compiler.languageVersion>1.2</kotlin.compiler.languageVersion>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <main.class>JavaMemoryForTheKids</main.class>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>appli</id>
+            <properties>
+                <sources.path>src/main/kotlin/bernard/tatin</sources.path>
+                <main.class>bernard.tatin.JavaMemoryForTheKids</main.class>
+                <jar.name>recallMeKotlin</jar.name>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>testing</id>
+            <properties>
+               <sources.path>src/main/kotlin/bernard/tatin/Tools/counting</sources.path>
+                <main.class>bernard.tatin.Tools.counting.tests.CounterTests</main.class>
+                <jar.name>recallMeKotlin</jar.name>
+            </properties>
+        </profile>
+    </profiles>
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -33,7 +53,7 @@
     </dependencies>
 
     <build>
-        <sourceDirectory>${project.basedir}/src/main/kotlin/bernard/tatin</sourceDirectory>
+        <sourceDirectory>${project.basedir}/${sources.path}</sourceDirectory>
 
         <plugins>
             <plugin>
@@ -71,7 +91,7 @@
                                 </manifest>
                             </archive>
                             <descriptorRefs>
-                                <descriptorRef>JavaMemoryForTheKids</descriptorRef>
+                                <descriptorRef>${jar.name}</descriptorRef>
                             </descriptorRefs>
                         </configuration>
                     </execution>

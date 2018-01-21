@@ -1,4 +1,4 @@
-package bernard.tatin.Tools
+package bernard.tatin.Tools.counting
 
 class Counter(private val max: Int) {
     private var current = -1
