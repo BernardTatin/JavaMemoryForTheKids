@@ -3,6 +3,11 @@ package bernard.tatin.Tools.counting.tests
 import bernard.tatin.Tools.counting.Counter
 
 class CounterTest(private val max: Int, private val loops: Int) {
+    private val name = "Counter"
+
+    fun header() {
+        System.out.println("testing $name on $loops loops...")
+    }
     fun testing() : Boolean {
         val counter = Counter(max);
         var currentLoop = -1;
