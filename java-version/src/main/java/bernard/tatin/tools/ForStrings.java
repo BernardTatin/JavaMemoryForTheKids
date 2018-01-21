@@ -7,13 +7,13 @@ import java.util.stream.Stream;
 public class ForStrings {
     private static String whites = null;
 
-    public static String rightFormat(String str, final int expectedLength) {
+    public static String rightFormat(final String str, final int expectedLength) {
         final int strLength = str.length();
         if (strLength < expectedLength) {
-            str += getWhites(
+            return str + getWhites(
                     Math.min(expectedLength - strLength, ApplicationConstants.MAX_STRING_LENGTH));
         } else if (strLength > expectedLength) {
-            str = str.substring(0, expectedLength);
+            return str.substring(0, expectedLength);
         }
         return str;
     }
