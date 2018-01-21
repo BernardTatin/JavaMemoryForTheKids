@@ -9,7 +9,7 @@ import java.util.stream.Stream
 class ThMemoryFiller private constructor() : AThConsumer(), IThPrinterClient {
     private val mutex = Mutex()
     private var memory: Array<Byte>? = null
-    private var memory_size: Long = 0
+    private var memorySize: Long = 0
     private val memory_unit = fillMemory(ApplicationConstants.MEMORY_INCREMENT)
             .toArray(Byte[]::new  /* Currently unsupported in Kotlin */)
 
@@ -22,10 +22,23 @@ class ThMemoryFiller private constructor() : AThConsumer(), IThPrinterClient {
                 printError("ERROR : cannot acquire mutex " + e.toString())
             }
 
-            rmem = memory_size
+            rmem = memorySize
             mutex.unlock()
             return rmem
         }
+    private fun setMemorySize() {
+        try {
+            mutex.lock()
+        } catch (e: InterruptedException) {
+            printError("ERROR : cannot acquire mutex " + e.toString())
+        }
+
+        memorySize = 0
+        if (memory != null) {
+            memorySize = memory!!.size.toLong()
+        }
+        mutex.unlock()
+    }
 
     override fun innerLoop() {
         try {
@@ -48,19 +61,6 @@ class ThMemoryFiller private constructor() : AThConsumer(), IThPrinterClient {
 
     }
 
-    private fun setMemorySize() {
-        try {
-            mutex.lock()
-        } catch (e: InterruptedException) {
-            printError("ERROR : cannot acquire mutex " + e.toString())
-        }
-
-        memory_size = 0
-        if (memory != null) {
-            memory_size = memory!!.size.toLong()
-        }
-        mutex.unlock()
-    }
 
     private fun fillMemory(bytes: Long): Stream<Byte> {
         return Stream.iterate(0.toByte(),
