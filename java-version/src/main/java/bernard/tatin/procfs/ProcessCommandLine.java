@@ -1,4 +1,4 @@
-package bernard.tatin.procFS;
+package bernard.tatin.procfs;
 
 import bernard.tatin.tools.ForFiles;
 

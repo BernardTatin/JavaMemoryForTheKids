@@ -1,8 +1,8 @@
 package bernard.tatin;
 
-import bernard.tatin.procFS.ProcessCommandLine;
-import bernard.tatin.procFS.ProcessID;
-import bernard.tatin.procFS.StatM;
+import bernard.tatin.procfs.ProcessCommandLine;
+import bernard.tatin.procfs.ProcessID;
+import bernard.tatin.procfs.StatM;
 import bernard.tatin.threads.AThConsumer;
 import bernard.tatin.threads.ThPrinter;
 import bernard.tatin.threads.ThPrinterClient;
