@@ -1,4 +1,4 @@
-package bernard.tatin.Tools;
+package bernard.tatin.tools;
 
 public class Counter {
     private int current = -1;

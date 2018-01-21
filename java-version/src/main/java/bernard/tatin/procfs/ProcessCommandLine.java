@@ -1,6 +1,6 @@
-package bernard.tatin.ProcFS;
+package bernard.tatin.procfs;
 
-import bernard.tatin.Tools.ForFiles;
+import bernard.tatin.tools.ForFiles;
 
 public class ProcessCommandLine {
     //    final private static ProcessCommandLine ourInstance = new ProcessCommandLine();

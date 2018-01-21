@@ -1,4 +1,4 @@
-package bernard.tatin.Threads;
+package bernard.tatin.threads;
 
 import java.io.PrintStream;
 import java.util.concurrent.BlockingQueue;

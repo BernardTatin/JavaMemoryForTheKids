@@ -1,4 +1,4 @@
-package bernard.tatin.Threads;
+package bernard.tatin.threads;
 
 public class ThPrinterClient implements IThPrinterClient {
     public void printString(String str) {

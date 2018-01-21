@@ -1,4 +1,4 @@
-package bernard.tatin.Threads;
+package bernard.tatin.threads;
 
 public interface IThConsumer {
     void consume();

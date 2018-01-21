@@ -1,4 +1,4 @@
-package bernard.tatin.Threads;
+package bernard.tatin.threads;
 
 public abstract class AThConsumer implements IThConsumer, Runnable {
     public final static ProtectedFlag isRunning = new ProtectedFlag(true);

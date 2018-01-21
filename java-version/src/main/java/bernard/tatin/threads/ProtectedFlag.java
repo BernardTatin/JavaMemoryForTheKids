@@ -1,4 +1,4 @@
-package bernard.tatin.Threads;
+package bernard.tatin.threads;
 
 public class ProtectedFlag {
     private boolean flag = false;
