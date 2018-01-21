@@ -1,29 +1,25 @@
-package bernard.tatin.Tools.counting.tests
+package bernard.tatin.WorkInProgress.testers
 
 import bernard.tatin.Tools.counting.Counter
+import bernard.tatin.WorkInProgress.testers.ITest
 
-class CounterTest(private val max: Int, private val loops: Int) {
-    private val name = "Counter"
+class CounterTests(private val max: Int, private val iloops: Int) : ITest {
+    override val name = "Counter"
+    override val loops = iloops
+    val counter = Counter(max);
 
-    fun header() {
-        System.out.println("testing $name on $loops loops...")
-    }
-    fun testing() : Boolean {
-        val counter = Counter(max);
-        var currentLoop = -1;
-
-        while (currentLoop < loops) {
-            val i = counter.value;
-            if (i != (currentLoop + 1) % max) {
-                return false
-            }
-            currentLoop++
+    override fun innerTest(currentLoop : Int) : Boolean {
+        val i = counter.value;
+        if (i != (currentLoop + 1) % max) {
+            java.lang.System.err.println("ERROR: $name failed on loop $currentLoop with i = $i and max = $max")
+            return false
         }
-        return true;
+        return true
     }
+
     companion object {
         @JvmStatic public fun main(args: Array<String>) {
-            val counterTest = CounterTest(15, 3)
+            val counterTest = CounterTests(15, 3)
             if (!counterTest.testing()) {
                 java.lang.System.err.println("Test failed..")
             } else {

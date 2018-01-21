@@ -1,4 +1,4 @@
-package bernard.tatin.ProcFS.processid.tests
+package bernard.tatin.WorkInProgress.testers
 
 /*
  * here is how to test :
@@ -6,32 +6,25 @@ package bernard.tatin.ProcFS.processid.tests
  *
  */
 import bernard.tatin.ProcFS.processid.ProcessID
+import bernard.tatin.WorkInProgress.testers.ITest
 
-class ProcessIDTests(private val loops : Int) {
-    private val name = "ProcessID"
+class ProcessIDTests(private val iloops : Int) : ITest {
+    override val name = "ProcessID"
+    override val loops = iloops
+    var lastPID : Long = getPID()
 
-    fun header() {
-        System.out.println("testing $name on $loops loops...")
-    }
     fun getPID() : Long {
         return ProcessID.getPID()
     }
 
-    fun testing() : Boolean {
-        var currentLoop : Int = 0;
-        var lastPID : Long  = getPID()
-
-        header()
-        while (currentLoop < loops) {
-            val newPID : Long  = getPID()
-            System.out.println("PID -> $newPID")
-            if (newPID != lastPID) {
-                return false
-            }
-            lastPID = newPID
-            currentLoop++
+    override fun innerTest(currentLoop : Int) : Boolean {
+        val newPID : Long  = getPID()
+        System.out.println("PID -> $newPID")
+        if (newPID != lastPID) {
+            return false
         }
-        return true;
+        lastPID = newPID
+        return true
     }
 
     companion object {
