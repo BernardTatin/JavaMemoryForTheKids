@@ -15,9 +15,24 @@
         <kotlin.compiler.languageVersion>1.2</kotlin.compiler.languageVersion>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.groupID>bernard.tatin</project.groupID>
+        <sources.base>src/main/kotlin/bernard/tatin</sources.base>
+        <test.pack>ProcFS</test.pack>
+        <test.unit>processid</test.unit>
+        <test.class>ProcessIDTests</test.class>
+        <test.sources>${sources.base}/${test.pack}/${test.unit}</test.sources>
+        <test.mainclass>${project.groupID}.${test.pack}.${test.unit}.tests.${test.class}</test.mainclass>
     </properties>
 
     <profiles>
+        <profile>
+            <id>testing</id>
+            <properties>
+                <sources.path>${test.sources}</sources.path>
+                <main.class>${test.mainclass}</main.class>
+                <jar.name>${artifactID}-${project.version}</jar.name>
+            </properties>
+        </profile>
         <profile>
             <id>appli</id>
             <properties>
@@ -28,14 +43,6 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-        </profile>
-        <profile>
-            <id>testing</id>
-            <properties>
-               <sources.path>src/main/kotlin/bernard/tatin/Tools/counting</sources.path>
-                <main.class>bernard.tatin.Tools.counting.tests.CounterTest</main.class>
-                <jar.name>recallMeKotlin-1.0.0</jar.name>
-            </properties>
         </profile>
     </profiles>
     <dependencies>

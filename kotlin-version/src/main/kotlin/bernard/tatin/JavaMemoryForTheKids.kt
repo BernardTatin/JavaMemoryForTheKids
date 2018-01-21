@@ -6,7 +6,7 @@ import bernard.tatin.ProcFS.StatM
 import bernard.tatin.Threads.AThConsumer
 import bernard.tatin.Threads.ThPrinter
 import bernard.tatin.Threads.ThPrinterClient
-import bernard.tatin.Tools.Counter
+import bernard.tatin.Tools.counting.Counter
 import bernard.tatin.Tools.ThMemoryFiller
 
 /**
