@@ -8,13 +8,12 @@ import java.util.stream.Stream
 
 class ThMemoryFiller private constructor() : AThConsumer(), IThPrinterClient {
     private val mutex = Mutex()
-    private var memory: Array<Byte>? = null
-    private var memorySize: Long = 0
-    private val memory_unit = fillMemory(ApplicationConstants.MEMORY_INCREMENT)
-            .toArray(Byte[]::new  /* Currently unsupported in Kotlin */)
+    private var memory: ByteArray? = null
+    private var theMemorySize: Long = 0
+    val memory_unit = ByteArray(ApplicationConstants.MEMORY_INCREMENT,
+            { b -> ((b + 1.toByte()) % 253.toByte()).toByte() })
 
-    val memorySize: Long
-        get() {
+    fun memorySize(): Long {
             val rmem: Long
             try {
                 mutex.lock()
@@ -22,7 +21,7 @@ class ThMemoryFiller private constructor() : AThConsumer(), IThPrinterClient {
                 printError("ERROR : cannot acquire mutex " + e.toString())
             }
 
-            rmem = memorySize
+            rmem = theMemorySize
             mutex.unlock()
             return rmem
         }
@@ -33,20 +32,26 @@ class ThMemoryFiller private constructor() : AThConsumer(), IThPrinterClient {
             printError("ERROR : cannot acquire mutex " + e.toString())
         }
 
-        memorySize = 0
+        theMemorySize = 0
         if (memory != null) {
-            memorySize = memory!!.size.toLong()
+            theMemorySize = memory!!.size.toLong()
         }
         mutex.unlock()
     }
 
+    fun concatArrays() : ByteArray {
+        val ab = ByteArray(theMemorySize.toInt() + ApplicationConstants.MEMORY_INCREMENT)
+        System.arraycopy(memory, 0, ab, 0, theMemorySize.toInt())
+        System.arraycopy(memory_unit, 0, ab, theMemorySize.toInt(), ApplicationConstants.MEMORY_INCREMENT)
+        return ab
+    }
     override fun innerLoop() {
         try {
-            memory = if (memory != null)
-                Stream.concat(Arrays.stream(memory), Arrays.stream(memory_unit)).toArray(Byte[]::new  /* Currently unsupported in Kotlin */)
-            else
+            memory = if (memory != null) {
+                concatArrays()
+            } else {
                 memory_unit
-
+            }
         } catch (e: OutOfMemoryError) {
             printError("ERROR (ThMemoryFiller::consume): " + e.toString())
             memory = null
@@ -59,12 +64,6 @@ class ThMemoryFiller private constructor() : AThConsumer(), IThPrinterClient {
             printError("ERROR InterruptedException : " + e.toString())
         }
 
-    }
-
-
-    private fun fillMemory(bytes: Long): Stream<Byte> {
-        return Stream.iterate(0.toByte(),
-                { b -> ((b + 1.toByte()) % 253.toByte()).toByte() }).limit(bytes)
     }
 
 
