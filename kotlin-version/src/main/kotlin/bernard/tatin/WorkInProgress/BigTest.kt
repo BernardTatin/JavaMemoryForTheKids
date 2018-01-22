@@ -3,11 +3,14 @@ package bernard.tatin.WorkInProgress
 import bernard.tatin.WorkInProgress.testers.ITest
 import bernard.tatin.WorkInProgress.testers.ProcessIDTests
 import bernard.tatin.WorkInProgress.testers.CounterTests
+import bernard.tatin.WorkInProgress.testers.ForFilesTests
 
 class BigTest(private val iloops : Int) : ITest  {
     override val name = "BigTest"
     override val loops = iloops
-    val tests : Array<ITest> = arrayOf(CounterTests(15, iloops),
+    val tests : Array<ITest> = arrayOf(
+            ForFilesTests(iloops),
+            CounterTests(15, iloops),
             ProcessIDTests(iloops))
 
     override fun innerTest(currentLoop : Int) : Boolean {
