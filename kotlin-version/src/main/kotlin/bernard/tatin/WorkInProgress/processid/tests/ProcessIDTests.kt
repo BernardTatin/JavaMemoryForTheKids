@@ -26,18 +26,4 @@ class ProcessIDTests(private val iloops : Int) : ITest {
         lastPID = newPID
         return true
     }
-
-    companion object {
-        @JvmStatic
-        public fun main(args: Array<String>) {
-            val counterTest = ProcessIDTests(15)
-            if (!counterTest.testing()) {
-                java.lang.System.err.println("Test failed..")
-            } else {
-                java.lang.System.out.println("Test OK !!!")
-            }
-        }
-    }
-
-
 }
