@@ -14,21 +14,13 @@ object ForFiles {
 
             if (l > 0) {
                 // '\0' is a word separator
-                val bytes : java.util.ArrayList<Byte> =
-                        java.util.ArrayList(
-                                fileBytes.map{
-                                    c ->
-                                    return if (c.toInt() == 0)
-                                        32
-                                    else
-                                        c}.toByte())
-                return bytes.toString()
-//                for (i in 0 until l) {
-//                    if (fileBytes[i].toInt() == 0) {
-//                        fileBytes[i] = 32
-//                    }
-//                }
-//                return String(fileBytes, "UTF-8")
+                val chars : Array<Char> = fileBytes.map(
+                        fun(c: Byte) : Char =
+                                if (c.toInt() == 0)
+                                    32.toChar()
+                                else
+                                    c.toChar()).toTypedArray()
+                return chars.toString()
             } else {
                 return null
             }
