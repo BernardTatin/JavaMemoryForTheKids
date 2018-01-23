@@ -5,6 +5,8 @@ import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.Path
 
+// a lot of things to learn here about collections,
+// types and map
 object ForFiles {
     fun loadTextFile(path: String): String? {
         try {
