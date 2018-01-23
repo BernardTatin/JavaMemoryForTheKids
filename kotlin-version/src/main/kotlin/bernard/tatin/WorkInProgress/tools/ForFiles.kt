@@ -6,9 +6,9 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 object ForFiles {
-    fun loadTextFile(path: Path): String? {
+    fun loadTextFile(path: String): String? {
         try {
-            val file = File(path.toString())
+            val file = File(path)
             val fileBytes : ByteArray = file.inputStream().readBytes()
             val l = fileBytes.size
 
@@ -30,7 +30,7 @@ object ForFiles {
 
     }
 
-    fun loadLinesFromFiles(path: Path, separators: String): List<String>? {
+    fun loadLinesFromFiles(path: String, separators: String): List<String>? {
         val fileContent = ForFiles.loadTextFile(path)
         return fileContent?.split(separators)
     }
