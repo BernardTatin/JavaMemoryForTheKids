@@ -25,18 +25,22 @@ class ForFilesTests(private val iloops : Int) : ITest {
             "stepping	: 9"
     )
 
-    override fun innerTest(currentLoop : Int) : Boolean {
-        Array<String> currentLines = ForFiles.loadLinesFromFiles(
-                fileName, "\n"
-                )
-        var i : Int = 0
+    override fun innerTest(currentLoop: Int): Boolean {
+        var currentLines: List<String>? = ForFiles.loadLinesFromFiles(fileName, "\n")
+        var i: Int = 0
 
-        while (i < referenceLines.size) {
-            if (currentLines[i].compareTo(referenceLines[i]) != 0) {
-                println("ERROR: $name failed on loop $currentLoop expected = ${referenceLines[i]} get counter = ${currentLines[i]}")
-                return false
+        if (currentLines != null) {
+            while (i < referenceLines.size) {
+                if (currentLines[i]!!.compareTo(referenceLines[i]) != 0) {
+                    println("ERROR: $name failed on loop $currentLoop expected = ${referenceLines[i]} get counter = ${currentLines[i]!!}")
+                    return false
+                }
+                i++
             }
+            return true
+        } else {
+            return false
         }
-        return true
     }
+}
 
