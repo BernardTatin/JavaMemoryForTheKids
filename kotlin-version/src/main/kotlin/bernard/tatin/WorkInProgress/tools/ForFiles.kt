@@ -22,6 +22,13 @@ object ForFiles {
                                     32.toChar()
                                 else
                                     c.toChar()).toTypedArray()
+
+                val c0 = chars[0]
+                println("chars: ${chars::class.qualifiedName} - ${chars::class.simpleName}")
+                println("c0: ${c0::class.qualifiedName} - ${c0::class.simpleName}")
+                println("----------------------------------")
+                println(chars)
+                println("----------------------------------")
                 return chars.toString()
             } else {
                 return null
@@ -34,6 +41,12 @@ object ForFiles {
 
     fun loadLinesFromFiles(path: String, separators: String): List<String>? {
         val fileContent = ForFiles.loadTextFile(path)
+        if (fileContent != null) {
+            println("fileContent: ${fileContent::class.qualifiedName} - ${fileContent::class.simpleName}")
+            println("----------------------------------")
+            println(fileContent)
+            println("----------------------------------")
+        }
         return fileContent?.split(separators)
     }
 }

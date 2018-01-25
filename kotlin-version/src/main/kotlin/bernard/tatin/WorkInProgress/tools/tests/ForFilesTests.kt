@@ -16,7 +16,7 @@ class ForFilesTests(private val iloops : Int) : ITest {
     override val name = "ForFiles"
     override val loops = iloops
     val fileName = "/proc/cpuinfo"
-    val referenceLines = arrayOf(
+    val referenceLines: Array<String> = arrayOf(
             "processor	: 0",
             "vendor_id	: GenuineIntel",
             "cpu family	: 6",
@@ -26,18 +26,29 @@ class ForFilesTests(private val iloops : Int) : ITest {
     )
 
     override fun innerTest(currentLoop: Int): Boolean {
-        var currentLines: List<String>? = ForFiles.loadLinesFromFiles(fileName, "\n")
-        var i: Int = 0
+        val listOfCurrentLines: List<String>? = ForFiles.loadLinesFromFiles(fileName, "\n")
+        if (listOfCurrentLines != null) {
+            println("listOfCurrentLines: ${listOfCurrentLines::class.qualifiedName} - ${listOfCurrentLines::class.simpleName}")
+            val currentLines: Array<String>? = listOfCurrentLines.toTypedArray()
+            var i: Int = 0
 
-        if (currentLines != null) {
-            while (i < referenceLines.size) {
-                if (currentLines[i]!!.compareTo(referenceLines[i]) != 0) {
-                    println("ERROR: $name failed on loop $currentLoop expected = ${referenceLines[i]} get counter = ${currentLines[i]!!}")
-                    return false
+            if (currentLines != null) {
+                println("currentLines: ${currentLines::class.qualifiedName} - ${currentLines::class.simpleName}")
+                while (i < referenceLines.size) {
+                    val line = currentLines[i] // .toString()
+                    val rline = referenceLines[i] // .toString()
+                    println("line: ${line::class.qualifiedName} - ${line::class.simpleName}")
+                    println("rline: ${rline::class.qualifiedName} - ${rline::class.simpleName}")
+                    if (line.compareTo(referenceLines[i]) != 0) {
+                        println("ERROR: $name failed on loop $currentLoop expected = <${referenceLines[i]}> get line = <${line}>")
+                        return false
+                    }
+                    i++
                 }
-                i++
+                return true
+            } else {
+                return false
             }
-            return true
         } else {
             return false
         }
