@@ -12,12 +12,12 @@ object ForFiles {
         try {
             val file = File(path)
             val fileBytes : ByteArray = file.inputStream().readBytes()
-            val l = fileBytes.size
+            val byteCount = fileBytes.size
 
-            if (l > 0) {
+            if (byteCount > 0) {
                 // '\0' is a word separator
                 return CharArray(
-                        l,
+                        byteCount,
                         fun(index : Int) : Char =
                                 if (fileBytes[index].toInt() == 0)
                                     32.toChar()
@@ -25,7 +25,8 @@ object ForFiles {
                                     fileBytes[index].toChar())
                         .fold(
                                 "",
-                                fun(acc : String, cc: Char) : String = "${acc}${cc}"
+                                fun(acc : String, cc: Char) : String =
+                                        "${acc}${cc}"
                         )
             } else {
                 println("ERROR: readBytes -> null")
