@@ -29,16 +29,18 @@ object ForFiles {
                 val c0 = chars[0]
                 println("chars: ${chars::class.qualifiedName} - ${chars::class.simpleName}")
                 println("c0: ${c0::class.qualifiedName} - ${c0::class.simpleName}")
+//                println("----------------------------------")
+//                chars.forEach( fun(cc: Char) = print("$cc") )
+//                println("----------------------------------")
                 println("----------------------------------")
-                chars.forEach( fun(cc: Char) = print("$cc") )
-                println("----------------------------------")
-                println("----------------------------------")
-                chars.fold(
+                val result : String = chars.fold(
                         "",
-                        fun(acc : String, cc: Char) : String = "/${acc}${cc}/"
+                        fun(acc : String, cc: Char) : String = "${acc}${cc}"
                 )
+//                println(result)
                 println("----------------------------------")
-                return chars.toString()
+                return  result
+//                return chars.toString()
 //                return chars.fold(
 //                        "",
 //                        fun(acc : String, cc: Char) : String = "${acc}${cc}"
