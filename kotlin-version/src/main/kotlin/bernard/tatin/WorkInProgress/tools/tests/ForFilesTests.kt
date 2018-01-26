@@ -28,17 +28,13 @@ class ForFilesTests(private val iloops : Int) : ITest {
     override fun innerTest(currentLoop: Int): Boolean {
         val listOfCurrentLines: List<String>? = ForFiles.loadLinesFromFiles(fileName, "\n")
         if (listOfCurrentLines != null) {
-            println("listOfCurrentLines: ${listOfCurrentLines::class.qualifiedName} - ${listOfCurrentLines::class.simpleName}")
             val currentLines: Array<String>? = listOfCurrentLines.toTypedArray()
             var i: Int = 0
 
             if (currentLines != null) {
-                println("currentLines: ${currentLines::class.qualifiedName} - ${currentLines::class.simpleName}")
                 while (i < referenceLines.size) {
                     val line = currentLines[i] // .toString()
                     val rline = referenceLines[i] // .toString()
-                    println("line: ${line::class.qualifiedName} - ${line::class.simpleName}")
-                    println("rline: ${rline::class.qualifiedName} - ${rline::class.simpleName}")
                     if (line.compareTo(referenceLines[i]) != 0) {
                         println("ERROR: $name failed on loop $currentLoop expected = <${referenceLines[i]}> get line = <${line}>")
                         return false
