@@ -16,24 +16,38 @@ object ForFiles {
 
             if (l > 0) {
                 // '\0' is a word separator
-                val chars : Array<Char> = fileBytes.map(
-                        fun(c: Byte) : Char =
-                                if (c.toInt() == 0)
+                // CharArray(size: Int, init: (Int) -> Char)
+                var index0 : Int = 0
+                val chars : CharArray = CharArray(
+                        l,
+                        fun(index : Int) : Char =
+                                if (fileBytes[index].toInt() == 0)
                                     32.toChar()
                                 else
-                                    c.toChar()).toTypedArray()
+                                    fileBytes[index].toChar())
 
                 val c0 = chars[0]
                 println("chars: ${chars::class.qualifiedName} - ${chars::class.simpleName}")
                 println("c0: ${c0::class.qualifiedName} - ${c0::class.simpleName}")
                 println("----------------------------------")
-                println(chars)
+                chars.forEach( fun(cc: Char) = print("$cc") )
+                println("----------------------------------")
+                println("----------------------------------")
+                chars.fold(
+                        "",
+                        fun(acc : String, cc: Char) : String = "/${acc}${cc}/"
+                )
                 println("----------------------------------")
                 return chars.toString()
+//                return chars.fold(
+//                        "",
+//                        fun(acc : String, cc: Char) : String = "${acc}${cc}"
             } else {
+                println("ERROR: readBytes -> null")
                 return null
             }
         } catch (e: Exception) {
+            println("ERROR: readBytes -> ${e::toString}")
             return null
         }
 
