@@ -40,7 +40,6 @@ object ForFiles {
     }
 
     fun loadLinesFromFiles(path: String, separators: String): List<String>? {
-        val fileContent = ForFiles.loadTextFile(path)
-        return fileContent?.split(separators)
+        return ForFiles.loadTextFile(path)?.split(separators)
     }
 }

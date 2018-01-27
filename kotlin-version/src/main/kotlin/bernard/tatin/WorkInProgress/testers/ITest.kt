@@ -10,13 +10,14 @@ interface ITest {
     fun innerTest(currentLoop : Int) : Boolean
     fun testing() : Boolean {
         var currentLoop : Int = -1;
+        var result : Boolean = true
         header()
         while (currentLoop < loops) {
             if (! innerTest(currentLoop)) {
-                return false
+                result = false
             }
             currentLoop++
         }
-        return true
+        return result
     }
 }

@@ -19,7 +19,6 @@ class ProcessIDTests(private val iloops : Int) : ITest {
 
     override fun innerTest(currentLoop : Int) : Boolean {
         val newPID : Long  = getPID()
-        System.out.println("PID -> $newPID")
         if (newPID != lastPID) {
             return false
         }

@@ -12,8 +12,8 @@ class BigTest(private val iloops : Int) : ITest  {
     val tests : Array<ITest> = arrayOf(
             ForFilesTests(iloops),
             CounterTests(15, iloops),
-            ProcessIDTests(iloops),
-            KTests(iloops))
+            KTests(iloops),
+            ProcessIDTests(iloops))
     var okCount: Int = 0
     val totalTests: Int = tests.size
 
@@ -27,24 +27,14 @@ class BigTest(private val iloops : Int) : ITest  {
                         }
         )
         return okCount > 0
-//        for (item in tests) {
-//            if (item is ITest && !item.testing()) {
-//                return false
-//            }
-//        }
-//        return true
     }
 
     fun doAllTests() {
         val isItOk = testing()
 
-        println("Good tests : $okCount / $totalTests")
-        if (!isItOk) {
-            java.lang.System.err.println("$name failed..")
-        } else {
-            java.lang.System.out.println("$name OK !!!")
-        }
+        println("Good tests $name : $okCount / $totalTests")
     }
+
     companion object {
         @JvmStatic
         public fun main(args: Array<String>) {
