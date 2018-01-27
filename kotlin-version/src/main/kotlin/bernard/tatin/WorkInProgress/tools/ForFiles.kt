@@ -11,7 +11,8 @@ object ForFiles {
     fun loadTextFile(path: String): String? {
         try {
             val fileBytes : ByteArray =
-                    File(path).inputStream().readBytes() as ByteArray
+                    File(path).inputStream().readBytes()
+                            as ByteArray
             val byteCount = fileBytes.size
 
             if (byteCount > 0) {
