@@ -6,10 +6,10 @@ import bernard.tatin.WorkInProgress.testers.ProcessIDTests
 import bernard.tatin.WorkInProgress.testers.CounterTests
 import bernard.tatin.WorkInProgress.testers.ForFilesTests
 
-class BigTest(private val iloops : Int) : ITest  {
+class BigTest(private val iloops: Int) : ITest {
     override val name = "BigTest"
     override val loops = iloops
-    val tests : Array<ITest> = arrayOf(
+    val tests: Array<ITest> = arrayOf(
             ForFilesTests(iloops),
             CounterTests(15, iloops),
             KTests(iloops),
@@ -17,7 +17,7 @@ class BigTest(private val iloops : Int) : ITest  {
     var okCount: Int = 0
     val totalTests: Int = tests.size
 
-    override fun innerTest(currentLoop : Int) : Boolean {
+    override fun innerTest(currentLoop: Int): Boolean {
         okCount = tests.fold(0,
                 fun(count: Int, test: ITest): Int =
                         if (test.testing()) {
@@ -38,7 +38,7 @@ class BigTest(private val iloops : Int) : ITest  {
     companion object {
         @JvmStatic
         public fun main(args: Array<String>) {
-            val bigTest : BigTest = BigTest(15)
+            val bigTest: BigTest = BigTest(15)
 
             bigTest.doAllTests()
         }
