@@ -36,7 +36,7 @@ class ForFilesTests(private val iloops : Int) : ITest {
                     val line = currentLines[i] // .toString()
                     val rline = referenceLines[i] // .toString()
                     if (line.compareTo(rline) != 0) {
-                        println("ERROR: $name failed on loop $currentLoop expected = <${referenceLines[i]}> get line = <${line}>")
+                        printError("$name failed on loop $currentLoop expected = <${referenceLines[i]}> get line = <${line}>")
                         return false
                     }
                     i++
