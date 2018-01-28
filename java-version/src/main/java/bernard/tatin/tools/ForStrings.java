@@ -1,19 +1,19 @@
-package bernard.tatin.Tools;
+package bernard.tatin.tools;
 
-import bernard.tatin.Constants.ApplicationConstants;
+import bernard.tatin.constants.Constants;
 
 import java.util.stream.Stream;
 
 public class ForStrings {
     private static String whites = null;
 
-    public static String rightFormat(String str, final int expectedLength) {
+    public static String rightFormat(final String str, final int expectedLength) {
         final int strLength = str.length();
         if (strLength < expectedLength) {
-            str += getWhites(
-                    Math.min(expectedLength - strLength, ApplicationConstants.MAX_STRING_LENGTH));
+            return str + getWhites(
+                    Math.min(expectedLength - strLength, Constants.MAX_STRING_LENGTH));
         } else if (strLength > expectedLength) {
-            str = str.substring(0, expectedLength);
+            return str.substring(0, expectedLength);
         }
         return str;
     }
@@ -23,7 +23,7 @@ public class ForStrings {
         if (strLength < expectedLength) {
             return getWhites(
                     Math.min(expectedLength - strLength,
-                            ApplicationConstants.MAX_STRING_LENGTH)) +
+                            Constants.MAX_STRING_LENGTH)) +
                     str;
         } else if (strLength > expectedLength) {
             return str.substring(0, expectedLength);
@@ -35,7 +35,7 @@ public class ForStrings {
     private static String getWhites(final int length) {
         if (whites == null) {
             whites = Stream.iterate("", s -> " ").
-                    limit(ApplicationConstants.MAX_STRING_LENGTH).
+                    limit(Constants.MAX_STRING_LENGTH).
                     reduce("", String::concat);
         }
         return whites.substring(0, length);

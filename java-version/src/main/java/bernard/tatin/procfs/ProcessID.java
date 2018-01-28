@@ -1,4 +1,4 @@
-package bernard.tatin.ProcFS;
+package bernard.tatin.procfs;
 
 
 public class ProcessID {

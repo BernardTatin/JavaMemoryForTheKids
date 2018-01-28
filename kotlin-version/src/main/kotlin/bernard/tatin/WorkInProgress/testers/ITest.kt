@@ -1,11 +1,13 @@
 package bernard.tatin.WorkInProgress.testers
 
-interface ITest {
+import bernard.tatin.WorkInProgress.IThPrinterClient
+
+interface ITest:IThPrinterClient {
     val name: String
     val loops: Int
 
     fun header() {
-        System.out.println("testing $name on $loops loops...")
+        printString("testing $name on $loops loops...")
     }
 
     fun innerTest(currentLoop: Int): Boolean
@@ -21,5 +23,14 @@ interface ITest {
                         fun(b: Boolean, v: Int): Boolean =
                                 b && innerTest(currentLoop++)
                 )
+    }
+    override fun printString(str: String) {
+        println(str)
+    }
+    override fun printStrings(strings: Array<String>) {
+        strings.forEach(fun(s:String) : Unit=println(s))
+    }
+    override fun printError(str: String) {
+        printString("ERROR: $str")
     }
 }

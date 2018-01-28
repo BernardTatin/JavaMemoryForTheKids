@@ -13,7 +13,7 @@ interface ITestContainer : ITest {
                         if (test.testing()) {
                             count + 1
                         } else {
-                            println("   ...ERROR")
+                            printError("   ${test.name} failed")
                             count
                         }
         )
@@ -23,6 +23,6 @@ interface ITestContainer : ITest {
     fun doAllTests() {
         val isItOk = testing()
 
-        println("Good tests $name : $okCount / $totalTests")
+        printString("Good tests $name : $okCount / $totalTests")
     }
 }

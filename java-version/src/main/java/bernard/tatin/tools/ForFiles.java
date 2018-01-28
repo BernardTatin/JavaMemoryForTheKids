@@ -1,4 +1,4 @@
-package bernard.tatin.Tools;
+package bernard.tatin.tools;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
