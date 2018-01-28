@@ -1,4 +1,4 @@
-[![Known Vulnerabilities](https://snyk.io/test/github/bernardtatin/javamemoryforthekids/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/bernardtatin/javamemoryforthekids?targetFile=pom.xml)
+[![Known Vulnerabilities](https://snyk.io/test/github/bernardtatin/javamemoryforthekids/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/bernardtatin/javamemoryforthekids?targetFile=pom.xml) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/62a1c577710b46e2b0a2811e4afea944)](https://www.codacy.com/app/bernard.tatin/JavaMemoryForTheKids?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=BernardTatin/JavaMemoryForTheKids&amp;utm_campaign=Badge_Grade)
 
 # Java Memory For the Kids
 
