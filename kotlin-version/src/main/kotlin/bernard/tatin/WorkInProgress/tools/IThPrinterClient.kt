@@ -1,4 +1,4 @@
-package bernard.tatin.Threads
+package bernard.tatin.WorkInProgress
 
 interface IThPrinterClient {
     fun printString(str: String)
