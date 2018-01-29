@@ -10,7 +10,7 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
     private final static ThMemoryFiller mainMemoryFiller = new ThMemoryFiller();
     private final Mutex mutex = new Mutex();
     private Byte[] memory = null;
-    private ProtectedValue<Long> memory_size = new ProtectedValue<Long>(new Long(0));
+    private ProtectedValue<Long> memory_size = new ProtectedValue<Long>(0L);
     private Byte[] memory_unit = fillMemory(Constants.MEMORY_INCREMENT).
             toArray(Byte[]::new);
 
@@ -48,9 +48,9 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
 
     private void setMemorySize() {
         if (memory == null) {
-            memory_size.set(new Long(0));
+            memory_size.set(0L);
         } else {
-            memory_size.set(new Long(memory.length));
+            memory_size.set(new Long((long)memory.length));
         }
     }
 

@@ -7,6 +7,8 @@ reports/
 .project
 .settings/
 
+strace*
+
 # java
 *.class
 *.jar
