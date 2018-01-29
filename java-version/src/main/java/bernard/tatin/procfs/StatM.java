@@ -4,6 +4,7 @@ import bernard.tatin.constants.Constants;
 import bernard.tatin.tools.ForFiles;
 import bernard.tatin.tools.ForStrings;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 
 public class StatM {
@@ -16,6 +17,7 @@ public class StatM {
     private final int F_JAVA_FREE = 5;
     private final int F_ALLOCATED = 6;
     private String lineOfTitle = null;
+    private final Path statmPath = LinuxProc.procPathName("statm");
 
     public static StatM getMainInstance() {
         return ourInstance;
@@ -43,7 +45,7 @@ public class StatM {
     public String getStatsLine(long allocatedMemory) {
         Long[] lstats = new Long[Constants.FIELD_COUNT];
         String[] strStats = ForFiles.loadLinesFromFiles(
-                LinuxProc.procPathName("statm"),
+                statmPath,
                 "[ \n]");
         if (strStats != null) {
             lstats[F_ALLOCATED] = allocatedMemory;

@@ -10,7 +10,7 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
     private final static ThMemoryFiller mainMemoryFiller = new ThMemoryFiller();
     private final Mutex mutex = new Mutex();
     private Byte[] memory = null;
-    private long memory_size = 0;
+    private ProtectedValue<Long> memory_size = new ProtectedValue<Long>(new Long(0));
     private Byte[] memory_unit = fillMemory(Constants.MEMORY_INCREMENT).
             toArray(Byte[]::new);
 
@@ -43,28 +43,15 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
     }
 
     public long getMemorySize() {
-        long rmem;
-        try {
-            mutex.lock();
-        } catch (Exception e) {
-            printError("ERROR : cannot acquire mutex " + e.toString());
-        }
-        rmem = memory_size;
-        mutex.unlock();
-        return rmem;
+        return memory_size.get();
     }
 
     private void setMemorySize() {
-        try {
-            mutex.lock();
-        } catch (InterruptedException e) {
-            printError("ERROR : cannot acquire mutex " + e.toString());
+        if (memory == null) {
+            memory_size.set(new Long(0));
+        } else {
+            memory_size.set(new Long(memory.length));
         }
-        memory_size = 0;
-        if (memory != null) {
-            memory_size = memory.length;
-        }
-        mutex.unlock();
     }
 
     private Stream<Byte> fillMemory(int bytes) {

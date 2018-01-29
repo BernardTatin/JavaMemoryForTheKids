@@ -1,15 +1,16 @@
 package bernard.tatin.procfs;
 
+import java.nio.file.Path;
 import bernard.tatin.tools.ForFiles;
 
 public class ProcessCommandLine {
-    //    final private static ProcessCommandLine ourInstance = new ProcessCommandLine();
     private static String commandLine = null;
+    private final static Path cmdLinePath = LinuxProc.procPathName("cmdline");
 
     public static String getCommandLine() {
         if (commandLine == null) {
             try {
-                commandLine = ForFiles.loadTextFile(LinuxProc.procPathName("cmdline") );
+                commandLine = ForFiles.loadTextFile(cmdLinePath);
                 if (commandLine == null) {
                     commandLine = "<no command line found>";
                 }

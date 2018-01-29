@@ -12,6 +12,10 @@ class PrintElement {
         stream = s;
         line = l;
     }
+
+    public void print() {
+        stream.println(line);
+    }
 }
 
 public class ThPrinter extends AThConsumer {
@@ -30,8 +34,7 @@ public class ThPrinter extends AThConsumer {
         try {
             wait();
             while (!queue.isEmpty()) {
-                pElement = queue.take();
-                pElement.stream.println(pElement.line);
+                queue.take().print();
             }
         } catch (Exception e) {
             System.err.println("ERROR (ThPrinter::consume): " + e.toString());

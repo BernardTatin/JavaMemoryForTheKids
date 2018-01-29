@@ -1,15 +1,20 @@
 package bernard.tatin.threads;
 
+import bernard.tatin.threads.ThPrinter;
+
 public class ThPrinterClient implements IThPrinterClient {
+    private ThPrinter mainPrinter = ThPrinter.getMainInstance();
+
     public void printString(String str) {
-        ThPrinter.getMainInstance().printString(str);
+        mainPrinter.printString(str);
     }
+
     public void printStrings(String[] strings) {
-        ThPrinter.getMainInstance().printStrings(strings);
+        mainPrinter.printStrings(strings);
     }
 
     public void printError(String str) {
-        ThPrinter.getMainInstance().printError(str);
+        mainPrinter.printError(str);
     }
 
 }
