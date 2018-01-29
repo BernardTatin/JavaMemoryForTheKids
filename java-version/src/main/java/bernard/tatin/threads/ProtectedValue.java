@@ -1,18 +1,18 @@
 package bernard.tatin.threads;
 
-public class ProtectedFlag {
-    private boolean flag = false;
+public class ProtectedValue<T> {
+    private T flag;
     private final Mutex mutex = new Mutex();
 
-    public ProtectedFlag() {
+    private ProtectedValue() {
 
     }
 
-    public ProtectedFlag(boolean initialValue) {
+    public ProtectedValue(T initialValue) {
         flag = initialValue;
     }
 
-    private void setV(boolean newValue) {
+    private void setV(T newValue) {
         try {
             mutex.lock();
         } catch (InterruptedException e) {
@@ -22,19 +22,16 @@ public class ProtectedFlag {
         mutex.unlock();
     }
 
-    public void set() {
-        setV(true);
+    public void set(T newValue) {
+        setV(newValue);
     }
-    public void reset() {
-        setV(false);
-    }
-    public boolean get() {
+    public T get() {
         try {
             mutex.lock();
         } catch (InterruptedException e) {
 
         }
-        boolean r = flag;
+        T r = flag;
         mutex.unlock();
         return r;
     }

@@ -1,7 +1,9 @@
 package bernard.tatin.threads;
 
+import java.lang.Boolean;
+
 public abstract class AThConsumer implements IThConsumer, Runnable {
-    public final static ProtectedFlag isRunning = new ProtectedFlag(true);
+    public final static ProtectedValue<Boolean> isRunning = new ProtectedValue<Boolean>(new Boolean(true));
 
     @Override
     public void initialize() {

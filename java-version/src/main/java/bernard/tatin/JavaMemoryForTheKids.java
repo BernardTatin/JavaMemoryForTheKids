@@ -22,7 +22,7 @@ class JavaMemoryForTheKids extends ThPrinterClient {
             // it works, but I don't like this
 
             // stop other threads
-            AThConsumer.isRunning.reset();
+            AThConsumer.isRunning.set(false);
             // wait a little
             try {
                 Thread.sleep(100);
