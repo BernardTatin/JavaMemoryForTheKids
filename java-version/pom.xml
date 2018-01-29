@@ -19,7 +19,7 @@
             <id>sunjdk8</id>
             <properties>
                 <jdkversion>1.8</jdkversion>
-                <JAVA_HOME>/usr/local/java/jdk-8u151-linux-x64/jdk1.8.0_151</JAVA_HOME>
+                <JAVA_HOME>/usr/java/1.8</JAVA_HOME>
             </properties>
         </profile>
         <profile>
