@@ -6,8 +6,10 @@ codealike.json
 reports/
 .project
 .settings/
+*.gpj
 
 strace*
+nohup
 
 # java
 *.class
