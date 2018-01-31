@@ -6,6 +6,11 @@ codealike.json
 reports/
 .project
 .settings/
+*.gpj
+
+strace*
+nohup
+Java4TheKids/
 
 # java
 *.class
