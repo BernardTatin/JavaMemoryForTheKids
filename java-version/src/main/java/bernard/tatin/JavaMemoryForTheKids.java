@@ -16,6 +16,9 @@ class JavaMemoryForTheKids extends ThPrinterClient {
     private static String titleLine = null;
     private final Counter count = new Counter(25);
 
+    /**
+     * @param args command line args
+     */
     public static void main(String[] args) {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             // System signals handled

@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 
 public class StatM {
-    private final static StatM ourInstance = new StatM();
+    private static final StatM ourInstance = new StatM();
     private final int F_PROGRAM_SIZE = 0;
     private final int F_RESIDENT = 1;
     private final int F_DATA = 2;

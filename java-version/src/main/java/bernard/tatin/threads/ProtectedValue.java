@@ -1,7 +1,7 @@
 package bernard.tatin.threads;
 
-public class ProtectedValue<T> {
-    private T flag;
+public class ProtectedValue<T> extends ThPrinterClient {
+    private T pValue;
     private final Mutex mutex = new Mutex();
 
     private ProtectedValue() {
@@ -9,29 +9,27 @@ public class ProtectedValue<T> {
     }
 
     public ProtectedValue(T initialValue) {
-        flag = initialValue;
-    }
-
-    private void setV(T newValue) {
-        try {
-            mutex.lock();
-        } catch (InterruptedException e) {
-
-        }
-        flag = newValue;
-        mutex.unlock();
+        pValue = initialValue;
     }
 
     public void set(T newValue) {
-        setV(newValue);
+        try {
+            mutex.lock();
+        } catch (InterruptedException e) {
+            printError("Protected value, mutex lock failed in set. " + e.getMessage());
+        }
+        pValue = newValue;
+        mutex.unlock();
     }
+
+    
     public T get() {
         try {
             mutex.lock();
         } catch (InterruptedException e) {
-
+            printError("Protected value, mutex lock failed in get. " + e.getMessage());
         }
-        T r = flag;
+        T r = pValue;
         mutex.unlock();
         return r;
     }

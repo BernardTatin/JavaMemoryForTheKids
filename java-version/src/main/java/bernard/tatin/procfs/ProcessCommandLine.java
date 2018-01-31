@@ -5,7 +5,7 @@ import bernard.tatin.tools.ForFiles;
 
 public class ProcessCommandLine {
     private static String commandLine = null;
-    private final static Path cmdLinePath = LinuxProc.procPathName("cmdline");
+    private static final Path cmdLinePath = LinuxProc.procPathName("cmdline");
 
     public static String getCommandLine() {
         if (commandLine == null) {

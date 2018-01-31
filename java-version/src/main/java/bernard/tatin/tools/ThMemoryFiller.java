@@ -7,18 +7,24 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
-    private final static ThMemoryFiller mainMemoryFiller = new ThMemoryFiller();
-    private final Mutex mutex = new Mutex();
+    private static final ThMemoryFiller mainMemoryFiller = new ThMemoryFiller();
     private Byte[] memory = null;
     private ProtectedValue<Long> memory_size = new ProtectedValue<Long>(new Long(0));
     private Byte[] memory_unit = fillMemory(Constants.MEMORY_INCREMENT).
             toArray(Byte[]::new);
+    private ThPrinter mainPrinter = ThPrinter.getMainInstance();
+
 
     private ThMemoryFiller() {
     }
 
     public static ThMemoryFiller getMainInstance() {
         return mainMemoryFiller;
+    }
+
+    @Override
+    public String getName() {
+        return "ThMemoryFiller";
     }
 
     @Override
@@ -56,16 +62,21 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
 
     private Stream<Byte> fillMemory(int bytes) {
         return Stream.iterate((byte) 0,
-                b -> (byte) ((b + (byte) 1) % (byte) 253)).limit(bytes);
+                b -> (byte) ((b + 1) % 253)).limit(bytes);
     }
+    
+    @Override
     public void printString(String str) {
-        ThPrinter.getMainInstance().printString(str);
-    }
-    public void printStrings(String[] strings) {
-        ThPrinter.getMainInstance().printStrings(strings);
+        mainPrinter.printString(str);
     }
 
+    @Override
+    public void printStrings(String[] strings) {
+        mainPrinter.printStrings(strings);
+    }
+
+    @Override
     public void printError(String str) {
-        ThPrinter.getMainInstance().printError(str);
+        mainPrinter.printError(str);
     }
 }
