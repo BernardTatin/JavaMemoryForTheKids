@@ -11,7 +11,7 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
     private final Mutex mutex = new Mutex();
     private Byte[] memory = null;
     private ProtectedValue<Long> memory_size = new ProtectedValue<Long>(0L);
-    private Byte[] memory_unit = fillMemory(Constants.MEMORY_INCREMENT).
+    private final Byte[] memory_unit = fillMemory(Constants.MEMORY_INCREMENT).
             toArray(Byte[]::new);
 
     private ThMemoryFiller() {
