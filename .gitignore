@@ -7,10 +7,10 @@ reports/
 .project
 .settings/
 *.gpj
-Java4TheKids/
 
 strace*
 nohup
+Java4TheKids/
 
 # java
 *.class
