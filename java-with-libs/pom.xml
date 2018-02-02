@@ -1,0 +1,122 @@
+    <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+    
+	<groupId>bernard.tatin</groupId>
+	<artifactId>recallMeJava-with-libs</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+    
+	<name>recallMeJava</name>
+	<url>http://maven.apache.org</url>
+    
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+    
+	<profiles>
+		<profile>
+			<id>sunjdk8</id>
+			<properties>
+				<jdkversion>1.8</jdkversion>
+				<JAVA_HOME>/usr/java/1.8</JAVA_HOME>
+			</properties>
+		</profile>
+		<profile>
+			<id>openjdk8</id>
+			<properties>
+				<jdkversion>1.8</jdkversion>
+				<JAVA_HOME>/usr/lib/jvm/java-8-openjdk-amd64</JAVA_HOME>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>openjdk9</id>
+			<properties>
+				<jdkversion>1.9</jdkversion>
+				<JAVA_HOME>/usr/lib/jvm/java-9-openjdk-amd64</JAVA_HOME>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>sunjdk9</id>
+			<properties>
+				<jdkversion>1.9</jdkversion>
+				<JAVA_HOME>/usr/local/java/jdk-9.0.1_linux-x64_bin/jdk-9.0.1</JAVA_HOME>
+			</properties>
+		</profile>
+	</profiles>
+    
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.vavr</groupId>
+			<artifactId>vavr</artifactId>
+			<version>0.9.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.collections</groupId>
+			<artifactId>eclipse-collections-api</artifactId>
+			<version>9.1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.collections</groupId>
+			<artifactId>eclipse-collections</artifactId>
+			<version>9.1.0</version>
+		</dependency>
+	</dependencies>
+    
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<verbose>true</verbose>
+					<fork>true</fork>
+					<source>1.8</source>
+					<target>1.8</target>
+					<executable>${JAVA_HOME}/bin/javac</executable>
+					<compilerVersion>${jdkversion}</compilerVersion>
+				</configuration>
+			</plugin>
+    
+			<plugin>
+				<!-- Build an executable JAR -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<!-- classpathPrefix>lib/</classpathPrefix -->
+							<mainClass>bernard.tatin.JavaMemoryForTheKids</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+    
+		</plugins>
+	</build>
+    
+</project>
