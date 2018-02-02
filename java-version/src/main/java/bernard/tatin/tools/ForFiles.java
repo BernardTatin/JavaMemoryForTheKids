@@ -5,8 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import java.util.Arrays;
-import org.apache.commons.lang3.ArrayUtils;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -16,7 +14,7 @@ public class ForFiles {
         try {
             Byte tableau[] = ArrayUtils.toObject(Files.readAllBytes(path));
             tableau = Arrays.stream(tableau).map(b -> b == 0 ? 32 : b).toArray(Byte[]::new);
-            return new String(ArrayUtils.toPrimitive(tableau));
+            return new String(ArrayUtils.toPrimitive(tableau), StandardCharsets.UTF_8);
         }
         catch (Exception e) {
             return null;
