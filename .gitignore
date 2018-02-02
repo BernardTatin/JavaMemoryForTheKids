@@ -27,3 +27,4 @@ target/
 # archives
 *.gz
 *.zip
+/java-version/nbactions-sunjdk8.xml

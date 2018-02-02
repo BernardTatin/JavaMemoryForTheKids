@@ -9,8 +9,8 @@ import java.util.stream.Stream;
 public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
     private static final ThMemoryFiller mainMemoryFiller = new ThMemoryFiller();
     private Byte[] memory = null;
-    private ProtectedValue<Long> memory_size = new ProtectedValue<Long>(new Long(0));
-    private Byte[] memory_unit = fillMemory(Constants.MEMORY_INCREMENT).
+    private ProtectedValue<Long> memory_size = new ProtectedValue<Long>(0L);
+    private final Byte[] memory_unit = fillMemory(Constants.MEMORY_INCREMENT).
             toArray(Byte[]::new);
     private ThPrinter mainPrinter = ThPrinter.getMainInstance();
 
@@ -54,9 +54,9 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
 
     private void setMemorySize() {
         if (memory == null) {
-            memory_size.set(new Long(0));
+            memory_size.set(0L);
         } else {
-            memory_size.set(new Long(memory.length));
+            memory_size.set(new Long((long)memory.length));
         }
     }
 

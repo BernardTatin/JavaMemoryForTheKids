@@ -4,9 +4,6 @@ public class ProtectedValue<T> extends ThPrinterClient {
     private T pValue;
     private final Mutex mutex = new Mutex();
 
-    private ProtectedValue() {
-
-    }
 
     public ProtectedValue(T initialValue) {
         pValue = initialValue;

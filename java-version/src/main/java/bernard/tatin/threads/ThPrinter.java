@@ -5,6 +5,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 
+
 public class ThPrinter extends AThConsumer implements IThPrinterClient {
     private static final ThPrinter mainPrinter = new ThPrinter();
     private final BlockingQueue<PrintElement> queue = new LinkedBlockingDeque<>(10);
@@ -18,9 +19,9 @@ public class ThPrinter extends AThConsumer implements IThPrinterClient {
 
     @Override
     public String getName() {
-        return "ThPrinter";    
+        return "ThPrinter";
     }
-    
+
     @Override
     public void innerLoop() {
         try {
