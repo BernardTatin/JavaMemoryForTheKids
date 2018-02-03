@@ -1,19 +1,19 @@
     <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <modelVersion>4.0.0</modelVersion>
-    
+
         <groupId>bernard.tatin</groupId>
         <artifactId>recallMeJava</artifactId>
         <version>1.1.0</version>
         <packaging>jar</packaging>
-    
+
         <name>recallMeJava</name>
         <url>http://maven.apache.org</url>
-    
+
         <properties>
             <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         </properties>
-    
+
         <profiles>
             <profile>
                 <id>sunjdk8</id>
@@ -50,7 +50,7 @@
                 </properties>
             </profile>
         </profiles>
-    
+
         <dependencies>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
@@ -65,7 +65,7 @@
                 <scope>test</scope>
             </dependency>
         </dependencies>
-    
+
         <build>
             <plugins>
                 <plugin>
@@ -81,7 +81,7 @@
                         <compilerVersion>${jdkversion}</compilerVersion>
                     </configuration>
                 </plugin>
-    
+
                 <plugin>
                     <!-- Build an executable JAR -->
                     <groupId>org.apache.maven.plugins</groupId>
@@ -97,8 +97,8 @@
                         </archive>
                     </configuration>
                 </plugin>
-    
+
             </plugins>
         </build>
-    
+
     </project>
