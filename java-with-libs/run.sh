@@ -82,6 +82,6 @@ mvn ${mvn_options} ${profile} package || onerror 1 "mvn package failed"
 here=${HOME}/git/recallMeJava/java-with-libs
 m2=/home/bernard/.m2/repository
 
-java -Xmx412m -classpath ${here}/target/recallMeJava-with-libs-1.0.0.jar:$m2/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar:$m2/io/vavr/vavr/0.9.0/vavr-0.9.0.jar:$m2/io/vavr/vavr-match/0.9.0/vavr-match-0.9.0.jar bernard.tatin.JavaMemoryForTheKids
+java -Xmx412m -classpath ${here}/target/recallMeJava-with-libs-1.0.0.jar:$m2/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar:$m2/io/vavr/vavr/0.9.2/vavr-0.9.2.jar:$m2/io/vavr/vavr-match/0.9.2/vavr-match-0.9.2.jar bernard.tatin.JavaMemoryForTheKids
 
 
