@@ -16,6 +16,17 @@ class JavaMemoryForTheKids extends ThPrinterClient {
    private static String titleLine = null;
    private final Counter count = new Counter(25);
 
+   public static void stopAll() {
+       // stop other threads
+       AThConsumer.isRunning.set(false);
+       // wait a little
+       try {
+           Thread.sleep(400);
+       } catch (Exception e) {
+           // don't use printError, ThPrinter is stopped
+           System.err.println("Sleep interrupted...");
+       }
+   }
     /**
      * @param args command line args
      */
@@ -23,16 +34,7 @@ class JavaMemoryForTheKids extends ThPrinterClient {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             // System signals handled
             // it works, but I don't like this
-
-            // stop other threads
-            AThConsumer.isRunning.set(false);
-            // wait a little
-            try {
-               Thread.sleep(100);
-            } catch (Exception e) {
-                // don't use printError, ThPrinter is stopped
-               System.err.println("Signal catching interrupted...");
-            }
+            JavaMemoryForTheKids.stopAll();
             // don't use printString, ThPrinter is stopped
             System.out.println("Signal caught, interrupt received, exit...");
          }));

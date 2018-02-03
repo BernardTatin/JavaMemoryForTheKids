@@ -6,7 +6,7 @@ public abstract class AThConsumer implements IThConsumer, Runnable {
 
     @Override
     public void initialize() {
-        Thread theThread = new Thread(this, "AThConsumer");
+        Thread theThread = new Thread(this, getName());
 
         theThread.setDaemon(true);
         theThread.start();

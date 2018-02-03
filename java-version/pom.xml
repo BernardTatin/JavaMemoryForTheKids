@@ -23,6 +23,13 @@
                 </properties>
             </profile>
             <profile>
+                <id>sunjdk9</id>
+                <properties>
+                    <jdkversion>1.9</jdkversion>
+                    <JAVA_HOME>/usr/java/1.9</JAVA_HOME>
+                </properties>
+            </profile>
+            <profile>
                 <id>openjdk8</id>
                 <properties>
                     <jdkversion>1.8</jdkversion>
@@ -41,13 +48,6 @@
                 <activation>
                     <activeByDefault>true</activeByDefault>
                 </activation>
-            </profile>
-            <profile>
-                <id>sunjdk9</id>
-                <properties>
-                    <jdkversion>1.9</jdkversion>
-                    <JAVA_HOME>/usr/local/java/jdk-9.0.1_linux-x64_bin/jdk-9.0.1</JAVA_HOME>
-                </properties>
             </profile>
         </profiles>
 

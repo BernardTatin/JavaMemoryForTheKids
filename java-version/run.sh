@@ -4,8 +4,8 @@
 # compile and run with jdk selected on command line
 #
 
-jdk8_home=/usr/local/java/jdk-8u151-linux-x64/jdk1.8.0_151
-jdk9_home=/usr/local/java/jdk-9.0.1_linux-x64_bin/jdk-9.0.1
+jdk8_home=/usr/java/1.8
+jdk9_home=/usr/java/1.9
 openjdk8_home=/usr/lib/jvm/java-8-openjdk-amd64
 openjdk9_home=/usr/lib/jvm/java-9-openjdk-amd64
 doclean=0
@@ -79,5 +79,7 @@ then
 fi
 mvn ${mvn_options} ${profile} package || onerror 1 "mvn package failed"
 
-java -server -d64  -Xmx412m -jar target/recallMeJava-1.1.0.jar
+here=${HOME}/git/recallMeJava/java-version
+m2=/home/bernard/.m2/repository
+java  -server -d64 -Xmx412m -classpath ${here}/target/recallMeJava-1.1.0.jar:$m2/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar bernard.tatin.JavaMemoryForTheKids
 

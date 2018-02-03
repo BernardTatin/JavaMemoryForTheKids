@@ -2,7 +2,7 @@ package bernard.tatin;
 
 /*
 Run :
-java -Xmx412m -classpath /home/bernard/git/recallMeJava/java-with-libs/target/classes:/home/bernard/.m2/repository/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar:/home/bernard/.m2/repository/io/vavr/vavr/0.9.0/vavr-0.9.0.jar:/home/bernard/.m2/repository/io/vavr/vavr-match/0.9.0/vavr-match-0.9.0.jar:/home/bernard/.m2/repository/org/eclipse/collections/eclipse-collections-api/9.1.0/eclipse-collections-api-9.1.0.jar:/home/bernard/.m2/repository/org/eclipse/collections/eclipse-collections/9.1.0/eclipse-collections-9.1.0.jar bernard.tatin.JavaMemoryForTheKids 
+java -Xmx412m -classpath /home/bernard/git/recallMeJava/java-with-libs/target/classes:/home/bernard/.m2/repository/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar:/home/bernard/.m2/repository/io/vavr/vavr/0.9.0/vavr-0.9.0.jar:/home/bernard/.m2/repository/io/vavr/vavr-match/0.9.0/vavr-match-0.9.0.jar:/home/bernard/.m2/repository/org/eclipse/collections/eclipse-collections-api/9.1.0/eclipse-collections-api-9.1.0.jar:/home/bernard/.m2/repository/org/eclipse/collections/eclipse-collections/9.1.0/eclipse-collections-9.1.0.jar bernard.tatin.JavaMemoryForTheKids
 export here=$(pwd)
 export m2=$HOME/.m2/repository
 java -Xmx412m -cp $here/target/classes:$m2/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar:$m2/io/vavr/vavr/0.9.0/vavr-0.9.0.jar:$m2/io/vavr/vavr-match/0.9.0/vavr-match-0.9.0.jar
@@ -25,6 +25,18 @@ class JavaMemoryForTheKids extends ThPrinterClient {
    private static String titleLine = null;
    private final Counter count = new Counter(25);
 
+
+   public static void stopAll() {
+       // stop other threads
+       AThConsumer.isRunning.set(false);
+       // wait a little
+       try {
+           Thread.sleep(400);
+       } catch (Exception e) {
+           // don't use printError, ThPrinter is stopped
+           System.err.println("Sleep interrupted...");
+       }
+   }
     /**
      * @param args command line args
      */
@@ -32,16 +44,7 @@ class JavaMemoryForTheKids extends ThPrinterClient {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             // System signals handled
             // it works, but I don't like this
-
-            // stop other threads
-            AThConsumer.isRunning.set(false);
-            // wait a little
-            try {
-               Thread.sleep(100);
-            } catch (Exception e) {
-                // don't use printError, ThPrinter is stopped
-               System.err.println("Signal catching interrupted...");
-            }
+            JavaMemoryForTheKids.stopAll();
             // don't use printString, ThPrinter is stopped
             System.out.println("Signal caught, interrupt received, exit...");
          }));
