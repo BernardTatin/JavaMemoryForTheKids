@@ -6,7 +6,7 @@ java -Xmx412m -classpath /home/bernard/git/recallMeJava/java-with-libs/target/cl
 export here=$(pwd)
 export m2=$HOME/.m2/repository
 java -Xmx412m -cp $here/target/classes:$m2/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar:$m2/io/vavr/vavr/0.9.0/vavr-0.9.0.jar:$m2/io/vavr/vavr-match/0.9.0/vavr-match-0.9.0.jar
-java -Xmx412m -classpath $here/target/classes:$m2/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar:$m2/io/vavr/vavr/0.9.0/vavr-0.9.0.jar:$m2/io/vavr/vavr-match/0.9.0/vavr-match-0.9.0.jar
+java -Xmx412m -classpath $here/target/classes:$m2/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar:$m2/io/vavr/vavr/0.9.0/vavr-0.9.0.jar:$m2/io/vavr/vavr-match/0.9.0/vavr-match-0.9.0.jar bernard.tatin.JavaMemoryForTheKids
 */
 
 import bernard.tatin.procfs.ProcessCommandLine;

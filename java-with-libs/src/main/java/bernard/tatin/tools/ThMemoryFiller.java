@@ -2,7 +2,6 @@ package bernard.tatin.tools;
 
 import bernard.tatin.constants.Constants;
 import bernard.tatin.threads.*;
-
 import java.util.Arrays;
 import java.util.stream.Stream;
 

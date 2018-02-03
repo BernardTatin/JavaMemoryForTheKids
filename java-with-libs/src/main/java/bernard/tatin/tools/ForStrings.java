@@ -1,7 +1,6 @@
 package bernard.tatin.tools;
 
 import bernard.tatin.constants.Constants;
-
 import java.util.stream.Stream;
 
 public class ForStrings {
