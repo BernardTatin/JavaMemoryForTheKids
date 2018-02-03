@@ -2,6 +2,8 @@ package bernard.tatin.tools;
 
 import bernard.tatin.constants.Constants;
 import bernard.tatin.threads.*;
+import io.vavr.control.Try;
+
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -11,6 +13,7 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
     private ProtectedValue<Long> memory_size = new ProtectedValue<Long>(0L);
     private final Byte[] memory_unit = fillMemory(Constants.MEMORY_INCREMENT);
     private ThPrinter mainPrinter = ThPrinter.getMainInstance();
+    private final Byte[] nullByteArray = null;
 
 
     private ThMemoryFiller() {
@@ -28,23 +31,31 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
     @Override
     public void innerLoop() {
         try {
-            memory = memory != null ?
-                    Stream.concat(Arrays.stream(memory), Arrays.stream(memory_unit)).
-                            toArray(Byte[]::new) :
-                    memory_unit;
-
+            // unecessary used of Try because OutOfMemoryError
+            // is a System Exception...
+            // Nice try, Bernard! (ouaaaahhhh)
+            Try<Byte[]> computedMemory =
+                    Try.of(() -> memory != null ?
+                            Stream.concat(Arrays.stream(memory), Arrays.stream(memory_unit)).
+                                    toArray(Byte[]::new) :
+                            memory_unit);
+            if (computedMemory.isFailure()) {
+                printError("ERROR (ThMemoryFiller::consume): "
+                        + computedMemory.getCause().toString());
+            }
+            // nullByteArray helps differntiation between 2 methods
+            // with different types of parameter, which null can't do
+            memory = computedMemory.getOrElse(nullByteArray);
         } catch (OutOfMemoryError e) {
             printError("ERROR (ThMemoryFiller::consume): " + e.toString());
             memory = null;
         }
 
         setMemorySize();
-        try {
-            Thread.sleep(100L);
-        } catch (InterruptedException e) {
-            printError("ERROR InterruptedException : " + e.getMessage());
-        }
+
+        doSleep(100L);
     }
+
 
     public long getMemorySize() {
         return memory_size.get();
@@ -54,12 +65,12 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
         if (memory == null) {
             memory_size.set(0L);
         } else {
-            memory_size.set(new Long((long)memory.length));
+            memory_size.set(new Long((long) memory.length));
         }
     }
 
     private Byte[] fillMemory(int bytes) {
-        return Stream.generate(() -> new Byte((byte)85))
+        return Stream.generate(() -> new Byte((byte) 85))
                 .limit(bytes)
                 .toArray(Byte[]::new);
     }
