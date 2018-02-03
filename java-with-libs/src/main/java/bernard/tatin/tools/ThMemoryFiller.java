@@ -9,8 +9,7 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
     private static final ThMemoryFiller mainMemoryFiller = new ThMemoryFiller();
     private Byte[] memory = null;
     private ProtectedValue<Long> memory_size = new ProtectedValue<Long>(0L);
-    private final Byte[] memory_unit = fillMemory(Constants.MEMORY_INCREMENT).
-            toArray(Byte[]::new);
+    private final Byte[] memory_unit = fillMemory(Constants.MEMORY_INCREMENT);
     private ThPrinter mainPrinter = ThPrinter.getMainInstance();
 
 
@@ -59,11 +58,12 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
         }
     }
 
-    private Stream<Byte> fillMemory(int bytes) {
-        return Stream.iterate((byte) 0,
-                b -> (byte) ((b + 1) % 253)).limit(bytes);
+    private Byte[] fillMemory(int bytes) {
+        return Stream.generate(() -> new Byte((byte)85))
+                .limit(bytes)
+                .toArray(Byte[]::new);
     }
-    
+
     @Override
     public void printString(String str) {
         mainPrinter.printString(str);
