@@ -1,7 +1,7 @@
 package bernard.tatin.procfs;
 
-import java.nio.file.Path;
 import bernard.tatin.tools.ForFiles;
+import java.nio.file.Path;
 
 public class ProcessCommandLine {
     private static String commandLine = null;
