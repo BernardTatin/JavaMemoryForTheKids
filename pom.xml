@@ -4,7 +4,7 @@
 
     <groupId>bernard.tatin</groupId>
     <artifactId>recallMeJava</artifactId>
-    <version>1.2.0</version>
+    <version>1.4.0</version>
     <packaging>pom</packaging>
 
     <name>recallMeJava</name>
