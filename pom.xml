@@ -11,7 +11,7 @@
     <url>https://github.com/BernardTatin/JavaMemoryForTheKids</url>
 
     <modules>
-        <!-- module>java-common</module -->
+        <module>java-common</module>
         <module>java-version</module>
         <module>java-with-libs</module>
     </modules>

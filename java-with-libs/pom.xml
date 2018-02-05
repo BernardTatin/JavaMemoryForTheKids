@@ -26,6 +26,11 @@
 			<version>0.9.2</version>
 			<type>jar</type>
 		</dependency>
+		<dependency>
+			<groupId>bernard.tatin</groupId>
+			<artifactId>java-common</artifactId>
+			<version>1.2.0</version>
+		</dependency>
 
 	</dependencies>
 
