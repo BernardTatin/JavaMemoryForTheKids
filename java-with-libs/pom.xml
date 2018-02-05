@@ -1,75 +1,30 @@
-    <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-			 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>bernard.tatin</groupId>
-	<artifactId>recallMeJava-with-libs</artifactId>
-	<version>1.0.0</version>
+	<parent>
+		<groupId>bernard.tatin</groupId>
+		<artifactId>recallMeJava</artifactId>
+		<version>1.2.0</version>
+	</parent>
+
+	<artifactId>java-with-libs</artifactId>
 	<packaging>jar</packaging>
 
-	<name>recallMeJava</name>
-	<url>http://maven.apache.org</url>
+	<url>https://github.com/BernardTatin/JavaMemoryForTheKids/${project.artifactId}</url>
+
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<profiles>
-		<profile>
-			<id>sunjdk8</id>
-			<properties>
-				<jdkversion>1.8</jdkversion>
-				<JAVA_HOME>/usr/java/1.8</JAVA_HOME>
-			</properties>
-		</profile>
-		<profile>
-			<id>openjdk8</id>
-			<properties>
-				<jdkversion>1.8</jdkversion>
-				<JAVA_HOME>/usr/lib/jvm/java-8-openjdk-amd64</JAVA_HOME>
-			</properties>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-		</profile>
-		<profile>
-			<id>openjdk9</id>
-			<properties>
-				<jdkversion>1.9</jdkversion>
-				<JAVA_HOME>/usr/lib/jvm/java-9-openjdk-amd64</JAVA_HOME>
-			</properties>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-		</profile>
-		<profile>
-			<id>sunjdk9</id>
-			<properties>
-				<jdkversion>1.9</jdkversion>
-				<JAVA_HOME>/usr/java/1.9</JAVA_HOME>
-			</properties>
-		</profile>
-	</profiles>
 
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.1</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
-
 		<dependency>
 			<groupId>io.vavr</groupId>
 			<artifactId>vavr</artifactId>
 			<version>0.9.2</version>
-		 <type>jar</type>
+			<type>jar</type>
 		</dependency>
 
 	</dependencies>
@@ -79,7 +34,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
+				<version>${maven-compiler.version}</version>
 				<configuration>
 					<verbose>true</verbose>
 					<fork>true</fork>
@@ -87,7 +42,7 @@
 					<target>1.8</target>
 					<executable>${JAVA_HOME}/bin/javac</executable>
 					<compilerVersion>${jdkversion}</compilerVersion>
-				 <showDeprecation>true</showDeprecation>
+					<showDeprecation>true</showDeprecation>
 				</configuration>
 			</plugin>
 
@@ -95,13 +50,13 @@
 				<!-- Build an executable JAR -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.0.2</version>
+				<version>${maven-jar.version}</version>
 				<configuration>
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<!-- classpathPrefix>lib/</classpathPrefix -->
-							<mainClass>bernard.tatin.JavaMemoryForTheKids</mainClass>
+							<mainClass>${mainClass.name}</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
