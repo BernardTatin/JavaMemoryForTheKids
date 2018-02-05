@@ -1,5 +1,6 @@
 package bernard.tatin.threads;
 
+import io.vavr.control.Try;
 
 public abstract class AThConsumer implements IThConsumer, Runnable {
     public static final ProtectedValue<Boolean> isRunning = new ProtectedValue<Boolean>(true);
@@ -23,4 +24,18 @@ public abstract class AThConsumer implements IThConsumer, Runnable {
             innerLoop();
         }
     }
+
+    protected void doSleep(long ms) {
+        Try<Boolean> sleep100 = Try.of(() -> sleep100B(ms));
+        if (sleep100.isFailure()) {
+            // TODO: must use ThPrinter
+            System.err.println("ERROR (ThMemoryFiller::consume): "
+                    + sleep100.getCause().toString());
+        }
+    }
+    private Boolean sleep100B(long ms) throws InterruptedException {
+        Thread.sleep(ms);
+        return new Boolean(true);
+    }
+
 }

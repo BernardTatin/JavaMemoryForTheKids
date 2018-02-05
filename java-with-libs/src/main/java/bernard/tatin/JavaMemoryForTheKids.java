@@ -1,5 +1,14 @@
 package bernard.tatin;
 
+/*
+Run :
+java -Xmx412m -classpath /home/bernard/git/recallMeJava/java-with-libs/target/classes:/home/bernard/.m2/repository/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar:/home/bernard/.m2/repository/io/vavr/vavr/0.9.0/vavr-0.9.0.jar:/home/bernard/.m2/repository/io/vavr/vavr-match/0.9.0/vavr-match-0.9.0.jar:/home/bernard/.m2/repository/org/eclipse/collections/eclipse-collections-api/9.1.0/eclipse-collections-api-9.1.0.jar:/home/bernard/.m2/repository/org/eclipse/collections/eclipse-collections/9.1.0/eclipse-collections-9.1.0.jar bernard.tatin.JavaMemoryForTheKids
+export here=$(pwd)
+export m2=$HOME/.m2/repository
+java -Xmx412m -cp $here/target/classes:$m2/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar:$m2/io/vavr/vavr/0.9.0/vavr-0.9.0.jar:$m2/io/vavr/vavr-match/0.9.0/vavr-match-0.9.0.jar
+java -Xmx412m -classpath $here/target/classes:$m2/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar:$m2/io/vavr/vavr/0.9.0/vavr-0.9.0.jar:$m2/io/vavr/vavr-match/0.9.0/vavr-match-0.9.0.jar bernard.tatin.JavaMemoryForTheKids
+*/
+
 import bernard.tatin.procfs.ProcessCommandLine;
 import bernard.tatin.procfs.ProcessID;
 import bernard.tatin.procfs.StatM;
@@ -15,6 +24,7 @@ import bernard.tatin.tools.ThMemoryFiller;
 class JavaMemoryForTheKids extends ThPrinterClient {
    private static String titleLine = null;
    private final Counter count = new Counter(25);
+
 
    public static void stopAll() {
        // stop other threads

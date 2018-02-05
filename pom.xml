@@ -1,0 +1,79 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>bernard.tatin</groupId>
+    <artifactId>recallMeJava</artifactId>
+    <version>1.2.0</version>
+    <packaging>pom</packaging>
+
+    <name>recallMeJava</name>
+    <url>https://github.com/BernardTatin/JavaMemoryForTheKids</url>
+
+    <modules>
+        <!-- module>java-common</module -->
+        <module>java-version</module>
+        <module>java-with-libs</module>
+    </modules>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.version>3.8.1</junit.version>
+        <maven-compiler.version>3.7.0</maven-compiler.version>
+        <maven-jar.version>3.0.2</maven-jar.version>
+        <mainClass.name>bernard.tatin.JavaMemoryForTheKids</mainClass.name>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>sunjdk8</id>
+            <properties>
+                <jdkversion>1.8</jdkversion>
+                <JAVA_HOME>/usr/java/1.8</JAVA_HOME>
+            </properties>
+        </profile>
+        <profile>
+            <id>openjdk8</id>
+            <properties>
+                <jdkversion>1.8</jdkversion>
+                <JAVA_HOME>/usr/lib/jvm/java-8-openjdk-amd64</JAVA_HOME>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>openjdk9</id>
+            <properties>
+                <jdkversion>1.9</jdkversion>
+                <JAVA_HOME>/usr/lib/jvm/java-9-openjdk-amd64</JAVA_HOME>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>sunjdk9</id>
+            <properties>
+                <jdkversion>1.9</jdkversion>
+                <JAVA_HOME>/usr/java/1.9</JAVA_HOME>
+            </properties>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.1</version>
+        </dependency>
+
+    </dependencies>
+
+</project>
