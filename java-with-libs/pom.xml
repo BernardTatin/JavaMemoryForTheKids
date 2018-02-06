@@ -16,6 +16,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<quasar.agent>${m2.path}/co/paralleluniverse/quasar-core/0.7.7/quasar-core-0.7.7-jdk8.jar</quasar.agent>
 	</properties>
 
 
@@ -25,6 +26,27 @@
 			<artifactId>vavr</artifactId>
 			<version>0.9.2</version>
 			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>co.paralleluniverse</groupId>
+			<artifactId>quasar-core</artifactId>
+			<version>0.7.7</version>
+			<classifier>jdk8</classifier>
+		</dependency>
+		<dependency>
+			<groupId>co.paralleluniverse</groupId>
+			<artifactId>quasar-actors</artifactId>
+			<version>0.7.7</version>
+		</dependency>
+		<dependency>
+			<groupId>co.paralleluniverse</groupId>
+			<artifactId>quasar-galaxy</artifactId>
+			<version>0.7.7</version>
+		</dependency>
+		<dependency>
+			<groupId>co.paralleluniverse</groupId>
+			<artifactId>quasar-reactive-streams</artifactId>
+			<version>0.7.7</version>
 		</dependency>
 		<dependency>
 			<groupId>bernard.tatin</groupId>
