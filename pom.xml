@@ -10,11 +10,6 @@
     <name>recallMeJava</name>
     <url>https://github.com/BernardTatin/JavaMemoryForTheKids</url>
 
-    <modules>
-        <module>java-common</module>
-        <module>java-version</module>
-        <module>java-with-libs</module>
-    </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>3.8.1</junit.version>
@@ -59,6 +54,12 @@
             </properties>
         </profile>
     </profiles>
+
+    <modules>
+        <module>java-common</module>
+        <module>java-version</module>
+        <module>java-with-libs</module>
+    </modules>
 
     <dependencies>
         <dependency>

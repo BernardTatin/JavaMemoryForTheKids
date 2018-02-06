@@ -7,7 +7,7 @@
         <version>1.4.0</version>
     </parent>
 
-    <artifactId>java-common</artifactId>
+    <artifactId>java-${jdkversion}-common</artifactId>
     <packaging>jar</packaging>
 
     <url>https://github.com/BernardTatin/JavaMemoryForTheKids/${project.artifactId}</url>
@@ -21,8 +21,8 @@
                 <configuration>
                     <verbose>true</verbose>
                     <fork>true</fork>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${jdkversion}</source>
+                    <target>${jdkversion}</target>
                     <executable>${JAVA_HOME}/bin/javac</executable>
                     <compilerVersion>${jdkversion}</compilerVersion>
                     <showDeprecation>true</showDeprecation>

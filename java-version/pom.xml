@@ -8,7 +8,7 @@
         <version>1.4.0</version>
     </parent>
 
-    <artifactId>java-version</artifactId>
+    <artifactId>java-${jdkversion}-version</artifactId>
     <packaging>jar</packaging>
 
     <url>https://github.com/BernardTatin/JavaMemoryForTheKids/${project.artifactId}</url>
@@ -21,7 +21,7 @@
     <dependencies>
         <dependency>
             <groupId>bernard.tatin</groupId>
-            <artifactId>java-common</artifactId>
+            <artifactId>java-${jdkversion}-common</artifactId>
             <version>1.4.0</version>
         </dependency>
     </dependencies>

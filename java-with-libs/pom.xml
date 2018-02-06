@@ -8,7 +8,7 @@
 		<version>1.4.0</version>
 	</parent>
 
-	<artifactId>java-with-libs</artifactId>
+	<artifactId>java-${jdkversion}-with-libs</artifactId>
 	<packaging>jar</packaging>
 
 	<url>https://github.com/BernardTatin/JavaMemoryForTheKids/${project.artifactId}</url>
@@ -28,7 +28,7 @@
 		</dependency>
 		<dependency>
 			<groupId>bernard.tatin</groupId>
-			<artifactId>java-common</artifactId>
+			<artifactId>java-${jdkversion}-common</artifactId>
 			<version>1.4.0</version>
 		</dependency>
 
@@ -43,8 +43,8 @@
 				<configuration>
 					<verbose>true</verbose>
 					<fork>true</fork>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>${jdkversion}</source>
+					<target>${jdkversion}</target>
 					<executable>${JAVA_HOME}/bin/javac</executable>
 					<compilerVersion>${jdkversion}</compilerVersion>
 					<showDeprecation>true</showDeprecation>
