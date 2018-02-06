@@ -1,6 +1,6 @@
 package bernard.tatin.tools;
 
-import bernard.tatin.constants.Constants;
+import bernard.tatin.common.Constants;
 
 import java.util.stream.Stream;
 

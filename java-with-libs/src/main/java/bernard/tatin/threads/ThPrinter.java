@@ -1,5 +1,7 @@
 package bernard.tatin.threads;
 
+import bernard.tatin.common.IThPrinterClient;
+
 import java.io.PrintStream;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;

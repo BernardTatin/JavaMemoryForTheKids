@@ -1,12 +1,12 @@
 package bernard.tatin;
 
+import bernard.tatin.common.Counter;
 import bernard.tatin.procfs.ProcessCommandLine;
 import bernard.tatin.procfs.ProcessID;
 import bernard.tatin.procfs.StatM;
 import bernard.tatin.threads.AThConsumer;
 import bernard.tatin.threads.ThPrinter;
 import bernard.tatin.threads.ThPrinterClient;
-import bernard.tatin.tools.Counter;
 import bernard.tatin.tools.ThMemoryFiller;
 
 /**

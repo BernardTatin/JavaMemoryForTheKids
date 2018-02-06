@@ -1,6 +1,8 @@
 package bernard.tatin.threads;
 
 
+import bernard.tatin.common.IThConsumer;
+
 public abstract class AThConsumer implements IThConsumer, Runnable {
     public static final ProtectedValue<Boolean> isRunning = new ProtectedValue<Boolean>(true);
 

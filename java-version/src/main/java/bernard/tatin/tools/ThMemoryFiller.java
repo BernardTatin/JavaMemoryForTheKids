@@ -1,7 +1,10 @@
 package bernard.tatin.tools;
 
-import bernard.tatin.constants.Constants;
-import bernard.tatin.threads.*;
+import bernard.tatin.common.Constants;
+import bernard.tatin.common.IThPrinterClient;
+import bernard.tatin.threads.AThConsumer;
+import bernard.tatin.threads.ProtectedValue;
+import bernard.tatin.threads.ThPrinter;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -64,7 +67,7 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
         return Stream.iterate((byte) 0,
                 b -> (byte) ((b + 1) % 253)).limit(bytes);
     }
-    
+
     @Override
     public void printString(String str) {
         mainPrinter.printString(str);

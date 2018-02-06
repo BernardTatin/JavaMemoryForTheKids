@@ -1,5 +1,6 @@
 package bernard.tatin.threads;
 
+import bernard.tatin.common.IThConsumer;
 import io.vavr.control.Try;
 
 public abstract class AThConsumer implements IThConsumer, Runnable {

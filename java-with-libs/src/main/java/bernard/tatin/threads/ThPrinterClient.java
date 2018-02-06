@@ -1,6 +1,8 @@
 package bernard.tatin.threads;
 
 
+import bernard.tatin.common.IThPrinterClient;
+
 public class ThPrinterClient implements IThPrinterClient {
     private ThPrinter mainPrinter = ThPrinter.getMainInstance();
 
