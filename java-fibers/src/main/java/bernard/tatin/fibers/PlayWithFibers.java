@@ -1,66 +1,42 @@
 package bernard.tatin.fibers;
 
 import co.paralleluniverse.fibers.Fiber;
-import co.paralleluniverse.fibers.SuspendExecution;
-import co.paralleluniverse.fibers.FiberForkJoinScheduler;
-import co.paralleluniverse.strands.SuspendableRunnable;
 import co.paralleluniverse.strands.channels.Channel;
 import co.paralleluniverse.strands.channels.Channels;
-
+import co.paralleluniverse.strands.Strand;
 import java.util.concurrent.*;
-import java.util.concurrent.ExecutionException;
 
-import static java.lang.String.format;
 import static java.lang.System.out;
 
-//import bernard.tatin.fork.*;
+/*
+export M2=~/.m2/repository
+export QUASAR=${M2}/co/paralleluniverse
+
+export CLASSPATH_FIBER=java-1.8-fibers-1.4.0.jar:${QUASAR}/quasar-core/0.7.9/quasar-core-0.7.9-jdk8.jar:${M2}/com/esotericsoftware/kryo/4.0.0/kryo-4.0.0.jar:${M2}/com/googlecode/concurrentlinkedhashmap/concurrentlinkedhashmap-lru/1.4/concurrentlinkedhashmap-lru-1.4.jar:${M2}/com/google/collections/google-collections/1.0/google-collections-1.0.jar:/${M2}/com/google/guava/guava/20.0/guava-20.0.jar
+
+
+(cd target; java -Xmx412m -classpath ${CLASSPATH_FIBER} -javaagent:${QUASAR}/quasar-core/0.7.9/quasar-core-0.7.9-jdk8.jar=m -Dco.paralleluniverse.fibers.verifyInstrumentation=true bernard.tatin.fibers.PlayWithFibers)
+ */
 
 class PlayWithFibers {
     private PlayWithFibers() {
 
     }
 
-    private static <Message> Channel<Message> newChannel() {
-        int mailboxSize = 5;
-        Channels.OverflowPolicy policy = Channels.OverflowPolicy.BLOCK;
-        boolean singleProducer = true;
-        boolean singleConsumer = true;
-
-        return Channels.newChannel(mailboxSize, policy, singleProducer, singleConsumer);
-    }
-
-    public static void main(String[] arguments) throws ExecutionException, InterruptedException {
-        final Channel<String> ch = newChannel();
-//        final ForkJoinPool forkJoinPool =
-//                new ForkJoinPool(4,
-//                        ForkJoinPool.defaultForkJoinWorkerThreadFactory,
-//                        null,
-//                        true);
-        final FiberForkJoinScheduler joinScheduler = FiberForkJoinScheduler("Scheduler", 4);
-        final ForkJoinPool forkJoinPool = joinScheduler.getForkJoinPool();
-        final Fiber receiver = new Fiber("receiver", joinScheduler, new SuspendableRunnable() {
-            @Override
-            public void run() throws SuspendExecution, InterruptedException {
-                while (true) {
-                    Fiber.sleep(2000L);
-                    String s = ch.receive();
-                    out.printf("                   -> '%s'\n", s);
-                }
+    public static void main(String[] args) throws Exception {
+        final Channel<Integer> chan=Channels.newChannel(0);
+        new Fiber<Void>(() -> {
+            for (int i=0; i < 10; i++) {
+                Strand.sleep(100);
+                chan.send(i);
             }
-        }).start();
-        final Fiber sender = new Fiber("sender", joinScheduler, new SuspendableRunnable() {
-            @Override
-            public void run() throws SuspendExecution, InterruptedException {
-                for (int i=1; ; i++) {
-                    Fiber.sleep(200L);
-                    String message = format("Hello %4d", i);
-                    ch.send(message);
-                    out.printf("'%s' ->\n", message);
-                }
-            }
-        }).start();
-
-        sender.join();
-        receiver.join();
+            chan.close();
+        }
+        ).start();
+        new Fiber<Void>(() -> {
+            Integer x;
+            while ((x=chan.receive()) != null)     System.out.println("Received from channel: " + x);
+        }
+        ).start().join();
     }
 }
