@@ -35,7 +35,9 @@ class PlayWithFibers {
         ).start();
         new Fiber<Void>(() -> {
             Integer x;
-            while ((x=chan.receive()) != null)     System.out.println("Received from channel: " + x);
+            while ((x=chan.receive()) != null) {
+                System.out.println("Received from channel: " + x);
+            }
         }
         ).start().join();
     }
