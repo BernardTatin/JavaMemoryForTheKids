@@ -24,17 +24,17 @@ class PlayWithFibers {
     }
 
     public static void main(String[] args) throws Exception {
-        final Channel<Integer> chan=Channels.newChannel(0);
+        final Channel<String> chan=Channels.newChannel(0);
         new Fiber<Void>(() -> {
             for (int i=0; i < 10; i++) {
                 Strand.sleep(100);
-                chan.send(i);
+                chan.send("Loop " + i);
             }
             chan.close();
         }
         ).start();
         new Fiber<Void>(() -> {
-            Integer x;
+            String x;
             while ((x=chan.receive()) != null) {
                 System.out.println("Received from channel: " + x);
             }
