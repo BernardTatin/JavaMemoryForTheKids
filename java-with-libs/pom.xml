@@ -30,23 +30,23 @@
 		<dependency>
 			<groupId>co.paralleluniverse</groupId>
 			<artifactId>quasar-core</artifactId>
-			<version>0.7.7</version>
+			<version>${quasar.version}</version>
 			<classifier>jdk8</classifier>
 		</dependency>
 		<dependency>
 			<groupId>co.paralleluniverse</groupId>
 			<artifactId>quasar-actors</artifactId>
-			<version>0.7.7</version>
+			<version>${quasar.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>co.paralleluniverse</groupId>
 			<artifactId>quasar-galaxy</artifactId>
-			<version>0.7.7</version>
+			<version>${quasar.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>co.paralleluniverse</groupId>
 			<artifactId>quasar-reactive-streams</artifactId>
-			<version>0.7.7</version>
+			<version>${quasar.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>bernard.tatin</groupId>
