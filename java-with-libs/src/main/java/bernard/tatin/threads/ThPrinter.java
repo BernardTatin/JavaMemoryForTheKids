@@ -37,19 +37,7 @@ public class ThPrinter extends AThConsumer implements IThPrinterClient {
     }
 
     @Override
-    public synchronized void printStrings(String[] strings) {
-        try {
-            for (String str: strings) {
-                queue.put(new PrintElement(System.out, str));
-            }
-            notify();
-        } catch (Exception e) {
-            System.err.println("ERROR (ThPrinter::printString): " + e.toString());
-        }
-    }
-
-    @Override
-    public synchronized void printString(String str) {
+    public void printString(String str) {
         try {
             queue.put(new PrintElement(System.out, str));
             notify();
@@ -59,7 +47,19 @@ public class ThPrinter extends AThConsumer implements IThPrinterClient {
     }
 
     @Override
-    public synchronized void printError(String str) {
+    public void printStrings(String[] strings) {
+        try {
+            for (String str : strings) {
+                queue.put(new PrintElement(System.out, str));
+            }
+            notify();
+        } catch (Exception e) {
+            System.err.println("ERROR (ThPrinter::printString): " + e.toString());
+        }
+    }
+
+    @Override
+    public void printError(String str) {
         try {
             queue.put(new PrintElement(System.err, str));
             notify();
