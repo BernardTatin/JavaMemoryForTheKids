@@ -6,6 +6,8 @@ import co.paralleluniverse.strands.channels.Channels;
 import co.paralleluniverse.strands.Strand;
 import java.util.concurrent.*;
 
+import bernard.tatin.tools.Printer;
+
 import static java.lang.System.out;
 
 /*
@@ -23,22 +25,18 @@ class PlayWithFibers {
 
     }
 
+
     public static void main(String[] args) throws Exception {
-        final Channel<String> chan=Channels.newChannel(0);
+
         new Fiber<Void>(() -> {
-            for (int i=0; i < 10; i++) {
+            String xxline;
+            int i = 0;
+            while (true) {
+                xxline = "xxline " + String.format("%6d", i++);
+                Printer.thePrinter.printString(xxline);
                 Strand.sleep(100);
-                chan.send("Loop " + i);
             }
-            chan.close();
-        }
-        ).start();
-        new Fiber<Void>(() -> {
-            String x;
-            while ((x=chan.receive()) != null) {
-                System.out.println("Received from channel: " + x);
-            }
-        }
-        ).start().join();
+        }).start();
+        Printer.thePrinter.run();
     }
 }
