@@ -1,7 +1,10 @@
 package bernard.tatin.tools;
 
-import bernard.tatin.constants.Constants;
-import bernard.tatin.threads.*;
+import bernard.tatin.common.Constants;
+import bernard.tatin.common.IThPrinterClient;
+import bernard.tatin.threads.AThConsumer;
+import bernard.tatin.threads.ProtectedValue;
+import bernard.tatin.threads.ThPrinter;
 import io.vavr.control.Try;
 
 import java.util.Arrays;

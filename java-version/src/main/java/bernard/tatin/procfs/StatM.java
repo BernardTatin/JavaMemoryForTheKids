@@ -1,6 +1,6 @@
 package bernard.tatin.procfs;
 
-import bernard.tatin.constants.Constants;
+import bernard.tatin.common.Constants;
 import bernard.tatin.tools.ForFiles;
 import bernard.tatin.tools.ForStrings;
 

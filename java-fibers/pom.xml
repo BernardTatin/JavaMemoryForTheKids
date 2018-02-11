@@ -1,16 +1,52 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>bernard.tatin</groupId>
         <artifactId>recallMeJava</artifactId>
         <version>1.4.0</version>
     </parent>
 
-    <artifactId>java-${jdkversion}-common</artifactId>
+    <artifactId>java-${jdkversion}-fibers</artifactId>
     <packaging>jar</packaging>
 
     <url>https://github.com/BernardTatin/JavaMemoryForTheKids/${project.artifactId}</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <mainClass.name>bernard.tatin.PlayWithFibers</mainClass.name>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>co.paralleluniverse</groupId>
+            <artifactId>quasar-core</artifactId>
+            <version>${quasar.version}</version>
+            <classifier>jdk8</classifier>
+        </dependency>
+        <dependency>
+            <groupId>co.paralleluniverse</groupId>
+            <artifactId>quasar-actors</artifactId>
+            <version>${quasar.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>co.paralleluniverse</groupId>
+            <artifactId>quasar-galaxy</artifactId>
+            <version>${quasar.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>co.paralleluniverse</groupId>
+            <artifactId>quasar-reactive-streams</artifactId>
+            <version>${quasar.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aol.simplereact</groupId>
+            <artifactId>cyclops-react</artifactId>
+            <version>2.0.0-MI3</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -25,7 +61,6 @@
                     <target>${jdkversion}</target>
                     <executable>${JAVA_HOME}/bin/javac</executable>
                     <compilerVersion>${jdkversion}</compilerVersion>
-                    <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
 
@@ -39,7 +74,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <!-- classpathPrefix>lib/</classpathPrefix -->
-                            <!--<mainClass>${mainClass.name}</mainClass>-->
+                            <mainClass>${mainClass.name}</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -47,4 +82,5 @@
 
         </plugins>
     </build>
+
 </project>

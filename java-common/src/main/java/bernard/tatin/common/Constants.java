@@ -1,4 +1,4 @@
-package bernard.tatin.constants;
+package bernard.tatin.common;
 
 public class Constants {
     public static final int KILOBYTE = 1024;

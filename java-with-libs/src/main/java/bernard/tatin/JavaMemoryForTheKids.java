@@ -9,13 +9,13 @@ java -Xmx412m -cp $here/target/classes:$m2/org/apache/commons/commons-lang3/3.1/
 java -Xmx412m -classpath $here/target/classes:$m2/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar:$m2/io/vavr/vavr/0.9.0/vavr-0.9.0.jar:$m2/io/vavr/vavr-match/0.9.0/vavr-match-0.9.0.jar bernard.tatin.JavaMemoryForTheKids
 */
 
+import bernard.tatin.common.Counter;
 import bernard.tatin.procfs.ProcessCommandLine;
 import bernard.tatin.procfs.ProcessID;
 import bernard.tatin.procfs.StatM;
 import bernard.tatin.threads.AThConsumer;
 import bernard.tatin.threads.ThPrinter;
 import bernard.tatin.threads.ThPrinterClient;
-import bernard.tatin.tools.Counter;
 import bernard.tatin.tools.ThMemoryFiller;
 
 /**

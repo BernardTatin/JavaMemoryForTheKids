@@ -1,4 +1,4 @@
-package bernard.tatin.threads;
+package bernard.tatin.common;
 
 import java.util.concurrent.Semaphore;
 

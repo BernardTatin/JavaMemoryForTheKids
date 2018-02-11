@@ -1,5 +1,7 @@
 package bernard.tatin.threads;
 
+import bernard.tatin.common.Mutex;
+
 public class ProtectedValue<T> extends ThPrinterClient {
     private T pValue;
     private final Mutex mutex = new Mutex();
@@ -19,7 +21,7 @@ public class ProtectedValue<T> extends ThPrinterClient {
         mutex.unlock();
     }
 
-    
+
     public T get() {
         try {
             mutex.lock();
