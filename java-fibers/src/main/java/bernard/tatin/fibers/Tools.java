@@ -8,7 +8,7 @@ public class Tools {
     public static final Tools tools = new Tools();
     public static final int KILOBYTE = 1024;
     public static final int MEGABYTE = KILOBYTE * KILOBYTE;
-    public static final int MEMORY_INCREMENT = 512 * KILOBYTE;
+    public static final int MEMORY_INCREMENT = 256 * KILOBYTE;
     public final ReentrantLock lockPrinter = new ReentrantLock(true);
     private final Var<Integer> vMemorySize = new Var<Integer>();
 
