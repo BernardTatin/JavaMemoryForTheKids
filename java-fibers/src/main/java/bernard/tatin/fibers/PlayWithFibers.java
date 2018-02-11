@@ -5,9 +5,8 @@ import bernard.tatin.tools.TaskManager;
 import co.paralleluniverse.fibers.SuspendExecution;
 import co.paralleluniverse.strands.Strand;
 import co.paralleluniverse.strands.SuspendableRunnable;
-import co.paralleluniverse.strands.channels.Channel;
-import co.paralleluniverse.strands.channels.Channels;
 import co.paralleluniverse.strands.concurrent.ReentrantLock;
+import co.paralleluniverse.strands.dataflow.Var;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -27,8 +26,8 @@ class PlayWithFibers {
         final int KILOBYTE = 1024;
         final int MEGABYTE = KILOBYTE * KILOBYTE;
         final int MEMORY_INCREMENT = 512 * KILOBYTE;
-        ReentrantLock lockPrinter = new ReentrantLock(true);
-        final Channel<Integer> memoryChannel = Channels.newChannel(50);
+        final ReentrantLock lockPrinter = new ReentrantLock(true);
+        final Var<Integer> vMemorySize = new Var<Integer>();
 
         Printer.thePrinter.run();
         TaskManager.taskManager.addRunnable(
@@ -38,7 +37,7 @@ class PlayWithFibers {
                         Integer memorySize;
                         while (true) {
                             try {
-                                memorySize = memoryChannel.receive();
+                                memorySize = vMemorySize.getNext();
                             } catch (InterruptedException e) {
                                 continue;
                             }
@@ -51,7 +50,7 @@ class PlayWithFibers {
                                         " | " +
                                         String.format("%7d", rtime.freeMemory()/MEGABYTE) +
                                         " | " +
-                                        String.format("%7d", memorySize/MEGABYTE) +
+                                        String.format("%9.1f", memorySize.doubleValue()/MEGABYTE) +
                                         " | ";
                                 Printer.thePrinter.printString(line);
                             } finally {
@@ -112,11 +111,7 @@ class PlayWithFibers {
                                     genericException = null;
                                 }
                             }
-                            try {
-                                memoryChannel.send(new Integer(memSize()));
-                            } catch (InterruptedException e) {
-                                //
-                            }
+                            vMemorySize.set(new Integer(memSize()));
                         }
                     }
                 });
