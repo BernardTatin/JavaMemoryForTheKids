@@ -7,6 +7,7 @@ import co.paralleluniverse.strands.Strand;
 import co.paralleluniverse.strands.SuspendableRunnable;
 import co.paralleluniverse.strands.concurrent.ReentrantLock;
 import co.paralleluniverse.strands.dataflow.Var;
+import cyclops.function.FluentFunctions;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -32,6 +33,10 @@ class PlayWithFibers {
         Printer.thePrinter.run();
         TaskManager.taskManager.addRunnable(
                 new SuspendableRunnable() {
+                    private Integer getMemorySize() throws InterruptedException, SuspendExecution {
+                        return vMemorySize.getNext();
+                    }
+
                     @Override
                     public void run() throws SuspendExecution {
                         Integer memorySize;
