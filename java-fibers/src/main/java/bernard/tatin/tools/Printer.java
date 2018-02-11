@@ -6,11 +6,14 @@ import co.paralleluniverse.strands.channels.Channels;
 import co.paralleluniverse.strands.Strand;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
+import co.paralleluniverse.strands.concurrent.ReentrantLock;
+
 
 public class Printer {
-    private static final Channel<PrintElement> printerChannel = Channels.newChannel(0);
+    private final Channel<PrintElement> printerChannel = Channels.newChannel(0);
     public static final Printer thePrinter = new Printer();
-    private final BlockingQueue<PrintElement> queue = new LinkedBlockingDeque<>(10);
+    private final BlockingQueue<PrintElement> queue = new LinkedBlockingDeque<>(100);
+    private final ReentrantLock lock = new ReentrantLock(true);
 
     private Fiber<Void> fiberRead =
             new Fiber<Void>(() -> {
@@ -34,12 +37,39 @@ public class Printer {
 
     }
 
+    private void write(PrintElement elt) {
+        boolean locked;
+/*        if (elt == null) {
+            System.err.println("ERROR write null elt");
+            return;
+        }
+        if (printerChannel == null) {
+            System.err.println("ERROR printerChannel is null");
+            return;
+        }
+        if (lock == null) {
+            System.err.println("ERROR lock is null");
+            return;
+        }*/
+        lock.lock();
+        locked = true;
+        try {
+            printerChannel.send(elt);
+        } catch(Exception e) {
+            System.err.println("ERROR printerChannel send: " + e.toString());
+        } finally {
+            if (locked) {
+                lock.unlock();
+            }
+        }
+    }
+
     public void run() {
         System.out.println("Start fiberWrite");
-        fiberWrite.start();
+//        fiberWrite.start();
         try {
             System.out.println("Start fiberRead");
-            fiberRead.start().join();
+            fiberRead.start();
             System.out.println("All fibers started");
         } catch(Exception e) {
             System.err.println("ERROR: " + e.toString());
@@ -48,7 +78,8 @@ public class Printer {
 
     public void printString(String str) {
         try {
-            queue.put(new PrintElement(System.out, str));
+//            queue.put(new PrintElement(System.out, str));
+            write(new PrintElement(System.out, str));
         } catch (Exception e) {
             System.err.println("ERROR (ThPrinter::printString): " + e.toString());
         }
@@ -57,7 +88,8 @@ public class Printer {
     public void printStrings(String[] strings) {
         try {
             for (String str : strings) {
-                queue.put(new PrintElement(System.out, str));
+//                queue.put(new PrintElement(System.out, str));
+                write(new PrintElement(System.out, str));
             }
         } catch (Exception e) {
             System.err.println("ERROR (ThPrinter::printString): " + e.toString());
@@ -66,7 +98,8 @@ public class Printer {
 
     public void printError(String str) {
         try {
-            queue.put(new PrintElement(System.err, str));
+//            queue.put(new PrintElement(System.err, str));
+            write(new PrintElement(System.err, str));
         } catch (Exception e) {
             System.err.println("ERROR (ThPrinter::printError): " + e.toString());
         }

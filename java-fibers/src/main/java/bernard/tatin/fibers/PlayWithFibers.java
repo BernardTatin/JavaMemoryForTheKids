@@ -1,9 +1,15 @@
 package bernard.tatin.fibers;
 
 import co.paralleluniverse.fibers.Fiber;
+import co.paralleluniverse.fibers.FiberScheduler;
+import co.paralleluniverse.fibers.FiberForkJoinScheduler;
+import co.paralleluniverse.fibers.SuspendExecution;
+import co.paralleluniverse.strands.SuspendableRunnable;
 import co.paralleluniverse.strands.channels.Channel;
 import co.paralleluniverse.strands.channels.Channels;
 import co.paralleluniverse.strands.Strand;
+
+import java.lang.InterruptedException;
 import java.util.concurrent.*;
 
 import bernard.tatin.tools.Printer;
@@ -21,22 +27,62 @@ export CLASSPATH_FIBER=java-1.8-fibers-1.4.0.jar:${QUASAR}/quasar-core/0.7.9/qua
  */
 
 class PlayWithFibers {
+    private static final PlayWithFibers app = new PlayWithFibers();
+
     private PlayWithFibers() {
 
     }
 
-
-    public static void main(String[] args) throws Exception {
-
-        new Fiber<Void>(() -> {
+    private static void loop(String name) {
             String xxline;
             int i = 0;
             while (true) {
-                xxline = "xxline " + String.format("%6d", i++);
+                xxline = name + " line " + String.format("%6d", i++);
                 Printer.thePrinter.printString(xxline);
-                Strand.sleep(100);
+//                try {
+//                    Fiber.sleep(100);
+//                } catch (Exception e) {
+//                    System.err.println("ERROR " + e.toString());
+//                }
             }
-        }).start();
+    }
+
+    public static void main(String[] args) {
+        Fiber[] fibers = new Fiber[4];
+        FiberScheduler scheduler =
+                new FiberForkJoinScheduler("test", 6, null, false);
+
         Printer.thePrinter.run();
+        for (int i=0; i<4; i++) {
+            final int id = i;
+            fibers[i] = new Fiber<Void>(scheduler, new SuspendableRunnable() {
+                @Override
+                public void run() throws SuspendExecution {
+                    int count = 0;
+                    String name = "ww " + String.format("%d", id);
+                    try {
+                        Fiber.sleep(200);
+                    } catch(InterruptedException e) {
+                        System.err.println("Fiber.Sleep interrupted");
+                    }
+                    while (true) {
+                        try {
+                            Fiber.sleep(100);
+                        } catch(InterruptedException e) {
+                            System.err.println("Fiber.Sleep interrupted");
+                        }
+                        Printer.thePrinter.printString(name + " line " + String.format("%6d", count++));
+                    }
+                }
+            });
+        }
+        for (int i=0; i<4; i++) {
+            fibers[i].start();
+        }
+        try {
+            fibers[3].join();
+        } catch (Exception e) {
+            System.err.println("ERROR on join");
+        }
     }
 }
