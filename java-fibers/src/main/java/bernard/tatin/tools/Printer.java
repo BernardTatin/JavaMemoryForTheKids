@@ -1,31 +1,16 @@
 package bernard.tatin.tools;
 
-import co.paralleluniverse.strands.channels.Channel;
-import co.paralleluniverse.strands.channels.Channels;
-import co.paralleluniverse.strands.Strand;
 import co.paralleluniverse.fibers.Fiber;
-import co.paralleluniverse.strands.concurrent.ReentrantLock;
-import co.paralleluniverse.fibers.FiberScheduler;
-import co.paralleluniverse.fibers.FiberForkJoinScheduler;
 import co.paralleluniverse.fibers.SuspendExecution;
 import co.paralleluniverse.strands.SuspendableRunnable;
+import co.paralleluniverse.strands.channels.Channel;
+import co.paralleluniverse.strands.channels.Channels;
 
 
 public class Printer {
-    private final Channel<PrintElement> printerChannel = Channels.newChannel(50);
     public static final Printer thePrinter = new Printer();
-    public static FiberScheduler scheduler;
-
+    private final Channel<PrintElement> printerChannel = Channels.newChannel(50);
     private Fiber<Void> fiberRead;
-/*    private Fiber<Void> fiberWrite =
-            new Fiber<Void>(() -> {
-                while (true) {
-                    while (!queue.isEmpty()) {
-                        printerChannel.send(queue.take());
-                    }
-                    Strand.sleep(100);
-                }
-            });*/
 
     private Printer() {
     }
@@ -51,7 +36,8 @@ public class Printer {
                             x.println();
                         }
                     } catch (InterruptedException ie) {
-                        System.err.println("ERROR printerChannel receive is interrupted: " + ie.toString());
+                        System.err.println("ERROR printerChannel receive is interrupted: " +
+                                ie.toString());
                     } catch (Exception ie) {
                         System.err.println("ERROR printerChannel receive: " + ie.toString());
                     }
@@ -64,32 +50,17 @@ public class Printer {
     }
 
     public void printString(String str) {
-        try {
-//            queue.put(new PrintElement(System.out, str));
-            write(new PrintElement(System.out, str));
-        } catch (Exception e) {
-            System.err.println("ERROR (ThPrinter::printString): " + e.toString());
-        }
+        write(new PrintElement(System.out, str));
     }
 
     public void printStrings(String[] strings) {
-        try {
-            for (String str : strings) {
-//                queue.put(new PrintElement(System.out, str));
-                write(new PrintElement(System.out, str));
-            }
-        } catch (Exception e) {
-            System.err.println("ERROR (ThPrinter::printString): " + e.toString());
+        for (String str : strings) {
+            write(new PrintElement(System.out, str));
         }
     }
 
     public void printError(String str) {
-        try {
-//            queue.put(new PrintElement(System.err, str));
-            write(new PrintElement(System.err, str));
-        } catch (Exception e) {
-            System.err.println("ERROR (ThPrinter::printError): " + e.toString());
-        }
+        write(new PrintElement(System.err, str));
     }
 
 }

@@ -1,23 +1,16 @@
 package bernard.tatin.fibers;
 
-import co.paralleluniverse.fibers.Fiber;
-import co.paralleluniverse.fibers.FiberScheduler;
-import co.paralleluniverse.fibers.FiberForkJoinScheduler;
+import bernard.tatin.tools.Printer;
+import bernard.tatin.tools.TaskManager;
 import co.paralleluniverse.fibers.SuspendExecution;
+import co.paralleluniverse.strands.Strand;
 import co.paralleluniverse.strands.SuspendableRunnable;
 import co.paralleluniverse.strands.channels.Channel;
 import co.paralleluniverse.strands.channels.Channels;
-import co.paralleluniverse.strands.Strand;
 import co.paralleluniverse.strands.concurrent.ReentrantLock;
 
-import java.lang.InterruptedException;
-import java.util.concurrent.*;
-
-import bernard.tatin.tools.Printer;
-import bernard.tatin.tools.TaskManager;
-
-import static java.lang.System.out;
-
+import java.util.Arrays;
+import java.util.stream.Stream;
 /*
 export M2=~/.m2/repository
 export QUASAR=${M2}/co/paralleluniverse
@@ -29,64 +22,105 @@ export CLASSPATH_FIBER=java-1.8-fibers-1.4.0.jar:${QUASAR}/quasar-core/0.7.9/qua
  */
 
 class PlayWithFibers {
-    private static final PlayWithFibers app = new PlayWithFibers();
-
-    private PlayWithFibers() {
-
-    }
-
-    private static void loop(String name) {
-            String xxline;
-            int i = 0;
-            while (true) {
-                xxline = name + " line " + String.format("%6d", i++);
-                Printer.thePrinter.printString(xxline);
-//                try {
-//                    Fiber.sleep(100);
-//                } catch (Exception e) {
-//                    System.err.println("ERROR " + e.toString());
-//                }
-            }
-    }
 
     public static void main(String[] args) {
-        Fiber[] fibers = new Fiber[4];
-        ReentrantLock lock = new ReentrantLock(true);
+        final int KILOBYTE = 1024;
+        final int MEGABYTE = KILOBYTE * KILOBYTE;
+        final int MEMORY_INCREMENT = 512 * KILOBYTE;
+        ReentrantLock lockPrinter = new ReentrantLock(true);
+        final Channel<Integer> memoryChannel = Channels.newChannel(50);
 
         Printer.thePrinter.run();
-        for (int i=0; i<4; i++) {
-            final int id = i;
-            TaskManager.taskManager.addRunnable(new SuspendableRunnable() {
-                @Override
-                public void run() throws SuspendExecution {
-                    int count = 0;
-                    String name = "ww " + String.format("%d", id);
-                    try {
-                        Fiber.sleep(200);
-                    } catch(InterruptedException e) {
-                        System.err.println("Fiber.Sleep interrupted");
-                    }
-                    while (true) {
-                        Strand.parkNanos(100000000);
-                        lock.lock();
-                        try {
-                            Printer.thePrinter.printString(name + " line " + String.format("%6d", count++));
-                        } finally {
-                            lock.unlock();
+        TaskManager.taskManager.addRunnable(
+                new SuspendableRunnable() {
+                    @Override
+                    public void run() throws SuspendExecution {
+                        Integer memorySize;
+                        while (true) {
+                            try {
+                                memorySize = memoryChannel.receive();
+                            } catch (InterruptedException e) {
+                                continue;
+                            }
+                            lockPrinter.lock();
+                            try {
+                                Runtime rtime = Runtime.getRuntime();
+                                String line = String.format("%7d", rtime.totalMemory()/MEGABYTE) +
+                                        " | " +
+                                        String.format("%7d", rtime.maxMemory()/MEGABYTE) +
+                                        " | " +
+                                        String.format("%7d", rtime.freeMemory()/MEGABYTE) +
+                                        " | " +
+                                        String.format("%7d", memorySize/MEGABYTE) +
+                                        " | ";
+                                Printer.thePrinter.printString(line);
+                            } finally {
+                                lockPrinter.unlock();
+                            }
                         }
                     }
-                }
-            });
-        }
+                });
+        TaskManager.taskManager.addRunnable(
+                new SuspendableRunnable() {
+                    private Byte[] memory = null;
+
+                    private Byte[] fillMemory(int bytes) {
+                        return Stream.generate(() -> new Byte((byte) 85))
+                                .limit(bytes)
+                                .toArray(Byte[]::new);
+                    }
+
+                    private int memSize() {
+                        if (memory != null) {
+                            return memory.length;
+                        } else {
+                            return 0;
+                        }
+                    }
+                    @Override
+                    public void run() throws SuspendExecution {
+                        Byte[] memory_unit = fillMemory(MEMORY_INCREMENT);
+                        boolean memory_error = false;
+                        OutOfMemoryError memoryException = null;
+                        Exception genericException = null;
+                        while (true) {
+                            Strand.parkNanos(100000000);
+                            try {
+                                memory = memory != null ?
+                                        Stream.concat(Arrays.stream(memory), Arrays.stream(memory_unit)).
+                                                toArray(Byte[]::new) :
+                                        memory_unit;
+
+                            } catch (OutOfMemoryError e) {
+                                memoryException = e;
+                                memory_error = true;
+                                memory = null;
+                            } catch (Exception e) {
+                                genericException = e;
+                                memory_error = true;
+                            }
+                            if (memory_error) {
+                                memory_error = false;
+                                if (memoryException != null) {
+                                    Printer.thePrinter.printError("ERROR Memory: " +
+                                            memoryException.toString());
+                                    memoryException = null;
+                                }
+                                if (genericException != null) {
+                                    Printer.thePrinter.printError("ERROR Memory: " +
+                                            genericException.toString());
+                                    genericException = null;
+                                }
+                            }
+                            try {
+                                memoryChannel.send(new Integer(memSize()));
+                            } catch (InterruptedException e) {
+                                //
+                            }
+                        }
+                    }
+                });
         TaskManager.taskManager.startAll();
         TaskManager.taskManager.joinLast();
-/*        for (int i=0; i<4; i++) {
-            fibers[i].start();
-        }
-        try {
-            fibers[3].join();
-        } catch (Exception e) {
-            System.err.println("ERROR on join");
-        }*/
     }
 }

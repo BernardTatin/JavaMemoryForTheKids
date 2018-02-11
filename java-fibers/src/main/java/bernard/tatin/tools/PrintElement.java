@@ -1,9 +1,5 @@
 package bernard.tatin.tools;
 
-import co.paralleluniverse.fibers.Fiber;
-import co.paralleluniverse.strands.channels.Channel;
-import co.paralleluniverse.strands.channels.Channels;
-import co.paralleluniverse.strands.Strand;
 import java.io.PrintStream;
 
 public class PrintElement {
