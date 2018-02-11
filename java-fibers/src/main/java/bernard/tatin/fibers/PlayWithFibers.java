@@ -7,7 +7,6 @@ import co.paralleluniverse.strands.Strand;
 import co.paralleluniverse.strands.SuspendableRunnable;
 import co.paralleluniverse.strands.concurrent.ReentrantLock;
 import co.paralleluniverse.strands.dataflow.Var;
-import cyclops.function.FluentFunctions;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -24,56 +23,51 @@ export CLASSPATH_FIBER=java-1.8-fibers-1.4.0.jar:${QUASAR}/quasar-core/0.7.9/qua
 class PlayWithFibers {
 
     public static void main(String[] args) {
-        final int KILOBYTE = 1024;
-        final int MEGABYTE = KILOBYTE * KILOBYTE;
-        final int MEMORY_INCREMENT = 512 * KILOBYTE;
-        final ReentrantLock lockPrinter = new ReentrantLock(true);
-        final Var<Integer> vMemorySize = new Var<Integer>();
 
         Printer.thePrinter.run();
         TaskManager.taskManager.addRunnable(
                 new SuspendableRunnable() {
-                    private Integer getMemorySize() throws InterruptedException, SuspendExecution {
-                        return vMemorySize.getNext();
-                    }
+                    Tools tools = Tools.tools;
 
+                    private String formatSize(long msize) {
+                        return String.format("%9.1f",
+                                new Long(msize).doubleValue() / tools.MEGABYTE);
+                    }
+                    private String formatSize(Integer msize) {
+                        return String.format("%9.1f",
+                                msize.doubleValue() / tools.MEGABYTE);
+                    }
                     @Override
                     public void run() throws SuspendExecution {
                         Integer memorySize;
                         while (true) {
                             try {
-                                memorySize = vMemorySize.getNext();
+                                memorySize = tools.getMemorySize();
                             } catch (InterruptedException e) {
                                 continue;
                             }
-                            lockPrinter.lock();
+                            tools.lockPrinter.lock();
                             try {
                                 Runtime rtime = Runtime.getRuntime();
                                 String line =
-                                        String.format("%9.1f",
-                                                new Long(rtime.totalMemory()).doubleValue()
-                                                        /MEGABYTE) +
-                                        " | " +
-                                        String.format("%9.1f",
-                                                new Long(rtime.maxMemory()).doubleValue()
-                                                        /MEGABYTE) +
-                                        " | " +
-                                        String.format("%9.1f",
-                                                new Long(rtime.freeMemory()).doubleValue()
-                                                        /MEGABYTE) +
-                                        " | " +
-                                        String.format("%9.1f",
-                                                memorySize.doubleValue()/MEGABYTE) +
-                                        " | ";
+                                        formatSize(rtime.totalMemory()) +
+                                                " | " +
+                                                formatSize(rtime.maxMemory()) +
+                                                " | " +
+                                                formatSize(rtime.freeMemory()) +
+                                                " | " +
+                                                formatSize(memorySize) +
+                                                " | ";
                                 Printer.thePrinter.printString(line);
                             } finally {
-                                lockPrinter.unlock();
+                                tools.lockPrinter.unlock();
                             }
                         }
                     }
                 });
         TaskManager.taskManager.addRunnable(
                 new SuspendableRunnable() {
+                    Tools tools = Tools.tools;
                     private Byte[] memory = null;
 
                     private Byte[] fillMemory(int bytes) {
@@ -91,12 +85,11 @@ class PlayWithFibers {
                     }
                     @Override
                     public void run() throws SuspendExecution {
-                        Byte[] memory_unit = fillMemory(MEMORY_INCREMENT);
+                        Byte[] memory_unit = fillMemory(tools.MEMORY_INCREMENT);
                         boolean memory_error = false;
                         OutOfMemoryError memoryException = null;
                         Exception genericException = null;
                         while (true) {
-                            Strand.parkNanos(300000000);
                             try {
                                 memory = memory != null ?
                                         Stream.concat(Arrays.stream(memory), Arrays.stream(memory_unit)).
@@ -113,7 +106,7 @@ class PlayWithFibers {
                             }
                             if (memory_error) {
                                 memory_error = false;
-                                lockPrinter.lock();
+                                tools.lockPrinter.lock();
                                 try {
                                     if (memoryException != null) {
                                         Printer.thePrinter.printError("ERROR Memory: " +
@@ -126,10 +119,11 @@ class PlayWithFibers {
                                         genericException = null;
                                     }
                                 } finally {
-                                    lockPrinter.unlock();
+                                    tools.lockPrinter.unlock();
                                 }
                             }
-                            vMemorySize.set(new Integer(memSize()));
+                            tools.setMemorySize(memSize());
+                            Strand.parkNanos(300000000);
                         }
                     }
                 });
