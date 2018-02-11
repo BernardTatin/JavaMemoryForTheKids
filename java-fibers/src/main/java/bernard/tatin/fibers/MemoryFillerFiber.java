@@ -4,6 +4,7 @@ import bernard.tatin.tools.Printer;
 import co.paralleluniverse.fibers.SuspendExecution;
 import co.paralleluniverse.strands.Strand;
 import co.paralleluniverse.strands.SuspendableRunnable;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -34,13 +35,11 @@ public class MemoryFillerFiber implements SuspendableRunnable {
         Exception genericException = null;
         while (true) {
             try {
-                memory = memory != null ?
-                        Stream.
-                                concat(Arrays.stream(memory),
-                                        Arrays.stream(memory_unit)).
-                                toArray(Byte[]::new) :
-                        memory_unit;
-
+                if (memory != null) {
+                    memory = (Byte[])ArrayUtils.addAll(memory, memory_unit);
+                } else {
+                    memory = memory_unit;
+                }
             } catch (OutOfMemoryError e) {
                 memoryException = e;
                 memory_error = true;

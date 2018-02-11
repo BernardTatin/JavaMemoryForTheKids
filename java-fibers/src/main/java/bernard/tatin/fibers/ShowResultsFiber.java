@@ -20,24 +20,24 @@ public class ShowResultsFiber implements SuspendableRunnable {
     @Override
     public void run() throws SuspendExecution {
         Integer memorySize;
+        Runtime rtime = Runtime.getRuntime();
         while (true) {
             try {
                 memorySize = tools.getMemorySize();
             } catch (InterruptedException e) {
                 continue;
             }
+            String line =
+                    formatSize(rtime.totalMemory()) +
+                            " | " +
+                            formatSize(rtime.maxMemory()) +
+                            " | " +
+                            formatSize(rtime.freeMemory()) +
+                            " | " +
+                            formatSize(memorySize) +
+                            " | ";
             tools.lockPrinter.lock();
             try {
-                Runtime rtime = Runtime.getRuntime();
-                String line =
-                        formatSize(rtime.totalMemory()) +
-                                " | " +
-                                formatSize(rtime.maxMemory()) +
-                                " | " +
-                                formatSize(rtime.freeMemory()) +
-                                " | " +
-                                formatSize(memorySize) +
-                                " | ";
                 Printer.thePrinter.printString(line);
             } finally {
                 tools.lockPrinter.unlock();
