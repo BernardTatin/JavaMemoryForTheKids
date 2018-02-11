@@ -44,13 +44,21 @@ class PlayWithFibers {
                             lockPrinter.lock();
                             try {
                                 Runtime rtime = Runtime.getRuntime();
-                                String line = String.format("%7d", rtime.totalMemory()/MEGABYTE) +
+                                String line =
+                                        String.format("%9.1f",
+                                                new Long(rtime.totalMemory()).doubleValue()
+                                                        /MEGABYTE) +
                                         " | " +
-                                        String.format("%7d", rtime.maxMemory()/MEGABYTE) +
+                                        String.format("%9.1f",
+                                                new Long(rtime.maxMemory()).doubleValue()
+                                                        /MEGABYTE) +
                                         " | " +
-                                        String.format("%7d", rtime.freeMemory()/MEGABYTE) +
+                                        String.format("%9.1f",
+                                                new Long(rtime.freeMemory()).doubleValue()
+                                                        /MEGABYTE) +
                                         " | " +
-                                        String.format("%9.1f", memorySize.doubleValue()/MEGABYTE) +
+                                        String.format("%9.1f",
+                                                memorySize.doubleValue()/MEGABYTE) +
                                         " | ";
                                 Printer.thePrinter.printString(line);
                             } finally {
@@ -83,7 +91,7 @@ class PlayWithFibers {
                         OutOfMemoryError memoryException = null;
                         Exception genericException = null;
                         while (true) {
-                            Strand.parkNanos(100000000);
+                            Strand.parkNanos(300000000);
                             try {
                                 memory = memory != null ?
                                         Stream.concat(Arrays.stream(memory), Arrays.stream(memory_unit)).
@@ -100,15 +108,20 @@ class PlayWithFibers {
                             }
                             if (memory_error) {
                                 memory_error = false;
-                                if (memoryException != null) {
-                                    Printer.thePrinter.printError("ERROR Memory: " +
-                                            memoryException.toString());
-                                    memoryException = null;
-                                }
-                                if (genericException != null) {
-                                    Printer.thePrinter.printError("ERROR Memory: " +
-                                            genericException.toString());
-                                    genericException = null;
+                                lockPrinter.lock();
+                                try {
+                                    if (memoryException != null) {
+                                        Printer.thePrinter.printError("ERROR Memory: " +
+                                                memoryException.toString());
+                                        memoryException = null;
+                                    }
+                                    if (genericException != null) {
+                                        Printer.thePrinter.printError("ERROR Memory: " +
+                                                genericException.toString());
+                                        genericException = null;
+                                    }
+                                } finally {
+                                    lockPrinter.unlock();
                                 }
                             }
                             vMemorySize.set(new Integer(memSize()));
