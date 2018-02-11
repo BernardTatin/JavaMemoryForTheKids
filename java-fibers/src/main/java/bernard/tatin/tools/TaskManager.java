@@ -15,23 +15,26 @@ public class TaskManager {
         }
     }
 
-    public void addRunnable(SuspendableRunnable sr) {
+    public TaskManager addRunnable(SuspendableRunnable sr) {
         if (firstEmptyRunnable < TaskManager.MAX_RUNNABLE) {
             fibers[firstEmptyRunnable++] = new Fiber(sr);
         }
+        return this;
     }
 
-    public void startAll() {
+    public TaskManager startAll() {
         for (int i=0; i<firstEmptyRunnable; i++) {
             fibers[i].start();
         }
+        return this;
     }
 
-    public void joinLast() {
+    public TaskManager joinLast() {
         try {
             fibers[firstEmptyRunnable - 1].join();
         } catch (Exception e) {
             System.err.println("ERROR TaskManager joinLast: " + e.toString());
         }
+        return this;
     }
 }
