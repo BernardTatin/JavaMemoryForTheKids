@@ -1,12 +1,9 @@
 package bernard.tatin.fibers;
 
 import bernard.tatin.tools.Printer;
-import bernard.tatin.tools.TaskManager;
 import co.paralleluniverse.fibers.SuspendExecution;
 import co.paralleluniverse.strands.Strand;
 import co.paralleluniverse.strands.SuspendableRunnable;
-import co.paralleluniverse.strands.concurrent.ReentrantLock;
-import co.paralleluniverse.strands.dataflow.Var;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
