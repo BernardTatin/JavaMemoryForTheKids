@@ -8,11 +8,13 @@ import co.paralleluniverse.strands.SuspendableRunnable;
 import co.paralleluniverse.strands.channels.Channel;
 import co.paralleluniverse.strands.channels.Channels;
 import co.paralleluniverse.strands.Strand;
+import co.paralleluniverse.strands.concurrent.ReentrantLock;
 
 import java.lang.InterruptedException;
 import java.util.concurrent.*;
 
 import bernard.tatin.tools.Printer;
+import bernard.tatin.tools.TaskManager;
 
 import static java.lang.System.out;
 
@@ -49,13 +51,12 @@ class PlayWithFibers {
 
     public static void main(String[] args) {
         Fiber[] fibers = new Fiber[4];
-        FiberScheduler scheduler =
-                new FiberForkJoinScheduler("test", 6, null, false);
+        ReentrantLock lock = new ReentrantLock(true);
 
         Printer.thePrinter.run();
         for (int i=0; i<4; i++) {
             final int id = i;
-            fibers[i] = new Fiber<Void>(scheduler, new SuspendableRunnable() {
+            TaskManager.taskManager.addRunnable(new SuspendableRunnable() {
                 @Override
                 public void run() throws SuspendExecution {
                     int count = 0;
@@ -66,23 +67,26 @@ class PlayWithFibers {
                         System.err.println("Fiber.Sleep interrupted");
                     }
                     while (true) {
+                        Strand.parkNanos(100000000);
+                        lock.lock();
                         try {
-                            Fiber.sleep(100);
-                        } catch(InterruptedException e) {
-                            System.err.println("Fiber.Sleep interrupted");
+                            Printer.thePrinter.printString(name + " line " + String.format("%6d", count++));
+                        } finally {
+                            lock.unlock();
                         }
-                        Printer.thePrinter.printString(name + " line " + String.format("%6d", count++));
                     }
                 }
             });
         }
-        for (int i=0; i<4; i++) {
+        TaskManager.taskManager.startAll();
+        TaskManager.taskManager.joinLast();
+/*        for (int i=0; i<4; i++) {
             fibers[i].start();
         }
         try {
             fibers[3].join();
         } catch (Exception e) {
             System.err.println("ERROR on join");
-        }
+        }*/
     }
 }
