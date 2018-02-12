@@ -17,7 +17,7 @@ class PlayWithFibers {
     public static void main(String[] args) {
 
         TaskManager.taskManager.addRunnable( new ShowResultsFiber() ).
-                addRunnable( new MemoryFillerFiber() ).
+                addRunnable( new KoolMemoryFillerFiber() ).
                 addRunnable( new PrinterFiber() ).
                 startAll().
                 joinLast();
