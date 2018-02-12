@@ -34,6 +34,7 @@ public class MemoryFillerFiber implements SuspendableRunnable {
         OutOfMemoryError memoryException = null;
         Exception genericException = null;
         while (true) {
+            tools.setMemorySize(memSize());
             try {
                 if (memory != null) {
                     memory = (Byte[])ArrayUtils.addAll(memory, memory_unit);
@@ -66,7 +67,6 @@ public class MemoryFillerFiber implements SuspendableRunnable {
                     tools.lockPrinter.unlock();
                 }
             }
-            tools.setMemorySize(memSize());
             Strand.parkNanos(300000000);
         }
     }
