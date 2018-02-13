@@ -35,6 +35,8 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
 
     @Override
     public void innerLoop() {
+        setMemorySize();
+
         try {
             if (memory != null) {
                 memory = Stream.concat(Arrays.stream(memory), Arrays.stream(memory_unit)).
@@ -46,18 +48,17 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
         } catch (OutOfMemoryError e) {
             try {
                 deltaT = chrono.stop();
-            } catch(ChronoException e) {
+            } catch(ChronoException anotherE) {
                 deltaT = 0;
             }
             printError("ERROR (ThMemoryFiller::consume): " +
                     e.toString() +
                     " " +
                     Long.toString(deltaT) +
-                    "ms";
+                    "ms");
             memory = null;
         }
 
-        setMemorySize();
         try {
             Thread.sleep(100L);
         } catch (InterruptedException e) {
