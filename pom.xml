@@ -46,9 +46,6 @@
                 <jdkversion>1.9</jdkversion>
                 <JAVA_HOME>/usr/lib/jvm/java-9-openjdk-amd64</JAVA_HOME>
             </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
         </profile>
         <profile>
             <id>sunjdk9</id>
@@ -63,6 +60,7 @@
         <module>java-common</module>
         <module>java-version</module>
         <module>java-with-libs</module>
+        <module>java-fibers</module>
     </modules>
 
     <dependencies>
