@@ -25,7 +25,7 @@ public class LArray<T> {
 
     public int getLArraySize(final int initValue) {
         if (getNext() == null) {
-            return initValue;
+            return initValue + getArraySize();
         } else {
             return next.getLArraySize(initValue + getArraySize());
         }

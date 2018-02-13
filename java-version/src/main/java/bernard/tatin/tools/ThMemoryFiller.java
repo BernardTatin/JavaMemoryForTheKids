@@ -1,5 +1,7 @@
 package bernard.tatin.tools;
 
+import bernard.tatin.common.Chrono;
+import bernard.tatin.common.ChronoException;
 import bernard.tatin.common.Constants;
 import bernard.tatin.common.IThPrinterClient;
 import bernard.tatin.threads.AThConsumer;
@@ -16,7 +18,8 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
     private final Byte[] memory_unit = fillMemory(Constants.MEMORY_INCREMENT).
             toArray(Byte[]::new);
     private ThPrinter mainPrinter = ThPrinter.getMainInstance();
-
+    private final Chrono chrono = new Chrono(false);
+    private long deltaT;
 
     private ThMemoryFiller() {
     }
@@ -33,13 +36,24 @@ public class ThMemoryFiller extends AThConsumer implements IThPrinterClient {
     @Override
     public void innerLoop() {
         try {
-            memory = memory != null ?
-                    Stream.concat(Arrays.stream(memory), Arrays.stream(memory_unit)).
-                            toArray(Byte[]::new) :
-                    memory_unit;
-
+            if (memory != null) {
+                memory = Stream.concat(Arrays.stream(memory), Arrays.stream(memory_unit)).
+                        toArray(Byte[]::new);
+            } else {
+                chrono.start();
+                memory = memory_unit;
+            }
         } catch (OutOfMemoryError e) {
-            printError("ERROR (ThMemoryFiller::consume): " + e.toString());
+            try {
+                deltaT = chrono.stop();
+            } catch(ChronoException e) {
+                deltaT = 0;
+            }
+            printError("ERROR (ThMemoryFiller::consume): " +
+                    e.toString() +
+                    " " +
+                    Long.toString(deltaT) +
+                    "ms";
             memory = null;
         }
 
