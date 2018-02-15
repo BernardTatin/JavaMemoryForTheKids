@@ -76,7 +76,65 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.4</version>
         </dependency>
+		<!-- https://mvnrepository.com/artifact/com.puppycrawl.tools/checkstyle -->
+		<dependency>
+			<groupId>com.puppycrawl.tools</groupId>
+			<artifactId>checkstyle</artifactId>
+			<version>8.8</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/pmd/pmd -->
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-pmd-plugin</artifactId>
+			<version>3.9.0</version>
+		</dependency>
+
 
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler.version}</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <fork>true</fork>
+                    <source>${jdkversion}</source>
+                    <target>${jdkversion}</target>
+                    <executable>${JAVA_HOME}/bin/javac</executable>
+                    <compilerVersion>${jdkversion}</compilerVersion>
+					<compilerArgs>
+						<args>-deprecation</args>
+						<args>-g:none</args>
+						<args>-Xlint:all</args>
+					</compilerArgs>
+                </configuration>
+            </plugin>
+		</plugins>
+	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.9.0</version>
+				<configuration>
+					<linkXref>true</linkXref>
+					<sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+					<minimumTokens>100</minimumTokens>
+					<targetJdk>${jdkversion}</targetJdk>
+					<excludes>
+						<exclude>**/*Bean.java</exclude>
+						<exclude>**/generated/*.java</exclude>
+					</excludes>
+					<excludeRoots>
+						<excludeRoot>target/generated-sources/stubs</excludeRoot>
+					</excludeRoots>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>
