@@ -61,6 +61,11 @@
                     <target>${jdkversion}</target>
                     <executable>${JAVA_HOME}/bin/javac</executable>
                     <compilerVersion>${jdkversion}</compilerVersion>
+					<compilerArgs>
+						<args>-deprecation</args>
+						<args>-g:none</args>
+						<args>-Xlint:all</args>
+					</compilerArgs>
                 </configuration>
             </plugin>
 

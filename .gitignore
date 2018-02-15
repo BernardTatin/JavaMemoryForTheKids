@@ -31,3 +31,4 @@ target/
 /java-version/nbactions-sunjdk8.xml
 /java-with-libs/nbactions-sunjdk8.xml
 /java-with-libs/nb-configuration.xml
+/nbactions-sunjdk8.xml
