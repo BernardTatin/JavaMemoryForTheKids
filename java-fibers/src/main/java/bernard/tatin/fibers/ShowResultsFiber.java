@@ -5,7 +5,7 @@ import co.paralleluniverse.fibers.SuspendExecution;
 import co.paralleluniverse.strands.SuspendableRunnable;
 
 public class ShowResultsFiber implements SuspendableRunnable {
-    Tools tools = Tools.tools;
+    private Tools tools = Tools.tools;
 
     private String formatSize(long msize) {
         return String.format("%9.2f",

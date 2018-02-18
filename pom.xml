@@ -10,6 +10,19 @@
     <name>recallMeJava</name>
     <url>https://github.com/BernardTatin/JavaMemoryForTheKids</url>
 
+    <inceptionYear>2018</inceptionYear>
+    <description>This little project was a pretext to (re)learn Java. With it's growth,
+        it became a sort of challenge : which Java feature can I use enven if it's
+        absolutly counter productive.
+    </description>
+    <organization>
+        <name>I'm alone</name>
+        <url>https://github.com/BernardTatin/</url>
+    </organization>
+    <prerequisites>
+        <maven>3.5.2</maven>
+    </prerequisites>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>3.8.1</junit.version>
@@ -76,18 +89,12 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.4</version>
         </dependency>
-		<!-- https://mvnrepository.com/artifact/com.puppycrawl.tools/checkstyle -->
-		<dependency>
-			<groupId>com.puppycrawl.tools</groupId>
-			<artifactId>checkstyle</artifactId>
-			<version>8.8</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/pmd/pmd -->
-		<dependency>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-pmd-plugin</artifactId>
-			<version>3.9.0</version>
-		</dependency>
+
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>0.9.2</version>
+        </dependency>
 
 
     </dependencies>
@@ -115,26 +122,4 @@
 		</plugins>
 	</build>
 
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.9.0</version>
-				<configuration>
-					<linkXref>true</linkXref>
-					<sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
-					<minimumTokens>100</minimumTokens>
-					<targetJdk>${jdkversion}</targetJdk>
-					<excludes>
-						<exclude>**/*Bean.java</exclude>
-						<exclude>**/generated/*.java</exclude>
-					</excludes>
-					<excludeRoots>
-						<excludeRoot>target/generated-sources/stubs</excludeRoot>
-					</excludeRoots>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
 </project>

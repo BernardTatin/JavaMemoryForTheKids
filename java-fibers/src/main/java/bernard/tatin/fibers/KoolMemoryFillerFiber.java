@@ -1,17 +1,12 @@
 package bernard.tatin.fibers;
 
-import bernard.tatin.tools.Printer;
-import bernard.tatin.tools.LArray;
 import bernard.tatin.tools.Chrono;
 import bernard.tatin.tools.ChronoException;
-
+import bernard.tatin.tools.LArray;
+import bernard.tatin.tools.Printer;
 import co.paralleluniverse.fibers.SuspendExecution;
 import co.paralleluniverse.strands.Strand;
 import co.paralleluniverse.strands.SuspendableRunnable;
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.util.Arrays;
-import java.util.stream.Stream;
 
 public class KoolMemoryFillerFiber implements SuspendableRunnable {
     private final long nanoToMs = 1000000;
